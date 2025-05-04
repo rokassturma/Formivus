@@ -63,7 +63,7 @@ export default function Login() {
                         />
                     </div>
 
-                    <button type='submit' className={styles.submitBtn}>Login</button>
+                    <button type='submit' className={`${styles.submitBtn} btn`}>Login</button>
                 </form>
             </section>
         </main>

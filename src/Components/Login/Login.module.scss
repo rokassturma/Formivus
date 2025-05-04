@@ -1,14 +1,16 @@
+@use '../../styles/variables' as *;
+
+
 .loginContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #eef2f3, #8e9eab);
-    padding: 1rem;
+    padding: 2rem;
 
     .loginBox {
         background-color: #fff;
-        padding: 3rem 2.5rem;
+        padding: 2.5rem;
         border-radius: 1rem;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         width: 100%;
@@ -17,61 +19,53 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+            color: $text-dark;
         }
+    }
 
-        .error {
-            color: red;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: bold;
-        }
+    .loginForm {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
 
-        .loginForm {
+        .formGroup {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
 
-            .formGroup {
-                display: flex;
-                flex-direction: column;
-
-                label {
-                    margin-bottom: 0.5rem;
-                    font-weight: 600;
-                    font-size: 0.95rem;
-                    color: #444;
-                }
-
-                input {
-                    padding: 0.75rem;
-                    border-radius: 0.5rem;
-                    border: 1px solid #ccc;
-                    font-size: 1rem;
-                    transition: border-color 0.3s;
-
-                    &:focus {
-                        outline: none;
-                        border-color: #1e90ff;
-                    }
-                }
+            label {
+                margin-bottom: 0.5rem;
+                font-weight: 600;
+                font-size: 0.95rem;
+                color: $text-dark;
             }
 
-            .submitBtn {
-                padding: 0.85rem;
-                font-size: 1rem;
-                background-color: #1e90ff;
-                color: white;
-                border: none;
-                cursor: pointer;
+            input {
+                padding: 0.75rem;
                 border-radius: 0.5rem;
-                transition: background-color 0.3s;
+                border: 1px solid $border-color;
+                font-size: 1rem;
+                transition: border-color 0.3s;
 
-                &:hover {
-                    background-color: #0077e6;
+                &:focus {
+                    outline: none;
+                    border-color: $primary-color;
                 }
             }
         }
+
+        .submitBtn {
+            letter-spacing: 0.5px;
+        }
+    }
+
+
+    .error {
+        color: $danger-color;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-weight: bold;
     }
 }
 
