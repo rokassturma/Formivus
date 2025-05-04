@@ -21,8 +21,8 @@ export const register = (req, res) => {
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
 
-        const insertQuery = 
-        `
+        const insertQuery =
+            `
         INSERT INTO users
         (email, username, password)
         VALUES
@@ -32,9 +32,9 @@ export const register = (req, res) => {
 
         db.query(insertQuery, values, (err, result) => {
             if (err)
-                return res.status(500).json({message: 'Something went wrong with registration'});
+                return res.status(500).json({ message: 'Something went wrong with registration' });
 
-            return res.status(201).json({message: 'Registration is successful'});
+            return res.status(201).json({ message: 'Registration is successful' });
         });
     });
 };

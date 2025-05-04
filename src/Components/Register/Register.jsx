@@ -12,7 +12,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventdefault();
+    e.preventDefault();
     setError('');
 
     try {
