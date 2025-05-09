@@ -1,0 +1,49 @@
+@use '../../styles/variables' as *;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    .left {
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: $primary-color;
+            text-decoration: none;
+        }
+    }
+
+    .right {
+        display: flex;
+        gap: 1rem;
+
+        .btn {
+            padding: 0.5rem 1rem;
+        }
+    }
+}
+
+.navLink {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s;
+
+    &--active {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-weight: 700;
+    }
+
+    &:hover {
+        color: $primary-hover;
+    }
+}

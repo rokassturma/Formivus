@@ -16,7 +16,7 @@ export const register = (req, res) => {
         if (err)
             return res.status(500).json({ message: 'Server error' });
         if (data.length > 0)
-            return res.status(400).json({ message: 'Email already exist' });
+            return res.status(400).json({ message: 'Email already exists' });
 
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
