@@ -57,12 +57,19 @@ export const login = (req, res) => {
 
         const user = data[0];
 
+        console.log('LOGIN: user =', user);
+
         const isPasswordCorrect = bcrypt.compareSync(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: 'Password is incorrect' });
         };
 
-        const token = jwt.sign({ id: user.id, role: user.role }, 'JWT_SECRET_KEY', { expiresIn: '1d' });
+
+        const token = jwt.sign(
+            { id: user.id, role: user.role },
+            'JWT_SECRET_KEY',
+            { expiresIn: '1d' }
+        );
 
         res
             .cookie('access_token', token, {
