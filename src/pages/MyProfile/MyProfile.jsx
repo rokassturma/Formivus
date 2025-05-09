@@ -4,10 +4,10 @@ export default function MyProfile() {
 
 
     return (
-        <main className={styles.myProfile}>
+        <main className={`main-wrapper ${styles.myProfile}`}>
             <section className={styles.profileBox}>
-                <h1>Welcome to your personal page</h1>
-                <p>Here you can fill your personal data and watch the progress!</p>
+                <h1>Welcome to your profile</h1>
+                <p>Please login to see all the personal information!</p>
             </section>
         </main>
     )

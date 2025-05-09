@@ -1,46 +1,70 @@
 @use '../../styles/variables' as *;
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 10;
+    padding: 20px;
+}
 
-    .left {
-        .logo {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: $primary-color;
-            text-decoration: none;
-        }
+.headerInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .logo {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: $primary-color;
+        text-decoration: none;
+    }
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .btn {
+        padding: 0.5rem 1rem;
     }
 
-    .right {
+    .username {
+        font-weight: 600;
+        color: $text-dark;
         display: flex;
-        gap: 1rem;
-
-        .btn {
-            padding: 0.5rem 1rem;
-        }
+        align-items: center;
+        margin-right: 0.5rem;
     }
 }
 
 .navLink {
-    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 110px;
+    padding: 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
     color: $primary-color;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    border-bottom: 2px solid transparent;
 
     &--active {
-        text-decoration: underline;
-        text-underline-offset: 4px;
-        font-weight: 700;
+        border-bottom: 2px solid $primary-color;
     }
 
     &:hover {

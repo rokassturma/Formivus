@@ -11,4 +11,14 @@ router.get('/me', verifyToken, (req, res) => {
     res.status(200).json({ user: req.user });
 });
 
+router.post('/logout', (req, res) => {
+    res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'Lax'
+    });
+    res.status(200).json({ message: 'Logout successful' });
+});
+
+
 export default router;
