@@ -41,12 +41,24 @@
     }
 
     .username {
-        font-weight: 600;
-        color: $text-dark;
-        display: flex;
-        align-items: center;
-        margin-right: 0.5rem;
+        color: $username-color;
+        font-weight: bold;
+        font-style: italic;
+        margin-right: 1rem;
     }
+
+    .usernameInline {
+        color: $primary-color;
+        font-weight: 600;
+    }
+
+    .profileText {
+        color: $text-dark;
+        font-style: normal;
+        font-weight: 500;
+        margin-left: 0.5rem;
+    }
+
 }
 
 .navLink {

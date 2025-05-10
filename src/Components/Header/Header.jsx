@@ -95,9 +95,10 @@ export default function Header() {
                                     isActive ? `${styles.navLink} ${styles['navLink--active']}` : styles.navLink
                                 }
                             >
-                                My Profile
+                                <span className={styles.usernameInline}>{currentUser.username}</span>
+                                <span className={styles.profileText}> Profile</span>
                             </NavLink>
-                            <span className={styles.username}>{currentUser.username}</span>
+
 
                             {loggingOut ? (
                                 <Spinner />
