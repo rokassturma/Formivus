@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header/Header';
 import Home from './pages/Home/Home';
@@ -7,9 +6,6 @@ import Register from './pages/Register/Register';
 import MyProfile from './pages/MyProfile/MyProfile';
 import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
-
-
-
 
 
 function App() {
