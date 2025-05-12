@@ -10,7 +10,7 @@
 
 .registerBox {
   background-color: #fff;
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   width: 100%;
@@ -19,8 +19,8 @@
 
   h1 {
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
     color: $text-dark;
   }
 }
@@ -28,21 +28,21 @@
 .registerForm {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 
   .formGroup {
     display: flex;
     flex-direction: column;
 
     label {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       font-weight: 600;
       font-size: 0.95rem;
       color: $text-dark;
     }
 
     input {
-      padding: 0.75rem;
+      padding: 0.6rem;
       border-radius: 0.5rem;
       border: 1px solid $border-color;
       font-size: 1rem;
@@ -54,6 +54,53 @@
       }
     }
   }
+
+  .requirementsList {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+
+    li {
+      color: grey;
+      margin-bottom: 0.3rem;
+
+      &::before {
+        content: '✖ ';
+        color: red;
+      }
+    }
+
+    .valid {
+      color: green;
+
+      &::before {
+        content: '✔ ';
+        color: green;
+      }
+    }
+  }
+
+  .strength {
+    margin-top: 0.5rem;
+    font-weight: bold;
+
+    &.weak {
+      color: red;
+    }
+
+    &.medium {
+      color: orange;
+    }
+
+    &.strong {
+      color: green;
+    }
+  }
+
+  .submitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .error {
@@ -61,6 +108,13 @@
   margin-bottom: 1rem;
   text-align: center;
   font-weight: bold;
+}
+
+.success {
+  color: $success-color;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 @keyframes fadeIn {
@@ -73,11 +127,4 @@
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.success {
-  color: green;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1rem;
 }
