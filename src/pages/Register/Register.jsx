@@ -3,41 +3,43 @@ import axios from 'axios';
 import styles from './Register.module.scss';
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../Components/Spinner/Spinner";
-import { validateUsername, validateEmail } from "../../utils/validators";
-import { checkPasswordRequirements, getPasswordStrength } from "../../utils/validators";
-import classNames from 'classnames';
+import {
+  validateUsername,
+  validateEmail,
+  checkPasswordRequirements,
+  getPasswordStrength
+} from "../../utils/validators";
+
+import NotificationMessage from './NotificationMessage';
+import EmailInput from './EmailInput';
+import UsernameInput from './UsernameInput';
+import PasswordInput from './PasswordInput';
+import ConfirmPasswordInput from './ConfirmPasswordInput';
+import PasswordRequirements from './PasswordRequirements';
 
 
 export default function Register() {
-
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-
-
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordRequirements, setPasswordRequirements] = useState({});
-  const [passwordStrength, setPasswordStrength] = useState('Weak');
-  const [confirmError, setConfirmError] = useState('');
 
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
 
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [passwordRequirements, setPasswordRequirements] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState('Weak');
 
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-
-
-
-
   const navigate = useNavigate();
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (emailError) {
       setError('Please fix the email field.');
       return;
@@ -71,133 +73,74 @@ export default function Register() {
     }
 
     catch (err) {
+      setLoading(false);
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setLoading(false);
         setError('Error. Try again.');
       }
     }
   };
-
 
   return (
     <main className={`main-wrapper ${styles.registerContainer}`}>
       <section className={styles.registerBox}>
         <h1>Registration</h1>
 
-        {error && <p className={styles.error}>{error}</p>}
-        {successMessage && <p className={styles.success}>{successMessage}</p>}
+        <NotificationMessage message={error || successMessage} type={error ? 'error' : 'success'} />
 
+        {loading ? <Spinner /> : (
+          <form className={styles.registerForm} onSubmit={handleSubmit}>
 
-        {loading ? <Spinner />
-          : (
-            <form className={styles.registerForm} onSubmit={handleSubmit}>
-              <div className={styles.formGroup}>
-                <label htmlFor="email">Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setEmail(value);
-                    setEmailError(validateEmail(value));
-                  }}
-                  onBeforeInput={(e) => {
-                    const disallowed = /[\\/*;"'()&]/;
-                    if (disallowed.test(e.data)) {
-                      e.preventDefault();
-                    }
-                  }}
-                  required
-                />
-                {emailError && <p className={styles.error}>{emailError}</p>}
-              </div>
+            <EmailInput
+              email={email}
+              setEmail={setEmail}
+              error={emailError}
+              setError={(val) => setEmailError(validateEmail(val))}
+              styles={styles}
+            />
 
+            <UsernameInput
+              username={username}
+              setUsername={setUsername}
+              error={usernameError}
+              setError={(val) => setUsernameError(validateUsername(val))}
+              styles={styles}
+            />
 
-              <div className={styles.formGroup}>
-                <label htmlFor="username">Username:</label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setUsername(value);
-                    setUsernameError(validateUsername(value));
-                  }}
-                  onBeforeInput={(e) => {
-                    const allowed = /^[a-zA-Z0-9]*$/;
-                    if (!allowed.test(e.data)) {
-                      e.preventDefault();
-                    }
-                  }}
-                  required
-                />
-                {usernameError && <p className={styles.error}>{usernameError}</p>}
-              </div>
+            <PasswordInput
+              password={password}
+              setPassword={setPassword}
+              setRequirements={setPasswordRequirements}
+              setStrength={setPasswordStrength}
+              styles={styles}
+              checkPasswordRequirements={checkPasswordRequirements}
+              getPasswordStrength={getPasswordStrength}
+            />
 
+            <PasswordRequirements
+              requirements={passwordRequirements}
+              strength={passwordStrength}
+              styles={styles}
+            />
 
+            <ConfirmPasswordInput
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              styles={styles}
+            />
 
-              <div className={styles.formGroup}>
-                <label htmlFor="password">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setPassword(val);
+            <button
+              type="submit"
+              className={`${styles.submitBtn} btn`}
+              disabled={passwordStrength === 'Weak' || password.length < 8}
+            >
+              Register
+            </button>
 
-                    const reqs = checkPasswordRequirements(val);
-                    setPasswordRequirements(reqs);
-
-                    const strength = getPasswordStrength(reqs);
-                    setPasswordStrength(strength);
-                  }}
-                  required
-                />
-              </div>
-
-              <ul className={styles.requirementsList}>
-                <li className={passwordRequirements.hasMinLength ? styles.valid : ''}>At least 8 characters</li>
-                <li className={passwordRequirements.hasUpperCase ? styles.valid : ''}>At least 1 uppercase letter</li>
-                <li className={passwordRequirements.hasLowerCase ? styles.valid : ''}>At least 1 lowercase letter</li>
-                <li className={passwordRequirements.hasNumber ? styles.valid : ''}>At least 1 number</li>
-                <li className={passwordRequirements.hasSpecialChar ? styles.valid : ''}>At least 1 special character</li>
-              </ul>
-
-              <p className={`${styles.strength} ${styles[passwordStrength.toLowerCase()]}`}>
-                Password strength: {passwordStrength}
-              </p>
-
-
-              <div className={styles.formGroup}>
-                <label htmlFor="confirmPassword">Please confirm password:</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setConfirmPassword(val);
-                    setConfirmError(val !== password ? 'Passwords do not match.' : '');
-                  }}
-                  required
-                />
-                {confirmError && <p className={styles.error}>{confirmError}</p>}
-              </div>
-
-              <button
-                type="submit"
-                className={`${styles.submitBtn} btn`}
-                disabled={passwordStrength === 'Weak' || password.length < 8}
-              >Register
-              </button>
-            </form>
-          )}
+          </form>
+        )}
       </section>
     </main>
-  )
+  );
 }
