@@ -1,4 +1,3 @@
-
 export default function UsernameInput({ username, setUsername, error, setError, styles }) {
   return (
     <div className={styles.formGroup}>

@@ -4,10 +4,7 @@ import styles from './Register.module.scss';
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../Components/Spinner/Spinner";
 import {
-  validateUsername,
-  validateEmail,
-  checkPasswordRequirements,
-  getPasswordStrength
+  validateUsername, validateEmail, checkPasswordRequirements, getPasswordStrength
 } from "../../utils/validators";
 
 import NotificationMessage from './NotificationMessage';
@@ -16,7 +13,6 @@ import UsernameInput from './UsernameInput';
 import PasswordInput from './PasswordInput';
 import ConfirmPasswordInput from './ConfirmPasswordInput';
 import PasswordRequirements from './PasswordRequirements';
-
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -31,26 +27,32 @@ export default function Register() {
   const [passwordRequirements, setPasswordRequirements] = useState({});
   const [passwordStrength, setPasswordStrength] = useState('Weak');
 
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  function showMessage(text, type = 'error') {
+    setMessage({ text, type });
+    setTimeout(() => {
+      setMessage({ text: '', type: '' });
+    }, 3000);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (emailError) {
-      setError('Please fix the email field.');
+      showMessage('Please fix the email field.', 'error');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      showMessage('Passwords do not match.', 'error');
       return;
     }
 
-    setError('');
+    setMessage({ text: '', type: '' });
     setLoading(true);
 
     try {
@@ -60,7 +62,7 @@ export default function Register() {
         { withCredentials: true }
       );
 
-      setSuccessMessage('Registration is successful! Redirecting to Login Page...');
+      showMessage('Registration is successful! Redirecting to Login Page...', 'success');
       setEmail('');
       setUsername('');
       setPassword('');
@@ -75,9 +77,9 @@ export default function Register() {
     catch (err) {
       setLoading(false);
       if (err.response?.data?.message) {
-        setError(err.response.data.message);
+        showMessage(err.response.data.message, 'error');
       } else {
-        setError('Error. Try again.');
+        showMessage('Error. Try again.', 'error');
       }
     }
   };
@@ -87,7 +89,7 @@ export default function Register() {
       <section className={styles.registerBox}>
         <h1>Registration</h1>
 
-        <NotificationMessage message={error || successMessage} type={error ? 'error' : 'success'} />
+        <NotificationMessage message={message.text} type={message.type} />
 
         {loading ? <Spinner /> : (
           <form className={styles.registerForm} onSubmit={handleSubmit}>
@@ -137,7 +139,6 @@ export default function Register() {
             >
               Register
             </button>
-
           </form>
         )}
       </section>
