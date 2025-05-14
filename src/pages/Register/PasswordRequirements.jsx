@@ -1,6 +1,11 @@
 import classNames from 'classnames';
 
 export default function PasswordRequirements({ requirements, strength, styles }) {
+
+    if (!requirements || Object.keys(requirements).length === 0) {
+        return null;
+    }
+
     return (
         <>
             <ul className={styles.requirementsList}>
