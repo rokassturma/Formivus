@@ -8,7 +8,8 @@ export default function ProfileForm({ onProfileSaved }) {
     const [age, setAge] = useState('');
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
-    const [activity_Level, setActivityLevel] = useState('');
+    const [activity_level, setActivityLevel] = useState('');
+
 
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -19,8 +20,21 @@ export default function ProfileForm({ onProfileSaved }) {
         setMessage('');
         setError('');
 
-        if (!gender || !age || !height || !weight || !activity_Level) {
+        const validGenders = ['male', 'female', 'other'];
+        const validActivityLevels = ['sedentary', 'light', 'moderate', 'active', 'very active'];
+
+        if (!gender || !age || !height || !weight || !activity_level) {
             setError('Please fill in all fields.');
+            return;
+        }
+
+        if (!validGenders.includes(gender)) {
+            setError('Please select a valid gender.');
+            return;
+        }
+
+        if (!validActivityLevels.includes(activity_level)) {
+            setError('Please select a valid activity level.');
             return;
         }
 
@@ -30,18 +44,21 @@ export default function ProfileForm({ onProfileSaved }) {
                 age,
                 height,
                 weight,
-                activity_Level
+                activity_level
             }, { withCredentials: true });
 
             setMessage('Profile saved successfully!');
             setGender('');
             setAge('');
             setHeight('');
+            setWeight('');
             setActivityLevel('');
+            onProfileSaved();
         } catch (err) {
             setError(err.response?.data?.message || 'Something went wrong.');
         }
-    }
+    };
+
 
     return (
         <form className={styles.profileForm} onSubmit={handleSubmit}>
@@ -54,7 +71,7 @@ export default function ProfileForm({ onProfileSaved }) {
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
                     required>
-                    <option value="">Select gender</option>
+                    <option value="" disabled>Select gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -100,10 +117,10 @@ export default function ProfileForm({ onProfileSaved }) {
             <div className={styles.formGroup}>
                 <label>Activity Level:</label>
                 <select
-                    value={activity_Level}
+                    value={activity_level}
                     onChange={(e) => setActivityLevel(e.target.value)}
                     required>
-                    <option value="">Select your activity level</option>
+                    <option value="" disabled>Select your activity level</option>
                     <option value="sedentary">Sedentary</option>
                     <option value="light">Light</option>
                     <option value="moderate">Moderate</option>
