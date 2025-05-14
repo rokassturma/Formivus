@@ -41,7 +41,7 @@ router.get('/profile', verifyToken, (req, res) => {
 
     db.query(q, [userId], (err, data) => {
         if (err) return res.status(500).json({ message: 'Database error' });
-        if (data.length === 0) return res.status(404).json({ message: 'Profile not found' });
+        if (data.length === 0) return res.status(404).json({ message: 'Data is empty. Please fill the form.' });
 
         res.status(200).json(data[0]);
     });
