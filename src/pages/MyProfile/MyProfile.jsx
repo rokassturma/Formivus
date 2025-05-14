@@ -41,11 +41,11 @@ export default function MyProfile() {
                             </div>
                             <div className={styles.profileItem}>
                                 <h4>Height:</h4>
-                                <p>{profile.height}</p>
+                                <p>{profile.height} cm</p>
                             </div>
                             <div className={styles.profileItem}>
                                 <h4>Weight:</h4>
-                                <p>{profile.weight}</p>
+                                <p>{profile.weight} kg</p>
                             </div>
                             <div className={styles.profileItem}>
                                 <h4>Gender:</h4>

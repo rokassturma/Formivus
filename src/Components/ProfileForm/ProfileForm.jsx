@@ -1,4 +1,4 @@
-import { act, useState } from 'react';
+import { useState } from 'react';
 import styles from './ProfileForm.module.scss';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ export default function ProfileForm({ onProfileSaved }) {
     const [age, setAge] = useState('');
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
-    const [activityLevel, setActivityLevel] = useState('');
+    const [activity_Level, setActivityLevel] = useState('');
 
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -19,7 +19,7 @@ export default function ProfileForm({ onProfileSaved }) {
         setMessage('');
         setError('');
 
-        if (!gender || !age || !height || !weight || !activityLevel) {
+        if (!gender || !age || !height || !weight || !activity_Level) {
             setError('Please fill in all fields.');
             return;
         }
@@ -30,7 +30,7 @@ export default function ProfileForm({ onProfileSaved }) {
                 age,
                 height,
                 weight,
-                activity_level: activityLevel
+                activity_Level
             }, { withCredentials: true });
 
             setMessage('Profile saved successfully!');
@@ -100,7 +100,7 @@ export default function ProfileForm({ onProfileSaved }) {
             <div className={styles.formGroup}>
                 <label>Activity Level:</label>
                 <select
-                    value={activityLevel}
+                    value={activity_Level}
                     onChange={(e) => setActivityLevel(e.target.value)}
                     required>
                     <option value="">Select your activity level</option>
