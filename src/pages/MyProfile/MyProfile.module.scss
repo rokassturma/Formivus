@@ -1,12 +1,29 @@
 @use '../../styles/variables' as *;
 
+.profileWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.left,
+.right {
+    flex: 1 1 45%;
+    display: flex;
+    justify-content: center;
+}
+
 .profileCard {
     background-color: #fff;
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     text-align: center;
-    margin-top: 2rem;
+    max-width: 500px;
+    width: 100%;
 
     .userStyle {
         color: $primary-color;
@@ -37,4 +54,11 @@
     p {
         font-weight: bold;
     }
+}
+
+.error {
+    color: $danger-color;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: center;
 }
