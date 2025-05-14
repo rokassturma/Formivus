@@ -23,7 +23,7 @@ router.post('/profile', verifyToken, (req, res) => {
 
         const insertQuery =
             `
-        INSERTO INTO user_profiles
+        INSERT INTO user_profiles
         (user_id, gender, age, height, weight, activity_level)
         VALUES (?, ?, ?, ?, ?, ?)
         `;
