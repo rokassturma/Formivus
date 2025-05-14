@@ -14,8 +14,14 @@ export default function MyProfile() {
 
     const getProfile = () => {
         axios.get('http://localhost:5000/api/profile', { withCredentials: true })
-            .then(res => setProfile(res.data))
-            .catch(err => setError(err.response?.data?.message || 'Failed to load profile.'));
+            .then(res => {
+                setProfile(res.data);
+                setError('');
+            })
+            .catch(err => {
+                setProfile(null);
+                setError(err.response?.data?.message || 'Failed to load a profile.');
+            });
     };
 
     useEffect(() => {
