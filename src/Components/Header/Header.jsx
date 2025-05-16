@@ -54,17 +54,17 @@ export default function Header() {
                         Formivus
                     </NavLink>
 
-
-                    {isAdmin && (
+                    {isAdmin &&
                         <NavLink
                             to="/admin"
+                            end
                             className={({ isActive }) =>
                                 isActive ? `${styles.navLink} ${styles['navLink--active']}` : styles.navLink
                             }
                         >
                             Admin Panel
                         </NavLink>
-                    )}
+                    }
 
                     {isAdmin && (
                         <NavLink

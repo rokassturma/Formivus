@@ -19,10 +19,10 @@ router.get('/admin/profiles', verifyToken, (req, res) => {
             return res.status(403).json({ message: 'Access denied. Admins only.' });
         }
 
-        const getProfilesQuery = 
-        `
+        const getProfilesQuery =
+            `
         SELECT
-        users.email, users.username,
+        users.email, users.username, users.role,
         user_profiles.age, user_profiles.height, user_profiles.weight,
         user_profiles.gender, user_profiles.activity_level
         FROM users
@@ -30,10 +30,58 @@ router.get('/admin/profiles', verifyToken, (req, res) => {
         `;
 
         db.query(getProfilesQuery, (err2, result) => {
-            if (err2) return res.status(500).json({message: 'Failed to retrieve profiles.'});
+            if (err2) return res.status(500).json({ message: 'Failed to retrieve profiles.' });
             return res.status(200).json(result);
         });
     });
 });
+
+router.put('/admin/toggle-role', verifyToken, (req, res) => {
+    const adminId = req.user.id;
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: 'Email is required' });
+    }
+
+    
+    const checkAdminQuery = 'SELECT role, email FROM users WHERE id = ?';
+
+    db.query(checkAdminQuery, [adminId], (err, adminResult) => {
+        if (err) return res.status(500).json({ message: 'Database error' });
+
+        const admin = adminResult[0];
+        if (!admin || admin.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+
+        if (admin.email === email) {
+            return res.status(403).json({ message: 'You cannot change your own role.' });
+        }
+
+
+        const getUserQuery = 'SELECT role FROM users WHERE email = ?';
+
+        db.query(getUserQuery, [email], (err2, userResult) => {
+            if (err2) return res.status(500).json({ message: 'Database error (user)' });
+
+            if (!userResult.length) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const currentRole = userResult[0].role;
+            const newRole = currentRole === 'admin' ? 'user' : 'admin';
+
+            const updateQuery = 'UPDATE users SET role = ? WHERE email = ?';
+
+            db.query(updateQuery, [newRole, email], (err3) => {
+                if (err3) return res.status(500).json({ message: 'Failed to update role' });
+
+                return res.status(200).json({ message: `Role updated to ${newRole}` });
+            });
+        });
+    });
+});
+
 
 export default router;

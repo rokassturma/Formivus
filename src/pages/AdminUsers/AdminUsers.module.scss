@@ -10,6 +10,23 @@
         letter-spacing: 1px;
     }
 
+    .searchInput {
+        width: 100%;
+        max-width: 400px;
+        padding: 0.75rem 1rem;
+        margin: 0 auto 2rem auto;
+        display: block;
+        border-radius: 0.5rem;
+        border: 1px solid $border-color;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+        }
+    }
+
     .error {
         color: $danger-color;
         text-align: center;

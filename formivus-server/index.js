@@ -22,6 +22,8 @@ app.use('/api', adminRoute);
 app.use('/api', profileRoutes);
 app.use('/api', adminRoutes);
 
+
+
 app.listen(PORT, () => {
     console.log(`Server is listening to http://localhost:${PORT}`);
 });
