@@ -67,4 +67,11 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
         }
     }
+
+    .adminCard {
+        background: linear-gradient(135deg, rgba(255, 230, 0, 0.25), rgba(255, 200, 0, 0.25));
+        border: 2px solid rgba(255, 190, 0, 0.6);
+        box-shadow: 0 0 10px rgba(255, 200, 0, 0.2);
+        transition: background 0.3s ease;
+    }
 }
