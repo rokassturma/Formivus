@@ -50,7 +50,9 @@ export default function Header() {
         <header className={styles.header}>
             <div className={`main-wrapper ${styles.headerInner}`}>
                 <div className={styles.left}>
-                    <NavLink to="/" className={styles.logo}>Home</NavLink>
+                    <NavLink to="/" className={styles.logo}>
+                        Formivus
+                    </NavLink>
 
 
                     {isAdmin && (

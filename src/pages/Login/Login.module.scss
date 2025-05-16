@@ -113,6 +113,22 @@
             background-color: $danger-color;
         }
     }
+
+    .backLink {
+        text-align: left;
+        margin-top: 1rem;
+
+        a {
+            color: $primary-color;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: darken($primary-color, 10%);
+            }
+        }
+    }
 }
 
 @keyframes fadeIn {

@@ -2,8 +2,7 @@ import styles from './Login.module.scss';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { validateEmail } from '../../utils/validators';
+import { Link, useNavigate } from 'react-router-dom';
 import Spinner from '../../Components/Spinner/Spinner';
 import NotificationMessage from './NotificationMessage';
 import PasswordInput from './PasswordInput';
@@ -86,6 +85,10 @@ export default function Login() {
                         />
 
                         <button type='submit' className={`${styles.submitBtn} btn`}>Login</button>
+
+                        <p className={styles.backLink}>
+                            <Link to="/">← Return to Home page</Link>
+                        </p>
                     </form>
                 )}
             </section>

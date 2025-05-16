@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import styles from './Register.module.scss';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../Components/Spinner/Spinner";
 import {
   validateUsername, validateEmail, checkPasswordRequirements, getPasswordStrength
@@ -139,6 +139,10 @@ export default function Register() {
             >
               Register
             </button>
+
+            <p className={styles.backLink}>
+              <Link to="/">← Return to Home page</Link>
+            </p>
           </form>
         )}
       </section>
