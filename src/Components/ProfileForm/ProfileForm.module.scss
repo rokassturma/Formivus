@@ -39,22 +39,4 @@
             @include mixin.remove-number-arrows;
         }
     }
-
-    .error {
-        color: $danger-color;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-
-    .success {
-        color: $success-color;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-
-    .btn {
-        margin-top: 1rem;
-    }
 }

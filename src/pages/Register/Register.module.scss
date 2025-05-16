@@ -140,30 +140,6 @@
   font-size: 0.9rem;
 }
 
-.message {
-  position: absolute;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: $danger-color;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: bold;
-  z-index: 1000;
-  animation: fadeInOut 3s ease-in-out;
-  max-width: 90%;
-  text-align: center;
-
-  &.success {
-    background-color: $success-color;
-  }
-
-  &.error {
-    background-color: $danger-color;
-  }
-}
-
 .backLink {
   text-align: left;
   margin-top: 1rem;
@@ -175,7 +151,7 @@
     transition: color 0.2s ease;
 
     &:hover {
-      color: color.adjust($primary-color, $lightness: -10%)
+      color: color.adjust($primary-color, $lightness: -10%);
     }
   }
 }

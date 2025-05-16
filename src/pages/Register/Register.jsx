@@ -6,7 +6,7 @@ import Spinner from "../../Components/Spinner/Spinner";
 import {
   validateUsername, validateEmail, checkPasswordRequirements, getPasswordStrength
 } from "../../utils/validators";
-import NotificationMessage from './NotificationMessage';
+import NotificationMessage from '../../Components/NotificationMessage/NotificationMessage';
 import EmailInput from './EmailInput';
 import UsernameInput from './UsernameInput';
 import PasswordInput from './PasswordInput';
@@ -16,26 +16,28 @@ import PasswordRequirements from './PasswordRequirements';
 export default function Register() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState('');
-
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
   const [passwordRequirements, setPasswordRequirements] = useState({});
   const [passwordStrength, setPasswordStrength] = useState('Weak');
-
-  const [message, setMessage] = useState({ text: '', type: '' });
   const [loading, setLoading] = useState(false);
+
+  const [notification, setNotification] = useState({ text: '', type: '', fading: false });
 
   const navigate = useNavigate();
 
   function showMessage(text, type = 'error') {
-    setMessage({ text, type });
+    setNotification({ text, type, fading: false });
+
     setTimeout(() => {
-      setMessage({ text: '', type: '' });
-    }, 3000);
+      setNotification((prev) => ({ ...prev, fading: true }));
+    }, 4500);
+
+    setTimeout(() => {
+      setNotification({ text: '', type: '', fading: false });
+    }, 5000);
   }
 
   const handleSubmit = async (e) => {
@@ -51,7 +53,6 @@ export default function Register() {
       return;
     }
 
-    setMessage({ text: '', type: '' });
     setLoading(true);
 
     try {
@@ -62,6 +63,7 @@ export default function Register() {
       );
 
       showMessage('Registration is successful! Redirecting to Login Page...', 'success');
+
       setEmail('');
       setUsername('');
       setPassword('');
@@ -71,24 +73,27 @@ export default function Register() {
         setLoading(false);
         navigate('/login');
       }, 4000);
-    }
-
-    catch (err) {
+    } catch (err) {
       setLoading(false);
-      if (err.response?.data?.message) {
-        showMessage(err.response.data.message, 'error');
-      } else {
-        showMessage('Error. Try again.', 'error');
-      }
+      const msg = err.response?.data?.message || 'Error. Try again.';
+      showMessage(msg, 'error');
     }
   };
 
   return (
     <main className={`main-wrapper ${styles.registerContainer}`}>
+      {notification.text && (
+        <div className="notificationWrapper">
+          <NotificationMessage
+            message={notification.text}
+            type={notification.type}
+            fading={notification.fading}
+          />
+        </div>
+      )}
+
       <section className={styles.registerBox}>
         <h1>Registration</h1>
-
-        <NotificationMessage message={message.text} type={message.type} />
 
         {loading ? <Spinner /> : (
           <form className={styles.registerForm} onSubmit={handleSubmit}>
@@ -135,9 +140,15 @@ export default function Register() {
               type="submit"
               className="btn-primary"
               disabled={passwordStrength === 'Weak' || password.length < 8}
+              title={
+                passwordStrength === 'Weak' || password.length < 8
+                  ? 'Password must be at least 8 characters and not weak'
+                  : ''
+              }
             >
               REGISTER
             </button>
+
 
             <Link to="/" className="btn-secondary link-reset">Return</Link>
           </form>

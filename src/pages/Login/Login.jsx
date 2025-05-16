@@ -4,33 +4,38 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Spinner from '../../Components/Spinner/Spinner';
-import NotificationMessage from './NotificationMessage';
+import NotificationMessage from '../../Components/NotificationMessage/NotificationMessage';
 import PasswordInput from './PasswordInput';
 import EmailInput from './EmailInput';
-
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
-
     const [password, setPassword] = useState('');
-
-    const [message, setMessage] = useState({ text: '', type: '' });
     const [loading, setLoading] = useState(false);
+
+    const [notification, setNotification] = useState({ text: '', type: '', fading: false });
 
     const { setCurrentUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     function showMessage(text, type = 'error') {
-        setMessage({ text, type });
+        setNotification({ text, type, fading: false });
+
+
         setTimeout(() => {
-            setMessage({ text: '', type: '' });
-        }, 3000);
+            setNotification((prev) => ({ ...prev, fading: true }));
+        }, 4500);
+
+
+        setTimeout(() => {
+            setNotification({ text: '', type: '', fading: false });
+        }, 5000);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setMessage({ text: '', type: '' });
+        setNotification({ text: '', type: '', fading: false });
         setLoading(true);
 
         try {
@@ -53,20 +58,26 @@ export default function Login() {
             }, 1000);
         } catch (err) {
             setLoading(false);
-            if (err.response?.data?.message) {
-                showMessage(err.response.data.message, 'error');
-            } else {
-                showMessage('Something went wrong. Please try again.', 'error');
-            }
+            const errorMsg = err.response?.data?.message || 'Something went wrong. Please try again.';
+            showMessage(errorMsg, 'error');
         }
     };
 
     return (
         <main className={`main-wrapper ${styles.loginContainer}`}>
+
+            {notification.text && (
+                <div className="notificationWrapper">
+                    <NotificationMessage
+                        message={notification.text}
+                        type={notification.type}
+                        fading={notification.fading}
+                    />
+                </div>
+            )}
+
             <section className={styles.loginBox}>
                 <h1>Login</h1>
-
-                <NotificationMessage message={message.text} type={message.type} />
 
                 {loading ? <Spinner /> : (
                     <form className={styles.loginForm} onSubmit={handleSubmit}>

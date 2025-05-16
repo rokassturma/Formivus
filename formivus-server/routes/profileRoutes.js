@@ -47,4 +47,35 @@ router.get('/profile', verifyToken, (req, res) => {
     });
 });
 
+router.put('/profile', verifyToken, (req, res) => {
+    const { gender, age, height, weight, activity_level } = req.body;
+    const userId = req.user.id;
+
+    if (!gender || !age || !height || !weight || !activity_level) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    const updateQuery =
+        `
+    UPDATE user_profiles
+    SET gender = ?, age = ?, height = ?, weight = ?, activity_level = ?
+    WHERE user_id = ?
+    `;
+
+    const values = [gender, age, height, weight, activity_level, userId];
+
+    db.query(updateQuery, values, (err, result) => {
+        if (err) {
+            console.error('Failed to update profile:', err);
+            return res.status(500).json({message: 'Server error while updating profile.'});
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({message: 'Profile not found.'});
+        }
+
+        res.status(200).json({message: 'Profile updated successfully.'});
+    });
+});
+
 export default router;
