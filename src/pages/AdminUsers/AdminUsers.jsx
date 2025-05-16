@@ -26,18 +26,19 @@ export default function AdminUsers() {
                 {profiles.length > 0 ? (
                     profiles.map((profile, index) => (
                         <div key={index} className={styles.profileCard}>
-                            <p><strong>Email:</strong> {profile.email}</p>
-                            <p><strong>Username:</strong> {profile.username}</p>
-                            <p><strong>Age:</strong> {profile.age} yrs</p>
-                            <p><strong>Height:</strong> {profile.height} cm</p>
-                            <p><strong>Weight:</strong> {profile.weight} kg</p>
-                            <p><strong>Gender:</strong> {profile.gender}</p>
-                            <p><strong>Activity:</strong> {profile.activity_level}</p>
+                            <h3>{profile.username || 'Unknown User'}</h3>
+                            <p><strong>Email:</strong> {profile.email || 'Not provided'}</p>
+                            <p><strong>Age:</strong> {profile.age ? `${profile.age} yrs` : 'Not provided'}</p>
+                            <p><strong>Height:</strong> {profile.height ? `${profile.height} cm` : 'Not provided'}</p>
+                            <p><strong>Weight:</strong> {profile.weight ? `${profile.weight} kg` : 'Not provided'}</p>
+                            <p><strong>Gender:</strong> {profile.gender || 'Not provided'}</p>
+                            <p><strong>Activity:</strong> {profile.activity_level || 'Not provided'}</p>
                         </div>
                     ))
                 ) : (
                     !error && <p>No profiles found.</p>
                 )}
+
             </div>
         </main>
     );
