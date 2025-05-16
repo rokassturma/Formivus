@@ -71,21 +71,11 @@ export default function Header() {
                 <div className={styles.right}>
                     {!currentUser ? (
                         <>
-                            <NavLink
-                                to="/login"
-                                className={({ isActive }) =>
-                                    isActive ? `${styles.navLink} ${styles['navLink--active']}` : styles.navLink
-                                }
-                            >
+                            <NavLink to="/login" className="btn-primary">
                                 Login
                             </NavLink>
 
-                            <NavLink
-                                to="/register"
-                                className={({ isActive }) =>
-                                    isActive ? `${styles.navLink} ${styles['navLink--active']}` : styles.navLink
-                                }
-                            >
+                            <NavLink to="/register" className="btn-primary">
                                 Register
                             </NavLink>
                         </>
@@ -105,7 +95,7 @@ export default function Header() {
                             {loggingOut ? (
                                 <Spinner />
                             ) : (
-                                <button onClick={handleLogout} className="btn">Logout</button>
+                                <button onClick={handleLogout} className="btn-primary">Logout</button>
                             )}
 
                         </>

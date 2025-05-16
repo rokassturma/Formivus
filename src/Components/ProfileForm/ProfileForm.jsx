@@ -129,7 +129,7 @@ export default function ProfileForm({ onProfileSaved }) {
                 </select>
             </div>
 
-            <button type='submit' className='btn'>Save Profile</button>
+            <button type='submit' className='btn-primary'>Save Profile</button>
         </form>
     );
 }

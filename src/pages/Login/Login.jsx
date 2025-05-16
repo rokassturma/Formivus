@@ -84,11 +84,9 @@ export default function Login() {
                             styles={styles}
                         />
 
-                        <button type='submit' className={`${styles.submitBtn} btn`}>Login</button>
+                        <button type='submit' className='btn-primary'>LOGIN</button>
 
-                        <p className={styles.backLink}>
-                            <Link to="/">← Return to Home page</Link>
-                        </p>
+                        <Link to="/" className="btn-secondary link-reset">Return</Link>
                     </form>
                 )}
             </section>

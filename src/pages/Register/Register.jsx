@@ -6,7 +6,6 @@ import Spinner from "../../Components/Spinner/Spinner";
 import {
   validateUsername, validateEmail, checkPasswordRequirements, getPasswordStrength
 } from "../../utils/validators";
-
 import NotificationMessage from './NotificationMessage';
 import EmailInput from './EmailInput';
 import UsernameInput from './UsernameInput';
@@ -134,15 +133,13 @@ export default function Register() {
 
             <button
               type="submit"
-              className={`${styles.submitBtn} btn`}
+              className="btn-primary"
               disabled={passwordStrength === 'Weak' || password.length < 8}
             >
-              Register
+              REGISTER
             </button>
 
-            <p className={styles.backLink}>
-              <Link to="/">← Return to Home page</Link>
-            </p>
+            <Link to="/" className="btn-secondary link-reset">Return</Link>
           </form>
         )}
       </section>
