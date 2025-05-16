@@ -16,7 +16,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: $font-family-base;
     background: linear-gradient(to right, #93c5fd, #60a5fa);
     color: $text-dark;
     min-height: 100vh;
