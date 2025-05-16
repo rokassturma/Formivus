@@ -55,6 +55,29 @@
             }
         }
 
+        .passwordWrapper {
+            position: relative;
+
+            input {
+                width: 100%;
+                padding-right: 3rem;
+            }
+
+            .togglePassword {
+                position: absolute;
+                right: 0.75rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                font-size: 1rem;
+                font-weight: 600;
+                padding: 10px;
+                cursor: pointer;
+                color: $text-dark;
+            }
+        }
+
         .submitBtn {
             letter-spacing: 0.5px;
         }

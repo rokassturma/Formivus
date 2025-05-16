@@ -1,13 +1,19 @@
-import { useContext, useState } from 'react';
 import styles from './Login.module.scss';
 import axios from 'axios';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { validateEmail } from '../../utils/validators';
 import Spinner from '../../Components/Spinner/Spinner';
 import NotificationMessage from './NotificationMessage';
+import PasswordInput from './PasswordInput';
+import EmailInput from './EmailInput';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
+
     const [password, setPassword] = useState('');
 
     const [message, setMessage] = useState({ text: '', type: '' });
@@ -65,29 +71,19 @@ export default function Login() {
 
                 {loading ? <Spinner /> : (
                     <form className={styles.loginForm} onSubmit={handleSubmit}>
-                        <div className={styles.formGroup}>
-                            <label htmlFor='email'>Email:</label>
-                            <input
-                                type='email'
-                                id='email'
-                                name='email'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
+                        <EmailInput
+                            email={email}
+                            setEmail={setEmail}
+                            error={emailError}
+                            setError={(val) => setEmailError(val)}
+                            styles={styles}
+                        />
 
-                        <div className={styles.formGroup}>
-                            <label htmlFor='password'>Password:</label>
-                            <input
-                                type='password'
-                                id='password'
-                                name='password'
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+                        <PasswordInput
+                            password={password}
+                            setPassword={setPassword}
+                            styles={styles}
+                        />
 
                         <button type='submit' className={`${styles.submitBtn} btn`}>Login</button>
                     </form>
