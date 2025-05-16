@@ -44,7 +44,7 @@ router.put('/admin/toggle-role', verifyToken, (req, res) => {
         return res.status(400).json({ message: 'Email is required' });
     }
 
-    
+
     const checkAdminQuery = 'SELECT role, email FROM users WHERE id = ?';
 
     db.query(checkAdminQuery, [adminId], (err, adminResult) => {
@@ -82,6 +82,38 @@ router.put('/admin/toggle-role', verifyToken, (req, res) => {
         });
     });
 });
+
+router.delete('/admin/delete-user', verifyToken, (req, res) => {
+    const adminId = req.user.id;
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ message: 'Email is required' });
+    }
+
+    const getAdminQuery = 'SELECT email, role FROM users WHERE id = ?';
+
+    db.query(getAdminQuery, [adminId], (err, adminResult) => {
+        if (err) return res.status(500).json({ message: 'Database error' });
+
+        const admin = adminResult[0];
+        if (!admin || admin.role !== 'admin') {
+            return res.status(403).json({ message: 'Only admins can delete users' });
+        }
+
+        if (admin.email === email) {
+            return res.status(403).json({ message: 'You cannot delete your own account' });
+        }
+
+        const deleteUserQuery = 'DELETE FROM users WHERE email = ?';
+        db.query(deleteUserQuery, [email], (err2) => {
+            if (err2) return res.status(500).json({ message: 'Failed to delete user' });
+
+            return res.status(200).json({ message: 'User deleted successfully' });
+        });
+    });
+});
+
 
 
 export default router;

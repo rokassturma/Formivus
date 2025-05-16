@@ -2,6 +2,9 @@ import styles from './AdminUsers.module.scss';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import NotificationMessage from '../../Components/NotificationMessage/NotificationMessage';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
+import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 
 
 
@@ -11,11 +14,15 @@ export default function AdminUsers() {
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [notification, setNotification] = useState({ text: '', type: '', fading: false });
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [emailToDelete, setEmailToDelete] = useState(null);
 
     const filteredProfiles = profiles.filter(profile =>
     (profile.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         profile.email?.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+
+    const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/admin/profiles', {
@@ -53,6 +60,33 @@ export default function AdminUsers() {
         }
     };
 
+    const confirmDelete = (email) => {
+        setEmailToDelete(email);
+        setShowConfirm(true);
+    };
+
+    const handleDeleteConfirmed = async () => {
+        try {
+            await axios.delete('http://localhost:5000/api/admin/delete-user', {
+                data: { email: emailToDelete },
+                withCredentials: true
+            });
+
+            const res = await axios.get('http://localhost:5000/api/admin/profiles', {
+                withCredentials: true
+            });
+
+            setProfiles(res.data);
+            setNotification({ text: 'User deleted successfully', type: 'success', fading: false });
+            setTimeout(() => setNotification((prev) => ({ ...prev, fading: true })), 2500);
+            setTimeout(() => setNotification({ text: '', type: '', fading: false }), 3000);
+        } catch (err) {
+            console.error('Delete error:', err);
+        } finally {
+            setShowConfirm(false);
+            setEmailToDelete(null);
+        }
+    };
 
 
     return (
@@ -89,7 +123,11 @@ export default function AdminUsers() {
                             key={index}
                             className={`${styles.profileCard} ${profile.role === 'admin' ? styles.adminCard : ''}`}
                         >
-                            <h3>{profile.username || 'Unknown User'}</h3>
+                            <h3>
+                                {profile.username || 'Unknown User'}
+                                {currentUser?.email === profile.email && ' (you)'}
+                            </h3>
+
                             <p><strong>Email:</strong> {profile.email || 'Not provided'}</p>
                             <p><strong>Age:</strong> {profile.age ? `${profile.age} yrs` : 'Not provided'}</p>
                             <p><strong>Height:</strong> {profile.height ? `${profile.height} cm` : 'Not provided'}</p>
@@ -98,18 +136,40 @@ export default function AdminUsers() {
                             <p><strong>Activity:</strong> {profile.activity_level || 'Not provided'}</p>
                             <p><strong>Role:</strong> {profile.role || 'Not provided'}</p>
 
-                            <button
-                                className='btn-secondary'
-                                onClick={() => handleRoleToggle(profile.email)}
-                            >
-                                Set as {profile.role === 'admin' ? 'user' : 'admin'}
-                            </button>
+                            <div className={styles.buttonGroup}>
+                                <button
+                                    className="btn-secondary"
+                                    onClick={() => handleRoleToggle(profile.email)}
+                                >
+                                    Set as {profile.role === 'admin' ? 'user' : 'admin'}
+                                </button>
+
+                                {currentUser?.email !== profile.email && (
+                                    <button
+                                        className='btn-secondary'
+                                        onClick={() => confirmDelete(profile.email)}
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ))
                 ) : (
                     <p>No matching profiles.</p>
                 )}
+                
             </div>
+            {showConfirm && (
+                <ConfirmDialog
+                    message={`Are you sure you want to delete ${emailToDelete}?`}
+                    onConfirm={handleDeleteConfirmed}
+                    onCancel={() => {
+                        setShowConfirm(false);
+                        setEmailToDelete(null);
+                    }}
+                />
+            )}
         </main>
     );
 }
