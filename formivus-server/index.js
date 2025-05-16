@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
-import adminRoutes from './routes/admin.js';
+import adminRoute from './routes/admin.js';
 import profileRoutes from './routes/profileRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 const PORT = 5000
@@ -17,8 +18,9 @@ app.use(cors({
 
 
 app.use('/api', authRoutes);
-app.use('/api', adminRoutes);
+app.use('/api', adminRoute);
 app.use('/api', profileRoutes);
+app.use('/api', adminRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is listening to http://localhost:${PORT}`);

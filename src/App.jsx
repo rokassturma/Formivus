@@ -6,6 +6,7 @@ import Register from './pages/Register/Register';
 import MyProfile from './pages/MyProfile/MyProfile';
 import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
+import AdminUsers from './pages/AdminUsers/AdminUsers';
 
 
 function App() {
@@ -32,12 +33,29 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
       </Routes>
-    </Router>
+
+    </Router >
   );
 }
 

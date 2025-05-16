@@ -65,6 +65,17 @@ export default function Header() {
                             Admin Panel
                         </NavLink>
                     )}
+
+                    {isAdmin && (
+                        <NavLink
+                            to="/admin/users"
+                            className={({ isActive }) =>
+                                isActive ? `${styles.navLink} ${styles['navLink--active']}` : styles.navLink
+                            }
+                        >
+                            All Users
+                        </NavLink>
+                    )}
                 </div>
 
 
