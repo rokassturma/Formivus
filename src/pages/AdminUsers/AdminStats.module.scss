@@ -1,0 +1,28 @@
+@use '../../styles/variables' as *;
+
+.statsBox {
+    background: linear-gradient(to right, #ffe66d, #ffcc00);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin: 0.3rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+    }
+}

@@ -5,6 +5,7 @@ import NotificationMessage from '../../Components/NotificationMessage/Notificati
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
+import AdminStats from './AdminStats';
 
 
 
@@ -16,11 +17,20 @@ export default function AdminUsers() {
     const [notification, setNotification] = useState({ text: '', type: '', fading: false });
     const [showConfirm, setShowConfirm] = useState(false);
     const [emailToDelete, setEmailToDelete] = useState(null);
+    const [roleFilter, setRoleFilter] = useState('all');
 
-    const filteredProfiles = profiles.filter(profile =>
-    (profile.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        profile.email?.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+
+    const filteredProfiles = profiles.filter(profile => {
+        const matchesSearch =
+            profile.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            profile.email?.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesRole =
+            roleFilter === 'all' || profile.role === roleFilter;
+
+        return matchesSearch && matchesRole;
+    });
+
 
     const { currentUser } = useContext(AuthContext);
 
@@ -105,6 +115,9 @@ export default function AdminUsers() {
                 </div>
             )}
 
+            <AdminStats profiles={profiles} />
+
+
             <input
                 type="text"
                 placeholder="Search by email or username"
@@ -112,6 +125,16 @@ export default function AdminUsers() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={styles.searchInput}
             />
+
+            <select
+                value={roleFilter}
+                onChange={(e) => setRoleFilter(e.target.value)}
+                className={styles.selectRole}
+            >
+                <option value="all">All roles</option>
+                <option value="admin">Admins only</option>
+                <option value="user">Users only</option>
+            </select>
 
 
             {error && <p className={styles.error}>{error}</p>}
@@ -158,7 +181,7 @@ export default function AdminUsers() {
                 ) : (
                     <p>No matching profiles.</p>
                 )}
-                
+
             </div>
             {showConfirm && (
                 <ConfirmDialog

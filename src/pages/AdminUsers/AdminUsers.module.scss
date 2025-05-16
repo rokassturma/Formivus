@@ -82,3 +82,14 @@
         transition: background 0.3s ease;
     }
 }
+
+.selectRole {
+    margin: 1rem 0;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid $border-color;
+    background-color: #fff;
+    color: $text-dark;
+    width: 200px;
+}
