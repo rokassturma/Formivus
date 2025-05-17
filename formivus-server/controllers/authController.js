@@ -9,14 +9,22 @@ export const register = (req, res) => {
         `
     SELECT * 
     FROM users 
-    WHERE email = ?
+    WHERE email = ? OR username = ?
     `
 
-    db.query(checkQuery, [email], (err, data) => {
+    db.query(checkQuery, [email, username], (err, data) => {
         if (err)
             return res.status(500).json({ message: 'Server error' });
-        if (data.length > 0)
-            return res.status(400).json({ message: 'Email already exists' });
+        if (data.length) {
+            if (data.some(user => user.email === email)) {
+                return res.status(400).json({ message: 'Email is already taken' });
+            }
+
+            if (data.some(user => user.username === username)) {
+                return res.status(400).json({ message: 'Username is already taken' });
+            }
+        }
+
 
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
@@ -64,8 +72,8 @@ export const login = (req, res) => {
 
 
         const token = jwt.sign(
-            { 
-                id: user.id, 
+            {
+                id: user.id,
                 role: user.role,
                 username: user.username,
                 email: user.email
