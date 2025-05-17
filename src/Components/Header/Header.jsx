@@ -92,6 +92,16 @@ export default function Header() {
                         </>
                     ) : (
                         <>
+
+                            <NavLink
+                                to="/progress"
+                                className={({ isActive }) =>
+                                    isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink
+                                }
+                            >
+                                Progress
+                            </NavLink>
+
                             <NavLink
                                 to="/my-profile"
                                 className={({ isActive }) =>

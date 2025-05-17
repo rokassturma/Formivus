@@ -1,0 +1,45 @@
+@use '../../styles/variables' as *;
+
+.chartBox {
+    background-color: #fdfdfd;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 3rem auto;
+    width: 100%;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .heading {
+            color: $text-dark;
+            margin: 0;
+        }
+
+        .select {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid $border-color;
+            background-color: white;
+            color: $text-dark;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+            }
+        }
+
+    }
+}
+
+.noData {
+    text-align: center;
+    color: $text-dark;
+    margin-top: 2rem;
+}

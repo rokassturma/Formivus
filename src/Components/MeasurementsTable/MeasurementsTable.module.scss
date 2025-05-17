@@ -1,0 +1,64 @@
+@use '../../styles/variables' as *;
+
+.tableWrapper {
+    overflow-x: auto;
+    margin-top: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.measurementsTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f9f9f9;
+
+    thead {
+        background-color: $primary-color;
+
+        th {
+            padding: 1rem;
+            color: white;
+            text-align: left;
+            font-weight: 600;
+        }
+    }
+
+    tbody {
+        tr {
+            &:nth-child(even) {
+                background-color: #eaeaea;
+            }
+
+            td {
+                padding: 0.8rem 1rem;
+                border-top: 1px solid #ccc;
+            }
+        }
+    }
+}
+
+.noData {
+    text-align: center;
+    margin-top: 2rem;
+    color: $text-dark;
+}
+
+.deleteButton {
+    background-color: #e53935;
+    color: #fff;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #c62828;
+    }
+}

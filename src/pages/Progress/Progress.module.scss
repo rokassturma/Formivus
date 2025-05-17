@@ -1,0 +1,39 @@
+@use '../../styles/variables' as *;
+
+.progressWrapper {
+    padding: 2rem;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: $text-dark;
+    }
+
+    .description {
+        text-align: center;
+        color: $text-dark;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+    }
+
+    .formAndTableWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 2rem;
+    }
+
+    .formAndTableWrapper :global(.formBox),
+    .formAndTableWrapper :global(.tableWrapper) {
+        flex: 1 1 400px;
+        max-width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .formAndTableWrapper {
+            flex-direction: column;
+        }
+    }
+}

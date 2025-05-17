@@ -7,6 +7,7 @@ import MyProfile from './pages/MyProfile/MyProfile';
 import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
+import Progress from './pages/Progress/Progress';
 
 
 function App() {
@@ -52,6 +53,11 @@ function App() {
         <Route
           path="/register"
           element={<Register />}
+        />
+
+        <Route
+          path="/progress"
+          element={<Progress />}
         />
       </Routes>
     </Router >
