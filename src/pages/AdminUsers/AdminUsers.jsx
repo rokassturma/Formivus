@@ -1,16 +1,12 @@
 import styles from './AdminUsers.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import NotificationMessage from '../../Components/NotificationMessage/NotificationMessage';
-import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import ConfirmDialog from '../../Components/ConfirmDialog/ConfirmDialog';
 import AdminStats from './AdminStats';
 
-
-
 export default function AdminUsers() {
-
     const [profiles, setProfiles] = useState([]);
     const [error, setError] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,25 +15,19 @@ export default function AdminUsers() {
     const [emailToDelete, setEmailToDelete] = useState(null);
     const [roleFilter, setRoleFilter] = useState('all');
 
-
-    const filteredProfiles = profiles.filter(profile => {
-        const matchesSearch =
-            profile.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            profile.email?.toLowerCase().includes(searchTerm.toLowerCase());
-
-        const matchesRole =
-            roleFilter === 'all' || profile.role === roleFilter;
-
-        return matchesSearch && matchesRole;
-    });
-
-
     const { currentUser } = useContext(AuthContext);
 
+    const filteredProfiles = profiles
+        .filter(profile =>
+        (profile.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            profile.email?.toLowerCase().includes(searchTerm.toLowerCase()))
+        )
+        .filter(profile =>
+            roleFilter === 'all' ? true : profile.role === roleFilter
+        );
+
     useEffect(() => {
-        axios.get('http://localhost:5000/api/admin/profiles', {
-            withCredentials: true
-        })
+        axios.get('http://localhost:5000/api/admin/profiles', { withCredentials: true })
             .then(res => setProfiles(res.data))
             .catch(err => {
                 setError(err.response?.data?.message || 'Something went wrong.');
@@ -46,25 +36,12 @@ export default function AdminUsers() {
 
     const handleRoleToggle = async (email) => {
         try {
-            await axios.put('http://localhost:5000/api/admin/toggle-role', { email }, {
-                withCredentials: true
-            });
-
-            const res = await axios.get('http://localhost:5000/api/admin/profiles', {
-                withCredentials: true
-            });
-
+            await axios.put('http://localhost:5000/api/admin/toggle-role', { email }, { withCredentials: true });
+            const res = await axios.get('http://localhost:5000/api/admin/profiles', { withCredentials: true });
             setProfiles(res.data);
-
             setNotification({ text: 'Role updated successfully!', type: 'success', fading: false });
-
-            setTimeout(() => {
-                setNotification(prev => ({ ...prev, fading: true }));
-            }, 2500);
-
-            setTimeout(() => {
-                setNotification({ text: '', type: '', fading: false });
-            }, 3000);
+            setTimeout(() => setNotification(prev => ({ ...prev, fading: true })), 2500);
+            setTimeout(() => setNotification({ text: '', type: '', fading: false }), 3000);
         } catch (err) {
             console.error('Failed to update role:', err);
         }
@@ -81,14 +58,10 @@ export default function AdminUsers() {
                 data: { email: emailToDelete },
                 withCredentials: true
             });
-
-            const res = await axios.get('http://localhost:5000/api/admin/profiles', {
-                withCredentials: true
-            });
-
+            const res = await axios.get('http://localhost:5000/api/admin/profiles', { withCredentials: true });
             setProfiles(res.data);
             setNotification({ text: 'User deleted successfully', type: 'success', fading: false });
-            setTimeout(() => setNotification((prev) => ({ ...prev, fading: true })), 2500);
+            setTimeout(() => setNotification(prev => ({ ...prev, fading: true })), 2500);
             setTimeout(() => setNotification({ text: '', type: '', fading: false }), 3000);
         } catch (err) {
             console.error('Delete error:', err);
@@ -98,11 +71,8 @@ export default function AdminUsers() {
         }
     };
 
-
     return (
-
         <main className={styles.adminWrapper}>
-
             <h1>All User Profiles</h1>
 
             {notification.text && (
@@ -117,72 +87,70 @@ export default function AdminUsers() {
 
             <AdminStats profiles={profiles} />
 
-
-            <input
-                type="text"
-                placeholder="Search by email or username"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.searchInput}
-            />
-
-            <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className={styles.selectRole}
-            >
-                <option value="all">All roles</option>
-                <option value="admin">Admins only</option>
-                <option value="user">Users only</option>
-            </select>
-
+            <div className={styles.controlsRow}>
+                <input
+                    type="text"
+                    placeholder="Search by email or username"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={styles.searchInput}
+                />
+                <select
+                    value={roleFilter}
+                    onChange={(e) => setRoleFilter(e.target.value)}
+                    className={styles.selectRole}
+                >
+                    <option value="all">All roles</option>
+                    <option value="admin">Admins</option>
+                    <option value="user">Users</option>
+                </select>
+            </div>
 
             {error && <p className={styles.error}>{error}</p>}
 
-            <div className={styles.profileList}>
-                {filteredProfiles.length > 0 ? (
-                    filteredProfiles.map((profile, index) => (
-                        <div
+            <table className={styles.userTable}>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th>Gender</th>
+                        <th>Activity</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredProfiles.map((profile, index) => (
+                        <tr
                             key={index}
-                            className={`${styles.profileCard} ${profile.role === 'admin' ? styles.adminCard : ''}`}
+                            className={`${profile.role === 'admin' ? styles.adminRow : ''} ${currentUser?.email === profile.email ? styles.youRow : ''}`}
                         >
-                            <h3>
-                                {profile.username || 'Unknown User'}
-                                {currentUser?.email === profile.email && ' (you)'}
-                            </h3>
-
-                            <p><strong>Email:</strong> {profile.email || 'Not provided'}</p>
-                            <p><strong>Age:</strong> {profile.age ? `${profile.age} yrs` : 'Not provided'}</p>
-                            <p><strong>Height:</strong> {profile.height ? `${profile.height} cm` : 'Not provided'}</p>
-                            <p><strong>Weight:</strong> {profile.weight ? `${profile.weight} kg` : 'Not provided'}</p>
-                            <p><strong>Gender:</strong> {profile.gender || 'Not provided'}</p>
-                            <p><strong>Activity:</strong> {profile.activity_level || 'Not provided'}</p>
-                            <p><strong>Role:</strong> {profile.role || 'Not provided'}</p>
-
-                            <div className={styles.buttonGroup}>
-                                <button
-                                    className="btn-secondary"
-                                    onClick={() => handleRoleToggle(profile.email)}
-                                >
+                            <td>{profile.username || 'Unknown'}{currentUser?.email === profile.email && ' (you)'}</td>
+                            <td>{profile.email || 'Not provided'}</td>
+                            <td>{profile.age ? `${profile.age} yrs` : '–'}</td>
+                            <td>{profile.height ? `${profile.height} cm` : '–'}</td>
+                            <td>{profile.weight ? `${profile.weight} kg` : '–'}</td>
+                            <td>{profile.gender || '–'}</td>
+                            <td>{profile.activity_level || '–'}</td>
+                            <td>{profile.role}</td>
+                            <td className={styles.actions}>
+                                <button className="btn-secondary" onClick={() => handleRoleToggle(profile.email)}>
                                     Set as {profile.role === 'admin' ? 'user' : 'admin'}
                                 </button>
-
                                 {currentUser?.email !== profile.email && (
-                                    <button
-                                        className='btn-secondary'
-                                        onClick={() => confirmDelete(profile.email)}
-                                    >
+                                    <button className="btn-secondary" onClick={() => confirmDelete(profile.email)}>
                                         Delete
                                     </button>
                                 )}
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p>No matching profiles.</p>
-                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
 
-            </div>
             {showConfirm && (
                 <ConfirmDialog
                     message={`Are you sure you want to delete ${emailToDelete}?`}
