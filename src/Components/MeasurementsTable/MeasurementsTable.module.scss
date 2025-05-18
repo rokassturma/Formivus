@@ -19,11 +19,11 @@
     background-color: #f9f9f9;
 
     thead {
-        background-color: $primary-color;
+        background-color: $table-color;
 
         th {
             padding: 1rem;
-            color: white;
+            color: $text-dark;
             text-align: left;
             font-weight: 600;
         }
@@ -31,13 +31,16 @@
 
     tbody {
         tr {
-            &:nth-child(even) {
-                background-color: #eaeaea;
+            transition: background 0.2s ease;
+
+            &:hover {
+                background-color: #FC7A57;
             }
 
             td {
-                padding: 0.8rem 1rem;
-                border-top: 1px solid #ccc;
+                padding: 1rem;
+                border-bottom: 1px solid #e0e0e0;
+                vertical-align: middle;
             }
         }
     }
