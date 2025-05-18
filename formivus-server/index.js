@@ -6,7 +6,9 @@ import adminRoute from './routes/admin.js';
 import profileRoutes from './routes/profileRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import measurementsRoutes from "./routes/measurements.js";
-import caloriesRoutes from "./routes/calories.js";
+import mealItemsRoutes from './routes/mealItems.js';
+import mealsRoutes from './routes/meals.js';
+import productsRoutes from './routes/products.js';
 
 const app = express();
 const PORT = 5000
@@ -24,8 +26,9 @@ app.use('/api', adminRoute);
 app.use('/api', profileRoutes);
 app.use('/api', adminRoutes);
 app.use("/api", measurementsRoutes);
-app.use("/api", caloriesRoutes);
-
+app.use("/api", mealItemsRoutes);
+app.use("/api", mealsRoutes);
+app.use("/api", productsRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is listening to http://localhost:${PORT}`);

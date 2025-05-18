@@ -1,0 +1,58 @@
+@use '../../../styles/variables' as *;
+@use 'sass:color';
+
+.tableWrapper {
+    overflow-x: auto;
+    margin-top: 2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    thead {
+        background-color: $primary-color;
+        color: white;
+
+        th {
+            padding: 1rem;
+            text-align: left;
+        }
+    }
+
+    tbody {
+        tr {
+            &:nth-child(even) {
+                background-color: #f7f7f7;
+            }
+
+            td {
+                padding: 0.8rem 1rem;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+.deleteBtn {
+    background: $danger-color;
+    border: none;
+    color: white;
+    padding: 0.4rem 0.7rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+        background: color.adjust($danger-color, $lightness: -10%);
+    }
+}
+
+.noItems {
+    text-align: center;
+    color: $text-dark;
+    margin-top: 1rem;
+}

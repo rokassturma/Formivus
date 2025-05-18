@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import ProgressSection from '../../Components/ProgressSection';
-import CaloriesSection from '../../Components/CaloriesSection';
 import ProductsSection from '../../Components/ProductsSection';
 import NutritionPlanSection from '../../Components/NutritionPlanSection';
 import MealsTrackerSection from '../../Components/MealsTrackerSection';
+import MealsSection from '../../Components/MealsSection/MealsSection';
 
 export default function HealthPanel() {
     const navigate = useNavigate();
@@ -21,11 +21,11 @@ export default function HealthPanel() {
                 return <ProgressSection />;
             case 'calories':
                 return <CaloriesSection />;
-            case 'products':
-                return <ProductsSection />;
             case 'plan':
                 return <NutritionPlanSection />;
             case 'meals':
+                return <MealsSection />;
+            case 'meals-tracker':
                 return <MealsTrackerSection />;
             default:
                 return null;
