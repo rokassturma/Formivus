@@ -8,63 +8,103 @@
     top: 0;
     z-index: 10;
     padding: 20px;
-}
 
-.headerInner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+    .headerInner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
 
-.left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+        .left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
 
-    .logo {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: $primary-color;
-        text-decoration: none;
-        transition: color 0.2s ease;
+            .logo {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: $primary-color;
+                text-decoration: none;
+                transition: color 0.2s ease;
 
-        &:hover {
-            color: color.adjust($primary-color, $lightness: -10%);
+                &:hover {
+                    color: color.adjust($primary-color, $lightness: -10%);
+                }
+            }
+        }
+
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .btn {
+                padding: 0.5rem 1rem;
+            }
+
+            .username {
+                color: $username-color;
+                font-weight: bold;
+                font-style: italic;
+                margin-right: 1rem;
+            }
+
+            .usernameInline {
+                color: $primary-color;
+                font-weight: 600;
+            }
+
+            .profileText {
+                color: $text-dark;
+                font-style: normal;
+                font-weight: 500;
+                margin-left: 0.5rem;
+            }
+
+            .dropdown {
+                position: relative;
+                display: inline-block;
+
+                &:hover .dropdownContent {
+                    display: block;
+                }
+
+                .dropdownTitle {
+                    cursor: pointer;
+                    font-weight: bold;
+                    padding: 0.5rem 1rem;
+                    color: $text-dark;
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+
+                .dropdownContent {
+                    display: none;
+                    position: absolute;
+                    background-color: white;
+                    border: 1px solid $border-color;
+                    min-width: 180px;
+                    z-index: 1000;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                    a {
+                        display: block;
+                        padding: 0.75rem 1rem;
+                        text-decoration: none;
+                        color: $text-dark;
+
+                        &:hover {
+                            background-color: #f0f0f0;
+                        }
+                    }
+                }
+            }
         }
     }
-}
-
-.right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    .btn {
-        padding: 0.5rem 1rem;
-    }
-
-    .username {
-        color: $username-color;
-        font-weight: bold;
-        font-style: italic;
-        margin-right: 1rem;
-    }
-
-    .usernameInline {
-        color: $primary-color;
-        font-weight: 600;
-    }
-
-    .profileText {
-        color: $text-dark;
-        font-style: normal;
-        font-weight: 500;
-        margin-left: 0.5rem;
-    }
-
 }
 
 .navLink {

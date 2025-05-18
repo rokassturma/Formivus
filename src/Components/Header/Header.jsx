@@ -92,15 +92,16 @@ export default function Header() {
                         </>
                     ) : (
                         <>
-
-                            <NavLink
-                                to="/progress"
-                                className={({ isActive }) =>
-                                    isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink
-                                }
-                            >
-                                Progress
-                            </NavLink>
+                            <div className={styles.dropdown}>
+                                <span className={styles.dropdownTitle}>Health Panel ▾</span>
+                                <div className={styles.dropdownContent}>
+                                    <NavLink to="/health?section=progress">My Progress</NavLink>
+                                    <NavLink to="/health?section=calories">My Calories</NavLink>
+                                    <NavLink to="/health?section=products">Products</NavLink>
+                                    <NavLink to="/health?section=plan">Nutrition Plan</NavLink>
+                                    <NavLink to="/health?section=meals">Meals Tracker</NavLink>
+                                </div>
+                            </div>
 
                             <NavLink
                                 to="/my-profile"
@@ -111,6 +112,7 @@ export default function Header() {
                                 <span className={styles.usernameInline}>{currentUser.username}</span>
                                 <span className={styles.profileText}> Profile</span>
                             </NavLink>
+
 
 
                             {loggingOut ? (

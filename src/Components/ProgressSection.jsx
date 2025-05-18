@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import AddMeasurementsForm from "../../Components/AddMeasurementsForm/AddMeasurementsForm";
-import MeasurementsTable from "../../Components/MeasurementsTable/MeasurementsTable";
-import ProgressChart from "../../Components/ProgressChart/ProgressChart";
-import styles from "./Progress.module.scss";
-import axios from "axios";
+import axios from 'axios';
+import AddMeasurementsForm from "./AddMeasurementsForm/AddMeasurementsForm";
+import MeasurementsTable from "./MeasurementsTable/MeasurementsTable";
+import ProgressChart from './ProgressChart/ProgressChart';
+import styles from '../pages/HealthPanel/ProgressSection.module.scss';  
 
-const Progress = () => {
+export default function ProgressSection() {
+
     const [measurements, setMeasurements] = useState([]);
 
     const fetchMeasurements = async () => {
@@ -13,15 +14,11 @@ const Progress = () => {
             const res = await axios.get("http://localhost:5000/api/measurements", {
                 withCredentials: true,
             });
-            setMeasurements(res.data.reverse());
+            setMeasurements(res.data);
         } catch (err) {
-            console.error("Error fetching measurements:", err.message);
+            console.error("Failed to fetch measurements", err.message);
         }
     };
-
-    useEffect(() => {
-        fetchMeasurements();
-    }, []);
 
     const handleDelete = async (id) => {
         try {
@@ -30,24 +27,27 @@ const Progress = () => {
             });
             setMeasurements((prev) => prev.filter((m) => m.id !== id));
         } catch (err) {
-            console.error("Delete failed:", err.message);
+            console.error("Delete failed", err.message);
         }
     };
+
+    useEffect(() => {
+        fetchMeasurements();
+    }, []);
+
 
 
     return (
         <div className={styles.progressWrapper}>
-            <h1>Progress Tracking</h1>
-            <p className={styles.description}>
-                Track your body measurements over time. Add new data and monitor your progress.
-            </p>
+            <h1>My Progress</h1>
+            <p className={styles.description}>Track your body measurements and visualize your progress over time.</p>
+
             <div className={styles.formAndTableWrapper}>
                 <AddMeasurementsForm onSuccess={fetchMeasurements} />
                 <MeasurementsTable measurements={measurements} onDelete={handleDelete} />
             </div>
+
             <ProgressChart measurements={measurements} />
         </div>
-    );
-};
-
-export default Progress;
+    )
+}

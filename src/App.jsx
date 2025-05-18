@@ -7,7 +7,7 @@ import MyProfile from './pages/MyProfile/MyProfile';
 import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
-import Progress from './pages/Progress/Progress';
+import HealthPanel from './pages/HealthPanel/HealthPanel';
 
 
 function App() {
@@ -56,8 +56,8 @@ function App() {
         />
 
         <Route
-          path="/progress"
-          element={<Progress />}
+          path="/health"
+          element={<HealthPanel />}
         />
       </Routes>
     </Router >
