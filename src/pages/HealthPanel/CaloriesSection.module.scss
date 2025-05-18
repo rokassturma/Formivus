@@ -1,0 +1,81 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixin' as *;
+
+.caloriesSection {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fdfdfd;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: $text-dark;
+    }
+
+    .caloriesForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+
+        input {
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            border: 1px solid $border-color;
+            border-radius: 0.5rem;
+            min-width: 180px;
+            flex: 1;
+
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+            }
+        }
+
+        button {
+            padding: 0.6rem 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+
+    .total {
+        text-align: center;
+        font-weight: bold;
+        color: $text-dark;
+        margin-bottom: 1rem;
+    }
+
+    .caloriesTable {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fafafa;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+        th {
+            background-color: $primary-color;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    }
+
+    input[type="number"] {
+        @include remove-number-arrows;
+    }
+}
