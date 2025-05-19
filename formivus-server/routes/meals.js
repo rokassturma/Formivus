@@ -8,11 +8,11 @@ router.get("/meals", verifyToken, (req, res) => {
   const userId = req.user.id;
 
   const query = `
-    SELECT id, meal_number, date
-    FROM meals
-    WHERE user_id = ? AND DATE(date) = DATE(NOW())
-    ORDER BY meal_number ASC
-  `;
+  SELECT id, meal_number, date, name
+  FROM meals
+  WHERE user_id = ? AND DATE(date) = DATE(NOW())
+  ORDER BY meal_number ASC
+`;
 
   db.query(query, [userId], (err, results) => {
     if (err) return res.status(500).json({ message: "Database error" });
@@ -46,6 +46,20 @@ router.post("/meals", verifyToken, (req, res) => {
     });
   });
 });
+
+router.put("/meals/:id", verifyToken, (req, res) => {
+  const userId = req.user.id;
+  const mealId = req.params.id;
+  const { name } = req.body;
+
+  const query = `UPDATE meals SET name = ? WHERE id = ? AND user_id = ?`;
+
+  db.query(query, [name, mealId, userId], (err, result) => {
+    if (err) return res.status(500).json({ message: "Update failed" });
+    return res.status(200).json({ message: "Meal name updated" });
+  });
+});
+
 
 router.delete("/meals/:id", verifyToken, (req, res) => {
   const userId = req.user.id;

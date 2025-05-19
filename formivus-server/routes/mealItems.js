@@ -5,9 +5,9 @@ import { verifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
 router.get("/meal-items", verifyToken, (req, res) => {
-  const userId = req.user.id;
+    const userId = req.user.id;
 
-  const query = `
+    const query = `
     SELECT mi.id, mi.meal_id, mi.amount, mi.proteins, mi.carbs, mi.fats, mi.calories, mi.created_at AS date, p.name AS product_name
     FROM meal_items mi
     JOIN meals m ON mi.meal_id = m.id
@@ -16,10 +16,10 @@ router.get("/meal-items", verifyToken, (req, res) => {
     ORDER BY mi.created_at DESC
   `;
 
-  db.query(query, [userId], (err, data) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    return res.status(200).json(data);
-  });
+    db.query(query, [userId], (err, data) => {
+        if (err) return res.status(500).json({ message: "Database error" });
+        return res.status(200).json(data);
+    });
 });
 
 router.post("/meal-items", verifyToken, (req, res) => {
@@ -68,6 +68,51 @@ router.post("/meal-items", verifyToken, (req, res) => {
         });
     });
 });
+
+router.put('/meal-items/:id', verifyToken, (req, res) => {
+    const itemId = req.params.id;
+    const { amount, product_id } = req.body;
+
+    if (!amount || !product_id || isNaN(amount) || isNaN(product_id)) {
+        return res.status(400).json({ message: "Invalid or missing data" });
+    }
+
+    const productQuery = `SELECT * FROM products WHERE id = ?`;
+
+    db.query(productQuery, [product_id], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(400).json({ message: "Product not found" });
+        }
+
+        const product = results[0];
+        const factor = Number(amount) / 100;
+
+        const proteins = (product.proteins * factor).toFixed(2);
+        const carbs = (product.carbs * factor).toFixed(2);
+        const fats = (product.fats * factor).toFixed(2);
+        const calories = (product.calories * factor).toFixed(2);
+
+        const updateQuery = `
+            UPDATE meal_items
+            SET amount = ?, product_id = ?, proteins = ?, carbs = ?, fats = ?, calories = ?
+            WHERE id = ?
+        `;
+
+        db.query(updateQuery, [
+            amount,
+            product_id,
+            proteins,
+            carbs,
+            fats,
+            calories,
+            itemId
+        ], (err, result) => {
+            if (err) return res.status(500).json({ message: 'Update failed', error: err });
+            return res.status(200).json({ message: 'Item updated' });
+        });
+    });
+});
+
 
 
 router.delete("/meal-items/:id", verifyToken, (req, res) => {

@@ -6,6 +6,8 @@ import axios from 'axios';
 export default function MealsSection() {
     const [meals, setMeals] = useState([]);
     const [mealItems, setMealItems] = useState([]);
+    const [editingMealId, setEditingMealId] = useState(null);
+    const [nameInputs, setNameInputs] = useState({});
 
     const handleDeleteMeal = async (mealId) => {
         try {
@@ -15,6 +17,19 @@ export default function MealsSection() {
             handleRefresh();
         } catch (err) {
             console.error('Error deleting meal:', err);
+        }
+    };
+
+    const handleSaveMealName = async (mealId) => {
+        try {
+            await axios.put(`http://localhost:5000/api/meals/${mealId}`, {
+                name: nameInputs[mealId],
+            }, { withCredentials: true });
+
+            setEditingMealId(null);
+            handleRefresh();
+        } catch (err) {
+            console.error("Error updating meal name:", err);
         }
     };
 
@@ -29,7 +44,6 @@ export default function MealsSection() {
         }
     };
 
-
     const fetchMeals = async () => {
         try {
             const res = await axios.get('http://localhost:5000/api/meals', {
@@ -37,7 +51,7 @@ export default function MealsSection() {
             });
             setMeals(res.data);
         } catch (err) {
-            console.error('Error while fetching meals:', err);
+            console.error('Error fetching meals:', err);
         }
     };
 
@@ -48,7 +62,7 @@ export default function MealsSection() {
             });
             setMealItems(res.data);
         } catch (err) {
-            console.error('Error while fetching meal items:', err);
+            console.error('Error fetching meal items:', err);
         }
     };
 
@@ -68,24 +82,82 @@ export default function MealsSection() {
         }
     };
 
-    useEffect(() => {
-        handleRefresh();
-    }, []);
-
     const getItemsForMeal = (mealId) => {
         return mealItems.filter(item => item.meal_id === mealId);
     };
 
+    const calculateTotals = () => {
+        let totalProteins = 0;
+        let totalCarbs = 0;
+        let totalFats = 0;
+        let totalCalories = 0;
+
+        mealItems.forEach(item => {
+            totalProteins += Number(item.proteins);
+            totalCarbs += Number(item.carbs);
+            totalFats += Number(item.fats);
+            totalCalories += Number(item.calories);
+        });
+
+        return {
+            proteins: totalProteins.toFixed(1),
+            carbs: totalCarbs.toFixed(1),
+            fats: totalFats.toFixed(1),
+            calories: totalCalories.toFixed(1),
+        };
+    };
+
+    useEffect(() => {
+        handleRefresh();
+    }, []);
+
+    const totals = calculateTotals();
+
     return (
         <section className={styles.mealsSection}>
             <h1>My Meals</h1>
-            <button onClick={handleAddMeal} className="btn-primary">➕ Add new meal</button>
 
             <div className={styles.mealsWrapper}>
                 {meals.map(meal => (
                     <div key={meal.id} className={styles.mealBlock}>
                         <div className={styles.mealHeader}>
-                            <h2>Meal {meal.meal_number}</h2>
+                            {editingMealId === meal.id ? (
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        handleSaveMealName(meal.id);
+                                    }}
+                                    className={styles.nameEditForm}
+                                >
+                                    <input
+                                        type="text"
+                                        value={nameInputs[meal.id] || ''}
+                                        onChange={(e) =>
+                                            setNameInputs((prev) => ({ ...prev, [meal.id]: e.target.value }))
+                                        }
+                                        placeholder={`Meal ${meal.meal_number}`}
+                                        className={styles.nameInput}
+                                    />
+                                    <button type="submit" className={styles.saveBtn}>💾</button>
+                                </form>
+                            ) : (
+                                <div className={styles.titleRow}>
+                                    <h2>{meal.name || `Meal ${meal.meal_number}`}</h2>
+                                    <button
+                                        onClick={() => {
+                                            setEditingMealId(meal.id);
+                                            setNameInputs((prev) => ({
+                                                ...prev,
+                                                [meal.id]: meal.name || `Meal ${meal.meal_number}`,
+                                            }));
+                                        }}
+                                        className={styles.editBtn}
+                                        title="Edit name"
+                                    >
+                                        ✏️
+                                    </button>
+                                </div>
+                            )}
                             <button onClick={() => handleDeleteMeal(meal.id)} className={styles.deleteMealBtn}>🗑</button>
                         </div>
 
@@ -113,7 +185,13 @@ export default function MealsSection() {
                                         <td>{item.fats}</td>
                                         <td>{item.calories}</td>
                                         <td>
-                                            <button onClick={() => handleDeleteItem(item.id)} className={styles.deleteBtn}>✖</button>
+                                            <button
+                                                onClick={() => handleDeleteItem(item.id)}
+                                                className={styles.deleteBtn}
+                                                title="Delete"
+                                            >
+                                                ✖
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -123,7 +201,17 @@ export default function MealsSection() {
                     </div>
                 ))}
             </div>
-        </section>
+            <button onClick={handleAddMeal} className="btn-primary">➕ Add new meal</button>
 
+            <div className={styles.summaryBox}>
+                <p>
+                    <strong>Total today:</strong>
+                    &nbsp;&nbsp;🔹 Proteins: {totals.proteins}g
+                    &nbsp;&nbsp;🔹 Carbs: {totals.carbs}g
+                    &nbsp;&nbsp;🔹 Fats: {totals.fats}g
+                    &nbsp;&nbsp;🔹 Calories: {totals.calories} kcal
+                </p>
+            </div>
+        </section>
     );
 }

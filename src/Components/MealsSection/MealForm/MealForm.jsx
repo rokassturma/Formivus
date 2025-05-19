@@ -1,13 +1,13 @@
 import styles from './MealForm.module.scss';
 import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import axios from 'axios';
 
 export default function MealForm({ mealId, onSuccess }) {
     const [products, setProducts] = useState([]);
-    const [selectedProductId, setSelectedProductId] = useState('');
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [amount, setAmount] = useState('');
     const [calculated, setCalculated] = useState(null);
-    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -25,35 +25,34 @@ export default function MealForm({ mealId, onSuccess }) {
     }, []);
 
     useEffect(() => {
-        if (selectedProductId && amount) {
-            const product = products.find(p => p.id === Number(selectedProductId));
+        if (selectedProduct && amount) {
             const factor = Number(amount) / 100;
 
             setCalculated({
-                proteins: (product.proteins * factor).toFixed(2),
-                carbs: (product.carbs * factor).toFixed(2),
-                fats: (product.fats * factor).toFixed(2),
-                calories: (product.calories * factor).toFixed(2),
+                proteins: (selectedProduct.proteins * factor).toFixed(2),
+                carbs: (selectedProduct.carbs * factor).toFixed(2),
+                fats: (selectedProduct.fats * factor).toFixed(2),
+                calories: (selectedProduct.calories * factor).toFixed(2),
             });
         } else {
             setCalculated(null);
         }
-    }, [selectedProductId, amount, products]);
+    }, [selectedProduct, amount]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedProductId || !amount || !mealId) return;
+        if (!selectedProduct || !amount || !mealId) return;
 
         try {
             await axios.post('http://localhost:5000/api/meal-items', {
-                product_id: selectedProductId,
+                product_id: selectedProduct.id,
                 amount: Number(amount),
                 meal_id: mealId
             }, {
                 withCredentials: true
             });
 
-            setSelectedProductId('');
+            setSelectedProduct(null);
             setAmount('');
             setCalculated(null);
             onSuccess && onSuccess();
@@ -62,50 +61,49 @@ export default function MealForm({ mealId, onSuccess }) {
         }
     };
 
+    const productOptions = products.map(product => ({
+        value: product.id,
+        label: product.name,
+        ...product,
+    }));
+
     return (
         <>
             <tr className={styles.formRow}>
                 <td></td>
-                <td colSpan={2}>
-                    <div className={styles.inputGroup}>
-                        <select
-                            className={`${styles.select} ${isExpanded ? styles.expanded : ''}`}
-                            value={selectedProductId}
-                            onFocus={() => setIsExpanded(true)}
-                            onBlur={() => setIsExpanded(false)}
-                            onChange={(e) => setSelectedProductId(e.target.value)}
-                            required
-                        >
-                            <option value="">Select product</option>
-                            {products.map(product => (
-                                <option key={product.id} value={product.id}>{product.name}</option>
-                            ))}
-                        </select>
 
-                        <input
-                            type="number"
-                            placeholder="Amount"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            required
-                        />
-                    </div>
+                <td>
+                    <Select
+                        className={styles.reactSelect}
+                        classNamePrefix="select"
+                        options={productOptions}
+                        value={selectedProduct}
+                        onChange={(selected) => setSelectedProduct(selected)}
+                        placeholder="Select product"
+                        isClearable
+                    />
                 </td>
-                <td colSpan={4}></td>
+
+                <td>
+                    <input
+                        className={styles.tableInput}
+                        type="number"
+                        placeholder="Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        required
+                    />
+                </td>
+
+                <td className={styles.previewValue}>{calculated?.proteins || ''}g</td>
+                <td className={styles.previewValue}>{calculated?.carbs || ''}g</td>
+                <td className={styles.previewValue}>{calculated?.fats || ''}g</td>
+                <td className={styles.previewValue}>{calculated?.calories || ''} kcal</td>
+
                 <td>
                     <button type="submit" className="btn-primary" onClick={handleSubmit}>Add</button>
                 </td>
             </tr>
-
-            {calculated && (
-                <tr className={styles.previewRow}>
-                    <td colSpan={8}>
-                        <span className={styles.macroPreview}>
-                            {calculated.proteins}g / {calculated.carbs}g / {calculated.fats}g / {calculated.calories} kcal
-                        </span>
-                    </td>
-                </tr>
-            )}
         </>
     );
 }

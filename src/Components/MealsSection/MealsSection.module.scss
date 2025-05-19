@@ -1,7 +1,5 @@
 @use '../../styles/variables' as *;
-@use 'sass:color';
-@use '../../styles/mixin' as *;
-
+@use "sass:color";
 
 .mealsSection {
   padding: 40px 20px;
@@ -12,13 +10,13 @@
   h1 {
     font-size: 2rem;
     color: $primary-color;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
   }
 
   .btn-primary {
     display: block;
-    margin: 0 auto 30px;
+    margin: 40px auto 0;
     background-color: $primary-color;
     color: $text-light;
     padding: 10px 18px;
@@ -40,17 +38,17 @@
   flex-direction: column;
   gap: 40px;
   max-width: 1400px;
-  margin: 0 auto;
   width: 100%;
+  margin: 1rem auto;
+  padding: 0 20px;
 }
 
 .mealBlock {
   border: 1px solid $border-color;
   background-color: $text-light;
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  width: 100%;
 }
 
 .mealHeader {
@@ -60,31 +58,69 @@
   border-bottom: 1px solid $gray-light;
   padding-bottom: 10px;
   margin-bottom: 20px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   h2 {
     font-size: 1.4rem;
     color: $username-color;
     margin: 0;
   }
+}
 
-  .deleteMealBtn {
-    background-color: transparent;
+.editBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: $username-color;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.nameEditForm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .nameInput {
+    padding: 6px 10px;
+    border: 1px solid $gray-light;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: $background-light;
+    font-family: $font-family-base;
+
+    &:focus {
+      outline: 2px solid $primary-color;
+    }
+  }
+
+  .saveBtn {
+    background-color: $primary-color;
     border: none;
-    color: $danger-color;
-    font-size: 1.4rem;
+    color: $text-light;
+    padding: 6px 10px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    font-size: 1rem;
 
     &:hover {
-      transform: scale(1.2);
+      background-color: $primary-hover;
     }
   }
 }
 
 .table {
   width: 100%;
-  border-collapse: collapse;
   table-layout: fixed;
+  border-collapse: collapse;
   font-size: 0.95rem;
   color: $text-dark;
 
@@ -96,50 +132,27 @@
       text-align: left;
       border-bottom: 1px solid $gray-light;
       font-weight: 600;
-
-      &:nth-child(1) {
-        width: 16%;
-      }
-
-     
-      &:nth-child(2) {
-        width: 30%;
-      }
-
-  
-      &:nth-child(3) {
-        width: 12%;
-      }
-
-      &:nth-child(4),
-      &:nth-child(5),
-      &:nth-child(6),
-      &:nth-child(7) {
-        width: 8%;
-      }
-
-
-      &:nth-child(8) {
-        width: 8%;
-        text-align: center;
-      }
     }
   }
 
   tbody {
-    td {
-      padding: 8px 12px;
-      border-bottom: 1px solid $gray-light;
-      color: $text-dark;
-      overflow-wrap: anywhere;
-    }
+    tr {
+      &:nth-child(even) {
+        background-color: color.adjust($table-color, $lightness: 5%);
+      }
 
-    td:last-child {
-      text-align: center;
+      td {
+        padding: 8px 12px;
+        border-bottom: 1px solid $gray-light;
+        color: $text-dark;
+      }
+
+      td:last-child {
+        text-align: center;
+      }
     }
   }
 }
-
 
 .deleteBtn {
   background-color: transparent;
@@ -154,6 +167,30 @@
   }
 }
 
-input[type="number"] {
-  @include remove-number-arrows;
+.deleteMealBtn {
+  background-color: transparent;
+  border: none;
+  color: $danger-color;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.summaryBox {
+  margin: 40px auto 20px;
+  max-width: 1400px;
+  width: 100%;
+  padding: 20px;
+  background-color: $background-light;
+  border: 1px solid $gray-light;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: $text-dark;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }

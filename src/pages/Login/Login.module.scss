@@ -49,6 +49,8 @@
                 font-size: 1rem;
                 transition: border-color 0.3s;
 
+                
+
                 &:focus {
                     outline: none;
                     border-color: $primary-color;
@@ -140,3 +142,4 @@
         transform: translate(-50%, -20px);
     }
 }
+
