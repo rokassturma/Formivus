@@ -2,11 +2,12 @@ import styles from './MealForm.module.scss';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function MealForm({ onSuccess }) {
+export default function MealForm({ mealId, onSuccess }) {
     const [products, setProducts] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState('');
     const [amount, setAmount] = useState('');
     const [calculated, setCalculated] = useState(null);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -41,12 +42,13 @@ export default function MealForm({ onSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedProductId || !amount) return;
+        if (!selectedProductId || !amount || !mealId) return;
 
         try {
             await axios.post('http://localhost:5000/api/meal-items', {
                 product_id: selectedProductId,
-                amount: Number(amount)
+                amount: Number(amount),
+                meal_id: mealId
             }, {
                 withCredentials: true
             });
@@ -61,40 +63,49 @@ export default function MealForm({ onSuccess }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.row}>
-                <select
-                    value={selectedProductId}
-                    onChange={(e) => setSelectedProductId(e.target.value)}
-                    required
-                >
-                    <option value="">Select product</option>
-                    {products.map(product => (
-                        <option key={product.id} value={product.id}>
-                            {product.name}
-                        </option>
-                    ))}
-                </select>
+        <>
+            <tr className={styles.formRow}>
+                <td></td>
+                <td colSpan={2}>
+                    <div className={styles.inputGroup}>
+                        <select
+                            className={`${styles.select} ${isExpanded ? styles.expanded : ''}`}
+                            value={selectedProductId}
+                            onFocus={() => setIsExpanded(true)}
+                            onBlur={() => setIsExpanded(false)}
+                            onChange={(e) => setSelectedProductId(e.target.value)}
+                            required
+                        >
+                            <option value="">Select product</option>
+                            {products.map(product => (
+                                <option key={product.id} value={product.id}>{product.name}</option>
+                            ))}
+                        </select>
 
-                <input
-                    type="number"
-                    placeholder="Amount (g/ml)"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    required
-                />
-            </div>
+                        <input
+                            type="number"
+                            placeholder="Amount"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            required
+                        />
+                    </div>
+                </td>
+                <td colSpan={4}></td>
+                <td>
+                    <button type="submit" className="btn-primary" onClick={handleSubmit}>Add</button>
+                </td>
+            </tr>
 
             {calculated && (
-                <div className={styles.preview}>
-                    <p><strong>Proteins:</strong> {calculated.proteins} g</p>
-                    <p><strong>Carbs:</strong> {calculated.carbs} g</p>
-                    <p><strong>Fats:</strong> {calculated.fats} g</p>
-                    <p><strong>Calories:</strong> {calculated.calories} kcal</p>
-                </div>
+                <tr className={styles.previewRow}>
+                    <td colSpan={8}>
+                        <span className={styles.macroPreview}>
+                            {calculated.proteins}g / {calculated.carbs}g / {calculated.fats}g / {calculated.calories} kcal
+                        </span>
+                    </td>
+                </tr>
             )}
-
-            <button type="submit" className="btn-primary">Add</button>
-        </form>
+        </>
     );
 }

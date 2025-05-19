@@ -1,58 +1,53 @@
 @use '../../../styles/variables' as *;
-@use 'sass:color';
 
-.tableWrapper {
-    overflow-x: auto;
-    margin-top: 2rem;
+.formRow {
+    background-color: $background-light;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.inlineForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-family: $font-family-base;
 
-    thead {
+    select,
+    input {
+        padding: 8px 10px;
+        border: 1px solid $gray-light;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        font-family: $font-family-base;
+        color: $text-dark;
+        background-color: $background-light;
+        min-width: 160px;
+
+        &:focus {
+            outline: 2px solid $primary-color;
+        }
+    }
+
+    .btn-primary {
         background-color: $primary-color;
-        color: white;
+        color: $text-light;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: background-color 0.2s ease;
 
-        th {
-            padding: 1rem;
-            text-align: left;
-        }
-    }
-
-    tbody {
-        tr {
-            &:nth-child(even) {
-                background-color: #f7f7f7;
-            }
-
-            td {
-                padding: 0.8rem 1rem;
-                vertical-align: middle;
-            }
+        &:hover {
+            background-color: $primary-hover;
         }
     }
 }
 
-.deleteBtn {
-    background: $danger-color;
-    border: none;
-    color: white;
-    padding: 0.4rem 0.7rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-
-    &:hover {
-        background: color.adjust($danger-color, $lightness: -10%);
-    }
-}
-
-.noItems {
-    text-align: center;
-    color: $text-dark;
-    margin-top: 1rem;
+.macroPreview {
+    font-size: 0.85rem;
+    color: $text-gray;
+    margin-left: auto;
+    font-style: italic;
 }

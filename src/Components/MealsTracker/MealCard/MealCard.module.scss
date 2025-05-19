@@ -1,0 +1,84 @@
+@use '../../variables.scss' as *;
+
+.mealCard {
+    background-color: $background-light;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: $font-family-base;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mealHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $gray-light;
+    padding-bottom: 10px;
+
+    h2 {
+        font-size: 1.5rem;
+        color: $primary-color;
+        margin: 0;
+    }
+
+    .deleteMealBtn {
+        background-color: transparent;
+        border: none;
+        color: $danger-color;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+}
+
+.inlineForm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    select,
+    input {
+        padding: 10px 12px;
+        border: 1px solid $gray-light;
+        border-radius: 8px;
+        font-size: 1rem;
+        min-width: 180px;
+        background-color: $background-light;
+        font-family: $font-family-base;
+        color: $text-dark;
+
+        &:focus {
+            outline: 2px solid $primary-color;
+        }
+    }
+
+    .btn-primary {
+        background-color: $primary-color;
+        color: $text-light;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1rem;
+        font-family: $font-family-base;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: $primary-hover;
+        }
+    }
+}

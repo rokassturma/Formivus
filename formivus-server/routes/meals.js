@@ -5,48 +5,75 @@ import { verifyToken } from "../middleware/verifyToken.js";
 const router = express.Router();
 
 router.get("/meals", verifyToken, (req, res) => {
-    const userId = req.user.id;
+  const userId = req.user.id;
 
-    const query = `
-    SELECT * FROM meals
-    WHERE user_id = ?
-    ORDER BY date DESC
+  const query = `
+    SELECT id, meal_number, date
+    FROM meals
+    WHERE user_id = ? AND DATE(date) = DATE(NOW())
+    ORDER BY meal_number ASC
   `;
 
-    db.query(query, [userId], (err, data) => {
-        if (err) return res.status(500).json({ message: "Database error" });
-        return res.status(200).json(data);
-    });
+  db.query(query, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error" });
+    return res.status(200).json(results);
+  });
 });
 
+
 router.post("/meals", verifyToken, (req, res) => {
-    const userId = req.user.id;
-    const { meal_number } = req.body;
+  const userId = req.user.id;
 
-    if (!meal_number) {
-        return res.status(400).json({ message: "Meal number is required" });
-    }
-
-    const query = `
-    INSERT INTO meals (user_id, date, meal_number)
-    VALUES (?, NOW(), ?)
+  const getMaxQuery = `
+    SELECT MAX(meal_number) AS maxMeal
+    FROM meals
+    WHERE user_id = ? AND DATE(date) = DATE(NOW())
   `;
 
-    db.query(query, [userId, meal_number], (err, result) => {
-        if (err) return res.status(500).json({ message: "Insert error" });
-        return res.status(200).json({ message: "Meal created", id: result.insertId });
+  db.query(getMaxQuery, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error" });
+
+    const newMealNumber = (results[0].maxMeal || 0) + 1;
+
+    const insertQuery = `
+      INSERT INTO meals (user_id, date, meal_number)
+      VALUES (?, NOW(), ?)
+    `;
+
+    db.query(insertQuery, [userId, newMealNumber], (err, result) => {
+      if (err) return res.status(500).json({ message: "Insert failed" });
+      return res.status(200).json({ message: "Meal created" });
     });
+  });
 });
 
 router.delete("/meals/:id", verifyToken, (req, res) => {
-    const id = req.params.id;
+  const userId = req.user.id;
+  const mealId = req.params.id;
 
-    const query = `DELETE FROM meals WHERE id = ?`;
+  const deleteItemsQuery = `
+        DELETE FROM meal_items
+        WHERE meal_id = ?
+        AND meal_id IN (
+            SELECT id FROM meals WHERE user_id = ?
+        )
+    `;
 
-    db.query(query, [id], (err) => {
-        if (err) return res.status(500).json({ message: "Delete error" });
-        return res.status(200).json({ message: "Meal deleted" });
+  db.query(deleteItemsQuery, [mealId, userId], (err) => {
+    if (err) return res.status(500).json({ message: "Failed to delete meal items" });
+
+    const deleteMealQuery = `
+            DELETE FROM meals
+            WHERE id = ? AND user_id = ?
+        `;
+
+    db.query(deleteMealQuery, [mealId, userId], (err) => {
+      if (err) return res.status(500).json({ message: "Failed to delete meal" });
+      return res.status(200).json({ message: "Meal deleted" });
     });
+  });
 });
 
+
 export default router;
+

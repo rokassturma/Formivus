@@ -1,11 +1,159 @@
 @use '../../styles/variables' as *;
+@use 'sass:color';
+@use '../../styles/mixin' as *;
+
 
 .mealsSection {
-  padding: 2rem;
+  padding: 40px 20px;
+  background-color: $background-light;
+  font-family: $font-family-base;
+  min-height: 100vh;
 
   h1 {
+    font-size: 2rem;
+    color: $primary-color;
+    margin-bottom: 20px;
     text-align: center;
-    margin-bottom: 2rem;
-    color: $text-dark;
   }
+
+  .btn-primary {
+    display: block;
+    margin: 0 auto 30px;
+    background-color: $primary-color;
+    color: $text-light;
+    padding: 10px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $primary-hover;
+    }
+  }
+}
+
+.mealsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.mealBlock {
+  border: 1px solid $border-color;
+  background-color: $text-light;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.mealHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $gray-light;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 1.4rem;
+    color: $username-color;
+    margin: 0;
+  }
+
+  .deleteMealBtn {
+    background-color: transparent;
+    border: none;
+    color: $danger-color;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.95rem;
+  color: $text-dark;
+
+  thead {
+    background-color: $table-color;
+
+    th {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid $gray-light;
+      font-weight: 600;
+
+      &:nth-child(1) {
+        width: 16%;
+      }
+
+     
+      &:nth-child(2) {
+        width: 30%;
+      }
+
+  
+      &:nth-child(3) {
+        width: 12%;
+      }
+
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(6),
+      &:nth-child(7) {
+        width: 8%;
+      }
+
+
+      &:nth-child(8) {
+        width: 8%;
+        text-align: center;
+      }
+    }
+  }
+
+  tbody {
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid $gray-light;
+      color: $text-dark;
+      overflow-wrap: anywhere;
+    }
+
+    td:last-child {
+      text-align: center;
+    }
+  }
+}
+
+
+.deleteBtn {
+  background-color: transparent;
+  border: none;
+  color: $danger-color;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+input[type="number"] {
+  @include remove-number-arrows;
 }
