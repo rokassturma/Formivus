@@ -88,7 +88,7 @@ export default function MealForm({ mealId, onSuccess }) {
                     <input
                         className={styles.tableInput}
                         type="number"
-                        placeholder="Amount"
+                        placeholder="g / ml"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         required
