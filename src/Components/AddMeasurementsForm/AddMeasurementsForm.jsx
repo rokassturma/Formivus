@@ -113,7 +113,6 @@ export default function AddMeasurementsForm({ onSuccess }) {
                         <button type="submit" className="btn-primary">
                             Save measurements
                         </button>
-                        <Link to="/" className="btn-secondary smallButton">Return</Link>
                     </form>
                 )}
             </section>
