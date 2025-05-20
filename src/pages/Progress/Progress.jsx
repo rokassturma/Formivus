@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import AddMeasurementsForm from "./AddMeasurementsForm/AddMeasurementsForm";
-import MeasurementsTable from "./MeasurementsTable/MeasurementsTable";
-import ProgressChart from './ProgressChart/ProgressChart';
-import styles from '../pages/HealthPanel/ProgressSection.module.scss';  
+import AddMeasurementsForm from "../../Components/AddMeasurementsForm/AddMeasurementsForm";
+import MeasurementsTable from "../../Components/MeasurementsTable/MeasurementsTable";
+import ProgressChart from '../../Components/ProgressChart/ProgressChart';
+import styles from './Progress.module.scss';
 
 export default function ProgressSection() {
 

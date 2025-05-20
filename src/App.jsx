@@ -8,6 +8,7 @@ import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
 import HealthPanel from './pages/HealthPanel/HealthPanel';
+import ProgressSection from "./pages/Progress/Progress";
 
 
 function App() {
@@ -58,6 +59,11 @@ function App() {
         <Route
           path="/health"
           element={<HealthPanel />}
+        />
+
+        <Route
+          path="/progress"
+          element={<ProgressSection />}
         />
       </Routes>
     </Router >

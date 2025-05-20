@@ -2,11 +2,11 @@ import styles from './HealthPanel.module.scss';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import ProgressSection from '../../Components/ProgressSection';
 import ProductsSection from '../../Components/ProductsSection';
 import NutritionPlanSection from '../../Components/NutritionPlanSection';
 import MealsTrackerSection from '../../Components/MealsTrackerSection';
 import MealsSection from '../../Components/MealsSection/MealsSection';
+import ProgressSection from "../Progress/Progress";
 
 export default function HealthPanel() {
     const navigate = useNavigate();

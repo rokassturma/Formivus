@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -95,7 +95,7 @@ export default function Header() {
                             <div className={styles.dropdown}>
                                 <span className={styles.dropdownTitle}>Health Panel ▾</span>
                                 <div className={styles.dropdownContent}>
-                                    <NavLink to="/health?section=progress">My Progress</NavLink>
+                                    <Link to="/progress">Progress</Link>
                                     <NavLink to="/health?section=calories">My Calories</NavLink>
                                     <NavLink to="/health?section=products">Products</NavLink>
                                     <NavLink to="/health?section=plan">Nutrition Plan</NavLink>
