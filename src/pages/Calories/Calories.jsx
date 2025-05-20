@@ -1,42 +1,55 @@
 import styles from './Calories.module.scss';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import NotificationMessage from '../../Components/NotificationMessage/NotificationMessage';
+import { useLocation } from 'react-router-dom';
+
 
 export default function CaloriesSection() {
     const [profile, setProfile] = useState(null);
-    const [progress, setProgress] = useState([]);
-    const [caloriesTarget, setCaloriesTarget] = useState(0);
+    const [progress, setProgress] = useState(null);
     const [goalWeight, setGoalWeight] = useState('');
-    const [savedGoal, setSavedGoal] = useState(localStorage.getItem('goalWeight') || '');
+    const [savedGoal, setSavedGoal] = useState(null);
+    const [notification, setNotification] = useState({ text: '', type: '', fading: false });
+
+    const location = useLocation();
+
 
     useEffect(() => {
-        const fetchProfile = async () => {
+        const fetchData = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/profile', { withCredentials: true });
-                setProfile(res.data);
+                const [profileRes, progressRes, goalRes] = await Promise.all([
+                    axios.get('http://localhost:5000/api/profile', { withCredentials: true }),
+                    axios.get('http://localhost:5000/api/progress', { withCredentials: true }),
+                    axios.get('http://localhost:5000/api/calorie-goals', { withCredentials: true })
+                ]);
+                setProfile(profileRes.data);
+                setProgress(progressRes.data);
+                setSavedGoal(goalRes.data.goal_weight_kg);
             } catch (err) {
-                console.error('Error loading profile:', err);
+                showMessage('Error loading data', 'error');
+                console.error(err);
             }
         };
 
-        const fetchProgress = async () => {
-            try {
-                const res = await axios.get('http://localhost:5000/api/progress', { withCredentials: true });
-                setProgress(res.data);
-            } catch (err) {
-                console.error('Error loading progress:', err);
-            }
-        };
+        fetchData();
+    }, [location.pathname]);
 
-        fetchProfile();
-        fetchProgress();
-    }, []);
+    function showMessage(text, type = 'error') {
+        setNotification({ text, type, fading: false });
 
-    const latestWeight = progress.length > 0
-        ? progress[0].weight_kg
-        : null;
+        setTimeout(() => {
+            setNotification(prev => ({ ...prev, fading: true }));
+        }, 4500);
 
-    const initialWeight = profile?.weight_kg || null;
+        setTimeout(() => {
+            setNotification({ text: '', type: '', fading: false });
+        }, 5000);
+    }
+
+    const latestWeight = progress && progress.length > 0 ? progress[progress.length - 1].weight_kg : null;
+    const initialWeight = progress && progress.length > 0 ? progress[0].weight_kg : null;
+
 
     let progressPercent = 0;
     if (savedGoal && latestWeight && initialWeight) {
@@ -47,8 +60,37 @@ export default function CaloriesSection() {
         if (progressPercent > 100) progressPercent = 100;
     }
 
+    const handleSaveGoal = async (e) => {
+        e.preventDefault();
+        if (!goalWeight) return;
+
+        try {
+            const res = await axios.post(
+                'http://localhost:5000/api/calorie-goals',
+                { goal_weight_kg: goalWeight },
+                { withCredentials: true }
+            );
+            setSavedGoal(goalWeight);
+            setGoalWeight('');
+            showMessage(res.data.message, 'success');
+        } catch (err) {
+            const msg = err.response?.data?.message || 'Error saving goal';
+            showMessage(msg, 'error');
+        }
+    };
+
     return (
         <section className={styles.caloriesSection}>
+            {notification.text && (
+                <div className="notificationWrapper">
+                    <NotificationMessage
+                        message={notification.text}
+                        type={notification.type}
+                        fading={notification.fading}
+                    />
+                </div>
+            )}
+
             <h1>My Calories</h1>
 
             {/* 1. Info / BMR skaičiavimas */}
@@ -65,15 +107,7 @@ export default function CaloriesSection() {
                 <h2>Your Goal</h2>
                 <p>Set your target weight and track your progress.</p>
 
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        if (!goalWeight) return;
-                        localStorage.setItem('goalWeight', goalWeight);
-                        setSavedGoal(goalWeight);
-                    }}
-                    className={styles.goalForm}
-                >
+                <form onSubmit={handleSaveGoal} className={styles.goalForm}>
                     <input
                         type="number"
                         placeholder="Enter target weight (kg)"
@@ -98,12 +132,10 @@ export default function CaloriesSection() {
                 )}
             </div>
 
-
             {/* 3. Progreso sekimas */}
             <div className={styles.block}>
                 <h2>Progress Tracker</h2>
                 <p>Weight change compared to your initial profile.</p>
-
             </div>
         </section>
     );

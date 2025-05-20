@@ -9,6 +9,8 @@ import measurementsRoutes from "./routes/measurements.js";
 import mealItemsRoutes from './routes/mealItems.js';
 import mealsRoutes from './routes/meals.js';
 import productsRoutes from './routes/products.js';
+import progressRoutes from "./routes/progress.js";
+import calorieGoalsRoutes from "./routes/calorieGoals.js";
 
 const app = express();
 const PORT = 5000
@@ -29,6 +31,9 @@ app.use("/api", measurementsRoutes);
 app.use("/api", mealItemsRoutes);
 app.use("/api", mealsRoutes);
 app.use("/api", productsRoutes);
+app.use("/api/progress", progressRoutes);
+app.use("/api/calorie-goals", calorieGoalsRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`Server is listening to http://localhost:${PORT}`);
