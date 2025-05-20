@@ -1,159 +1,335 @@
 @use '../../styles/variables' as *;
+@use 'sass:color';
 
 .home {
     display: flex;
     flex-direction: column;
     gap: 60px;
-}
 
-.heroSection {
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    color: $text-light;
 
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-        url('../../assets/images/hero.svg') center left 5% no-repeat;
+    .heroSection {
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        color: $text-light;
 
-    h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        font-weight: 700;
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+            url('../../assets/images/hero.svg') center left 5% no-repeat;
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.3rem;
+            max-width: 700px;
+        }
     }
 
-    p {
-        font-size: 1.3rem;
-        max-width: 700px;
+
+    .aboutSection {
+        padding: 80px 20px;
+        background-color: $background-light;
+
+        .aboutContent {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+
+            .aboutText {
+                flex: 1;
+                min-width: 300px;
+
+                h2 {
+                    font-size: 2rem;
+                    color: $primary-color;
+                    margin-bottom: 20px;
+                }
+
+                p {
+                    font-size: 1.1rem;
+                    line-height: 1.6;
+                    color: $text-dark;
+                }
+            }
+
+            .aboutImage {
+                flex: 1;
+                min-width: 300px;
+                display: flex;
+                justify-content: center;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+        }
+    }
+
+    .featuresSection {
+        padding: 60px 20px;
+        background-color: $background-light;
+        text-align: center;
+
+        h2 {
+            font-size: 2rem;
+            color: $text-dark;
+            margin-bottom: 40px;
+        }
+
+        .featuresGrid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+
+            .flipCard {
+                background-color: transparent;
+                width: 300px;
+                min-height: 300px;
+                perspective: 1000px;
+                cursor: pointer;
+
+                &:hover .flipInner {
+                    transform: rotateY(180deg);
+                }
+
+                .flipInner {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
+                    transition: transform 0.6s;
+                    transform-style: preserve-3d;
+
+                    .flipFront,
+                    .flipBack {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        backface-visibility: hidden;
+                        border: 1px solid $gray-light;
+                        border-radius: 12px;
+                        padding: 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .flipFront {
+                        background-color: $success-color;
+                        color: $text-dark;
+                    }
+
+                    .flipBack {
+                        background-color: $text-light;
+                        color: $text-dark;
+                        transform: rotateY(180deg);
+                        font-size: 0.95rem;
+                        line-height: 1.5;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+    }
+
+    .howItWorksSection {
+        background-color: #f3ecaa;
+        padding: 40px 20px;
+        color: $text-dark;
+        text-align: center;
+        border-radius: 100px;
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: $text-dark;
+        }
+
+        .stepsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+
+            .step {
+                background-color: $white;
+                border: 1px solid $gray-light;
+                padding: 30px 10px;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                font-weight: 500;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+
+                &:hover {
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+                    color: $success-color;
+                }
+
+                &.visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+
+    .testimonialsSection {
+        background: linear-gradient(to right, #e9f5f9, #f3f7fa);
+        padding: 80px 20px;
+        text-align: center;
+        color: $text-dark;
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: $primary-color;
+        }
+
+        .testimonialsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonialCard {
+            background-color: $white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: translateY(-5px);
+            }
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-bottom: 20px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+
+                .defaultAvatar {
+                    width: 100%;
+                    height: 100%;
+                    background-color: #ccc;
+                    border-radius: 50%;
+                }
+            }
+
+            .comment {
+                font-size: 1rem;
+                font-style: italic;
+                margin-bottom: 10px;
+                color: $text-dark;
+            }
+
+            .user {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: $username-color;
+            }
+        }
+    }
+
+    .footer {
+        background-color: $background-light;
+        color: $text-dark;
+        padding: 60px 20px 30px;
+        font-family: $font-family-base;
+
+        .footerContent {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+
+            .logo {
+                h2 {
+                    font-size: 1.8rem;
+                    margin-bottom: 8px;
+                }
+
+                p {
+                    font-size: 1rem;
+                    opacity: 0.9;
+                }
+            }
+
+            .links {
+                display: flex;
+                gap: 30px;
+
+                a {
+                    color: $text-light;
+                    text-decoration: none;
+                    font-weight: 500;
+                    font-size: 1rem;
+                    transition: color 0.2s ease;
+
+                    &:hover {
+                        color: color.adjust($text-light, $lightness: -20%);
+                    }
+                }
+            }
+        }
+
+        .bottom {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
     }
 }
 
+@keyframes fadeInStep {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .ctaButtons {
     display: flex;
     justify-content: center;
     gap: 20px;
-}
-
-.aboutSection,
-.featuresSection {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-
-    h2 {
-        font-size: 2rem;
-        margin-bottom: 15px;
-        color: $primary-color;
-        text-align: center;
-    }
-
-    p {
-        font-size: 1.1rem;
-        color: $text-dark;
-        line-height: 1.6;
-        text-align: center;
-    }
-}
-
-.featuresGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.featureCard {
-    background-color: $text-light;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid $gray-light;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    text-align: center;
-
-    h3 {
-        font-size: 1.3rem;
-        color: $username-color;
-        margin-bottom: 10px;
-    }
-
-    p {
-        font-size: 1rem;
-        color: $text-gray;
-    }
-}
-
-
-.howItWorksSection {
-    background-color: $background-light;
-    padding: 40px 20px;
-    text-align: center;
-
-    h2 {
-        color: $primary-color;
-        margin-bottom: 20px;
-    }
-
-    ol {
-        list-style: decimal;
-        text-align: left;
-        max-width: 600px;
-        margin: 0 auto;
-        padding-left: 20px;
-
-        li {
-            margin-bottom: 10px;
-            font-size: 1rem;
-            color: $text-dark;
-        }
-    }
-}
-
-.testimonialsSection {
-    padding: 40px 20px;
-    background-color: $table-color;
-    text-align: center;
-
-    h2 {
-        color: $primary-color;
-        margin-bottom: 20px;
-    }
-
-    .testimonialGrid {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-
-        blockquote {
-            font-style: italic;
-            color: $text-gray;
-            background-color: $text-light;
-            padding: 20px;
-            border-left: 4px solid $primary-color;
-            border-radius: 6px;
-        }
-    }
-}
-
-
-.footerPreview {
-    text-align: center;
-    padding: 60px 20px;
-    background-color: $gray-light;
-
-    h3 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-        color: $text-dark;
-    }
-
-    p {
-        font-size: 1rem;
-        color: $text-gray;
-    }
 }

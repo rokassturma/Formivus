@@ -1,0 +1,54 @@
+@use '../../styles/variables' as *;
+@use "sass:color";
+
+.footer {
+    background-color: #f3ecaa;
+    color: $text-dark;
+    padding: 60px 20px 30px;
+    font-family: $font-family-base;
+    width: 100%;
+
+    .footerContent {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+
+        .logo {
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            p {
+                font-size: 1rem;
+                opacity: 0.9;
+            }
+        }
+
+        .links {
+            display: flex;
+            gap: 20px;
+
+            a {
+                font-size: 1.2rem;
+                color: $text-dark;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+
+    .bottom {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+}
