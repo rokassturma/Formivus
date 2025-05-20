@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import ProductsSection from '../../Components/ProductsSection';
-import NutritionPlanSection from '../../Components/NutritionPlanSection';
 import MealsTrackerSection from '../../Components/MealsTrackerSection';
 import MealsSection from '../../Components/MealsSection/MealsSection';
 import ProgressSection from "../Progress/Progress";
@@ -21,8 +20,6 @@ export default function HealthPanel() {
                 return <ProgressSection />;
             case 'calories':
                 return <CaloriesSection />;
-            case 'plan':
-                return <NutritionPlanSection />;
             case 'meals':
                 return <MealsSection />;
             case 'meals-tracker':
@@ -53,9 +50,7 @@ export default function HealthPanel() {
                     <option value="progress">My Progress</option>
                     <option value="calories">My Calories</option>
                     <option value="products">Products</option>
-                    <option value="plan">Your Nutrition Plan</option>
                     <option value="meals">Meals Tracker</option>
-                    <option value="home">← Return to Home</option>
                 </select>
             </div>
 

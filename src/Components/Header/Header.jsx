@@ -98,7 +98,6 @@ export default function Header() {
                                     <Link to="/progress">Progress</Link>
                                     <NavLink to="/health?section=calories">My Calories</NavLink>
                                     <NavLink to="/health?section=products">Products</NavLink>
-                                    <NavLink to="/health?section=plan">Nutrition Plan</NavLink>
                                     <NavLink to="/health?section=meals">Meals Tracker</NavLink>
                                 </div>
                             </div>
