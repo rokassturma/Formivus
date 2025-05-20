@@ -33,7 +33,7 @@ const measurementOptions = [
 const ProgressChart = ({ measurements }) => {
   const [selectedField, setSelectedField] = useState("waist_narrow_cm");
 
-  if (!measurements.length) return <p className={styles.noData}>No measurements for chart.</p>;
+  if (!measurements.length) return <p className={styles.noData}>Please enter measurements first to see the progress.</p>;
 
   const data = {
     labels: measurements.map((m) =>

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const MeasurementsTable = ({ measurements, onDelete }) => {
     if (!measurements.length) {
-        return <p className={styles.noData}>No measurements yet.</p>;
+        return <p className={styles.noData}>Please enter measurements first to see the progress.</p>;
     }
 
     return (

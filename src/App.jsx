@@ -19,6 +19,11 @@ function App() {
           <Route path="/" element={<Home />} />
 
           <Route
+            path="/progress"
+            element={<ProgressSection />}
+          />
+
+          <Route
             path="/my-profile"
             element={
               <ProtectedRoute>
@@ -61,10 +66,7 @@ function App() {
           element={<HealthPanel />}
         />
 
-        <Route
-          path="/progress"
-          element={<ProgressSection />}
-        />
+
       </Routes>
     </Router >
   );
