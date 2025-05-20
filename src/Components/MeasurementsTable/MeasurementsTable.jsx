@@ -18,6 +18,7 @@ const MeasurementsTable = ({ measurements, onDelete }) => {
                         <th>Waist (wide)</th>
                         <th>Hips</th>
                         <th>Leg</th>
+                        <th>Weight</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -31,6 +32,7 @@ const MeasurementsTable = ({ measurements, onDelete }) => {
                             <td>{m.waist_wide_cm} cm</td>
                             <td>{m.hips_cm} cm</td>
                             <td>{m.leg_cm} cm</td>
+                            <td>{m.weight_kg}</td>
                             <td>
                                 <button
                                     onClick={() => onDelete(m.id)}

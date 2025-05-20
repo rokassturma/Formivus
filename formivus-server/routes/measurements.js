@@ -13,18 +13,19 @@ router.post("/measurements", verifyToken, (req, res) => {
         waist_wide_cm,
         hips_cm,
         leg_cm,
+        weight_kg
     } = req.body;
     const userId = req.user.id;
 
     const query = `
-        INSERT INTO user_measurements
-        (user_id, date, chest_cm, bicep_cm, waist_narrow_cm, waist_wide_cm, hips_cm, leg_cm)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO user_measurements (user_id, date, chest_cm, bicep_cm, waist_narrow_cm, waist_wide_cm, hips_cm, leg_cm, weight_kg)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
+
 
     db.query(
         query,
-        [userId, date, chest_cm, bicep_cm, waist_narrow_cm, waist_wide_cm, hips_cm, leg_cm],
+        [userId, date, chest_cm, bicep_cm, waist_narrow_cm, waist_wide_cm, hips_cm, leg_cm, weight_kg],
         (err, result) => {
             if (err) return res.status(500).json({ message: "Database error" });
             return res.status(200).json({ message: "Measurements saved" });
@@ -47,7 +48,7 @@ router.get("/measurements", verifyToken, (req, res) => {
         return res.status(200).json(results);
     });
 });
- 
+
 router.delete("/measurements/:id", verifyToken, (req, res) => {
     const measurementId = req.params.id;
     const userId = req.user.id;

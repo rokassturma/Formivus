@@ -28,6 +28,7 @@ const measurementOptions = [
   { value: "waist_wide_cm", label: "Waist (wide) (cm)" },
   { value: "hips_cm", label: "Hips (cm)" },
   { value: "leg_cm", label: "Leg (cm)" },
+  { value: "weight_kg", label: "Weight (kg)" }
 ];
 
 const ProgressChart = ({ measurements }) => {

@@ -9,6 +9,7 @@ import ProtectedRoute from './Components/ProtectedRoute';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
 import HealthPanel from './pages/HealthPanel/HealthPanel';
 import ProgressSection from "./pages/Progress/Progress";
+import Calories from "./pages/Calories/Calories";
 
 
 function App() {
@@ -20,7 +21,20 @@ function App() {
 
           <Route
             path="/progress"
-            element={<ProgressSection />}
+            element={
+              <ProtectedRoute>
+                <ProgressSection />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/calories"
+            element={
+              <ProtectedRoute>
+                <Calories />
+              </ProtectedRoute>
+            }
           />
 
           <Route
