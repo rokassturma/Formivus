@@ -7,9 +7,11 @@ import MyProfile from './pages/MyProfile/MyProfile';
 import Admin from './pages/Admin/Admin';
 import ProtectedRoute from './Components/ProtectedRoute';
 import AdminUsers from './pages/AdminUsers/AdminUsers';
-import HealthPanel from './pages/HealthPanel/HealthPanel';
 import ProgressSection from "./pages/Progress/Progress";
 import Calories from "./pages/Calories/Calories";
+import Products from "./pages/Products/Products";
+import MealsSection from "./Components/MealsSection/MealsSection";
+
 
 
 function App() {
@@ -18,6 +20,24 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+
+          <Route
+            path="/products"
+            element={
+              <ProtectedRoute>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/meals"
+            element={
+              <ProtectedRoute>
+                <MealsSection />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/progress"
@@ -74,12 +94,6 @@ function App() {
           path="/register"
           element={<Register />}
         />
-
-        <Route
-          path="/health"
-          element={<HealthPanel />}
-        />
-
 
       </Routes>
     </Router >

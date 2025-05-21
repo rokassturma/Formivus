@@ -96,9 +96,9 @@ export default function Header() {
                                 <span className={styles.dropdownTitle}>Health Panel ▾</span>
                                 <div className={styles.dropdownContent}>
                                     <Link to="/progress">Progress</Link>
-                                    <NavLink to="/calories">My Calories</NavLink>
-                                    <NavLink to="/health?section=products">Products</NavLink>
-                                    <NavLink to="/health?section=meals">Meals Tracker</NavLink>
+                                    <Link to="/calories">My Calories</Link>
+                                    <Link to="/products">Products</Link>
+                                    <Link to="/meals">Meals Tracker</Link>
                                 </div>
                             </div>
 
