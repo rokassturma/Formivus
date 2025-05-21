@@ -131,12 +131,6 @@ export default function CaloriesSection() {
                     </div>
                 )}
             </div>
-
-            {/* 3. Progreso sekimas */}
-            <div className={styles.block}>
-                <h2>Progress Tracker</h2>
-                <p>Weight change compared to your initial profile.</p>
-            </div>
         </section>
     );
 }

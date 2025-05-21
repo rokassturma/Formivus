@@ -21,8 +21,10 @@ router.get("/", verifyToken, (req, res) => {
 
 router.post("/", verifyToken, (req, res) => {
   const userId = req.user.id;
-  const isAdmin = req.user.is_admin ? 1 : 0;
-  const isApproved = isAdmin ? 1 : 0;
+  const role = req.user.role;
+
+  const isAdmin = role === 'admin' ? 1 : 0;
+  const isApproved = role === 'admin' ? 1 : 0;
 
   const { name, proteins, carbs, fats, calories } = req.body;
 
@@ -46,6 +48,7 @@ router.post("/", verifyToken, (req, res) => {
 });
 
 
+
 router.get("/pending", verifyToken, (req, res) => {
   if (!req.user.is_admin) {
     return res.status(403).json({ message: "Unauthorized" });
@@ -65,27 +68,30 @@ router.get("/pending", verifyToken, (req, res) => {
 
 
 router.put("/:id/approve", verifyToken, (req, res) => {
-  if (!req.user.is_admin) {
+  if (req.user.role !== 'admin') {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
   const productId = req.params.id;
+  const { action } = req.body;
 
-  const query = `
-    UPDATE products
-    SET is_approved = 1
-    WHERE id = ?
-  `;
+  let isApproved = null;
+  if (action === "approve") isApproved = 1;
+  else if (action === "reject") isApproved = 2;
+  else return res.status(400).json({ message: "Invalid action" });
 
-  db.query(query, [productId], (err) => {
-    if (err) return res.status(500).json({ message: "Approval error" });
-    return res.status(200).json({ message: "Product approved" });
+  const query = `UPDATE products SET is_approved = ? WHERE id = ?`;
+
+  db.query(query, [isApproved, productId], (err) => {
+    if (err) return res.status(500).json({ message: "Action error" });
+    return res.status(200).json({ message: "Product status updated" });
   });
 });
 
 
+
 router.delete("/:id", verifyToken, (req, res) => {
-  if (!req.user.is_admin) {
+  if (req.user.role !== 'admin') {
     return res.status(403).json({ message: "Unauthorized" });
   }
 

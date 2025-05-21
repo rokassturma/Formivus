@@ -79,7 +79,13 @@ export default function ProductForm({ onSuccess }) {
                 <input type="number" name="fats" placeholder="Fats (g)" value={form.fats} onChange={handleChange} required />
                 <input type="number" name="calories" placeholder="Calories (kcal)" value={form.calories} onChange={handleChange} required />
 
-                <button type="submit" className="btn-primary">Submit</button>
+                <button
+                    type="submit"
+                    className={`${styles['btn-submit-product']} ${styles['btn-submit-size']}`}
+                >
+                    Submit Product
+                </button>
+
             </form>
         </>
     );
