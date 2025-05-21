@@ -30,7 +30,7 @@ app.use('/api', adminRoutes);
 app.use("/api", measurementsRoutes);
 app.use("/api", mealItemsRoutes);
 app.use("/api", mealsRoutes);
-app.use("/api", productsRoutes);
+app.use("/api/products", productsRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/calorie-goals", calorieGoalsRoutes);
 

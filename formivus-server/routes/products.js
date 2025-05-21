@@ -4,7 +4,8 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/products", verifyToken, (req, res) => {
+
+router.get("/", verifyToken, (req, res) => {
   const query = `
     SELECT * FROM products
     WHERE is_approved = 1
@@ -17,8 +18,12 @@ router.get("/products", verifyToken, (req, res) => {
   });
 });
 
-router.post("/products", verifyToken, (req, res) => {
+
+router.post("/", verifyToken, (req, res) => {
   const userId = req.user.id;
+  const isAdmin = req.user.is_admin ? 1 : 0;
+  const isApproved = isAdmin ? 1 : 0;
+
   const { name, proteins, carbs, fats, calories } = req.body;
 
   if (!name || !proteins || !carbs || !fats || !calories) {
@@ -27,16 +32,21 @@ router.post("/products", verifyToken, (req, res) => {
 
   const query = `
     INSERT INTO products (name, proteins, carbs, fats, calories, created_by, is_approved, is_admin)
-    VALUES (?, ?, ?, ?, ?, ?, 0, 0)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  db.query(query, [name, proteins, carbs, fats, calories, userId], (err) => {
-    if (err) return res.status(500).json({ message: "Insert error" });
-    return res.status(200).json({ message: "Product submitted for review" });
-  });
+  db.query(
+    query,
+    [name, proteins, carbs, fats, calories, userId, isApproved, isAdmin],
+    (err) => {
+      if (err) return res.status(500).json({ message: "Insert error" });
+      return res.status(200).json({ message: "Product submitted" });
+    }
+  );
 });
 
-router.get("/products/pending", verifyToken, (req, res) => {
+
+router.get("/pending", verifyToken, (req, res) => {
   if (!req.user.is_admin) {
     return res.status(403).json({ message: "Unauthorized" });
   }
@@ -53,7 +63,8 @@ router.get("/products/pending", verifyToken, (req, res) => {
   });
 });
 
-router.put("/products/:id/approve", verifyToken, (req, res) => {
+
+router.put("/:id/approve", verifyToken, (req, res) => {
   if (!req.user.is_admin) {
     return res.status(403).json({ message: "Unauthorized" });
   }
@@ -72,7 +83,8 @@ router.put("/products/:id/approve", verifyToken, (req, res) => {
   });
 });
 
-router.delete("/products/:id", verifyToken, (req, res) => {
+
+router.delete("/:id", verifyToken, (req, res) => {
   if (!req.user.is_admin) {
     return res.status(403).json({ message: "Unauthorized" });
   }
@@ -84,6 +96,22 @@ router.delete("/products/:id", verifyToken, (req, res) => {
   db.query(query, [productId], (err) => {
     if (err) return res.status(500).json({ message: "Delete error" });
     return res.status(200).json({ message: "Product deleted" });
+  });
+});
+
+
+router.get("/submitted", verifyToken, (req, res) => {
+  const userId = req.user.id;
+
+  const query = `
+    SELECT * FROM products
+    WHERE created_by = ?
+    ORDER BY is_approved ASC, name
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error" });
+    return res.status(200).json(results);
   });
 });
 
