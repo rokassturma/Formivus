@@ -13,8 +13,12 @@ export default function MyProfile() {
     const [profile, setProfile] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [notification, setNotification] = useState({ text: '', type: '' });
+    const [isLoading, setIsLoading] = useState(true);
+
 
     const getProfile = () => {
+        setIsLoading(true);
+
         axios.get('http://localhost:5000/api/profile', { withCredentials: true })
             .then(res => {
                 setProfile(res.data);
@@ -22,16 +26,16 @@ export default function MyProfile() {
             .catch(err => {
                 setProfile(null);
                 const msg = err.response?.data?.message || 'Failed to load a profile.';
-
                 setNotification({ text: msg, type: 'error' });
-                setTimeout(() => {
-                    setNotification((prev) => ({ ...prev, fading: true }));
-                }, 2500);
-                setTimeout(() => {
-                    setNotification({ text: '', type: '' });
-                }, 3000);
+
+                setTimeout(() => setNotification((prev) => ({ ...prev, fading: true })), 2500);
+                setTimeout(() => setNotification({ text: '', type: '' }), 3000);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
+
 
 
     useEffect(() => {
@@ -93,8 +97,7 @@ export default function MyProfile() {
                 </section>
 
                 <section className={styles.right}>
-
-                    {(!profile || isEditing) && (
+                    {!isLoading && (!profile || isEditing) && (
                         <ProfileForm
                             profileData={profile}
                             onProfileSaved={() => {
@@ -103,11 +106,9 @@ export default function MyProfile() {
                             }}
                             showMessage={(text, type = 'success') => {
                                 setNotification({ text, type });
-
                                 setTimeout(() => {
                                     setNotification((prev) => ({ ...prev, fading: true }));
                                 }, 2500);
-
                                 setTimeout(() => {
                                     setNotification({ text: '', type: '' });
                                 }, 3000);
