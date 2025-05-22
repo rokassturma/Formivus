@@ -10,7 +10,28 @@
     h1 {
         margin: 4rem 0 2rem;
     }
-    
+
+    .searchWrapper {
+        margin: 3rem 0 1rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .searchInput {
+        padding: 8px 14px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 18px;
+        outline: none;
+        transition: all 0.2s ease;
+
+        &:focus {
+            border-color: #00afb5;
+            box-shadow: 0 0 0 2px rgba(0, 175, 181, 0.2);
+        }
+    }
+
+
 }
 
 .productsTable {
@@ -25,7 +46,7 @@
         border: 1px solid #ddd;
         padding: 0.75rem;
         text-align: center;
-        
+
     }
 
     th {
