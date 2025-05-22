@@ -50,7 +50,7 @@ router.post("/", verifyToken, (req, res) => {
 
 
 router.get("/pending", verifyToken, (req, res) => {
-  if (!req.user.is_admin) {
+  if (req.user.role !== 'admin') {
     return res.status(403).json({ message: "Unauthorized" });
   }
 

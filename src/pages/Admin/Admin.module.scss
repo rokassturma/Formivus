@@ -1,0 +1,52 @@
+@use '../../styles/variables.scss' as *;
+
+.profileText {
+    margin-left: 0.5rem;
+    font-weight: 500;
+}
+
+.adminWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.adminSection {
+    background-color: $white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+}
+
+.adminSection h1 {
+    margin-bottom: 3rem;
+    font-weight: 600;
+    color: $username-color;
+}
+
+.adminSection p {
+    color: $text-gray;
+    margin-bottom: 1.5rem;
+}
+
+.adminTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 0.6rem 1rem;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    th {
+        background-color: $text-gray;
+    }
+
+    td:last-child {
+        display: flex;
+        gap: 0.5rem;
+    }
+}
