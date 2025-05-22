@@ -74,7 +74,7 @@ export default function AdminProductsSuggestions() {
                             <th>Carbs</th>
                             <th>Fats</th>
                             <th>Calories</th>
-                            <th>Actions</th>
+                            <th className={styles.actions}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,8 +86,20 @@ export default function AdminProductsSuggestions() {
                                 <td>{p.fats}</td>
                                 <td>{p.calories}</td>
                                 <td>
-                                    <button onClick={() => handleAction(p.id, 'approve')} className="btn-smalll btn-green">✅</button>
-                                    <button onClick={() => handleAction(p.id, 'reject')} className="btn-smalll btn-red">❌</button>
+                                    <div className={styles.actionButtons}>
+                                        <button
+                                            className={styles['btn-approve']}
+                                            onClick={() => handleAction(p.id, 'approve')}
+                                        >
+                                            Approve
+                                        </button>
+                                        <button
+                                            className={styles['btn-reject']}
+                                            onClick={() => handleAction(p.id, 'reject')}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

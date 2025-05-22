@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './MySubmittedProducts.module.scss';
-import { AuthContext } from '../../../context/AuthContext';
+
 
 export default function MySubmittedProducts({ refresh }) {
 
-    const { currentUser } = useContext(AuthContext);
+
 
     const [products, setProducts] = useState([]);
 
@@ -30,18 +30,18 @@ export default function MySubmittedProducts({ refresh }) {
         return 'Rejected';
     };
 
-    const handleAction = async (id, action) => {
+    const handleHide = async (id) => {
         try {
-            await axios.put(
-                `http://localhost:5000/api/products/${id}/approve`,
-                { action },
-                { withCredentials: true }
-            );
-            fetch();
+            await axios.post(`http://localhost:5000/api/products/hide/${id}`, {}, {
+                withCredentials: true
+            });
+            setProducts(prev => prev.filter(p => p.id !== id));
         } catch (err) {
-            console.error('Action failed:', err);
+            console.error('Hide failed:', err);
         }
     };
+
+
 
     return (
         <div className={styles.submittedBox}>
@@ -58,13 +58,7 @@ export default function MySubmittedProducts({ refresh }) {
                             <th>Fats</th>
                             <th>Calories</th>
                             <th>Status</th>
-                           {/*  {
-                                currentUser?.role === 'admin' && (
-                                    <>
-                                        <th>Action</th>
-                                    </>
-
-                                )} */}
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,24 +72,13 @@ export default function MySubmittedProducts({ refresh }) {
                                 <td className={styles[`status${getStatus(p)}`]}>
                                     {getStatus(p)}
                                 </td>
-                               {/*  <td>
-                                    {getStatus(p) === 'Pending' && currentUser?.role === 'admin' && (
-                                        <>
-                                            <button
-                                                className="btn-smalll btn-green"
-                                                onClick={() => handleAction(p.id, 'approve')}
-                                            >
-                                                ✅
-                                            </button>
-                                            <button
-                                                className="btn-smalll btn-red"
-                                                onClick={() => handleAction(p.id, 'reject')}
-                                            >
-                                                ❌
-                                            </button>
-                                        </>
+                                <td>
+                                    {(p.is_approved === 1 || p.is_approved === 2) && (
+                                        <button onClick={() => handleHide(p.id)} className={styles['btn-hide']}>
+                                            Hide
+                                        </button>
                                     )}
-                                </td> */}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

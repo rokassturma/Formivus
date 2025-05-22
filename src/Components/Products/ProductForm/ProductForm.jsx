@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './ProductForm.module.scss';
 import NotificationMessage from '../../NotificationMessage/NotificationMessage';
@@ -18,6 +18,28 @@ export default function ProductForm({ onSuccess }) {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    useEffect(() => {
+        const { proteins, carbs, fats } = form;
+
+        const p = parseFloat(proteins);
+        const c = parseFloat(carbs);
+        const f = parseFloat(fats);
+
+        if (!isNaN(p) && !isNaN(c) && !isNaN(f)) {
+            const totalCalories = (p * 4) + (c * 4) + (f * 9);
+            setForm(prev => ({
+                ...prev,
+                calories: totalCalories.toFixed(0)
+            }));
+        } else {
+            setForm(prev => ({
+                ...prev,
+                calories: ''
+            }));
+        }
+    }, [form.proteins, form.carbs, form.fats]);
+
+
     const handleSubmit = async e => {
         e.preventDefault();
 
@@ -33,9 +55,15 @@ export default function ProductForm({ onSuccess }) {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/products', form, {
+            const formattedForm = {
+                ...form,
+                name: capitalizeFirstWordOnly(name)
+            };
+
+            await axios.post('http://localhost:5000/api/products', formattedForm, {
                 withCredentials: true
             });
+
             setForm({
                 name: '',
                 proteins: '',
@@ -62,6 +90,12 @@ export default function ProductForm({ onSuccess }) {
         }
     };
 
+
+    const capitalizeFirstWordOnly = str => {
+        const trimmed = str.trim().toLowerCase();
+        return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    };
+
     return (
         <>
             {notification && (
@@ -77,7 +111,7 @@ export default function ProductForm({ onSuccess }) {
                 <input type="number" name="proteins" placeholder="Proteins (g)" value={form.proteins} onChange={handleChange} required />
                 <input type="number" name="carbs" placeholder="Carbs (g)" value={form.carbs} onChange={handleChange} required />
                 <input type="number" name="fats" placeholder="Fats (g)" value={form.fats} onChange={handleChange} required />
-                <input type="number" name="calories" placeholder="Calories (kcal)" value={form.calories} onChange={handleChange} required />
+                <input type="number" name="calories" placeholder="Calories (kcal)" value={form.calories} onChange={handleChange} readOnly />
 
                 <button
                     type="submit"

@@ -68,7 +68,21 @@ export default function Products() {
 
             <div className="main-wrapper">
                 <section className={styles.productsBox}>
+
+                    <ProductForm
+                        onSuccess={() => {
+                            setRefresh(!refresh);
+                            setRefreshSubmitted(!refreshSubmitted);
+                        }}
+                    />
+
+                    <MySubmittedProducts refresh={refreshSubmitted} />
+
                     <h1>Available Products</h1>
+                    <p>Please take a note that all the values for proteins, carbs and fats are
+                        given by <strong>100g / 100 ml</strong> of the product.
+                    </p>
+
 
                     <table className={styles.productsTable}>
                         <thead>
@@ -103,17 +117,6 @@ export default function Products() {
                             ))}
                         </tbody>
                     </table>
-
-
-                    <ProductForm
-                        onSuccess={() => {
-                            setRefresh(!refresh);
-                            setRefreshSubmitted(!refreshSubmitted);
-                        }}
-                    />
-
-                    <MySubmittedProducts refresh={refreshSubmitted} />
-
                 </section>
             </div>
 

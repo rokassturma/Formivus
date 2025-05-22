@@ -13,4 +13,56 @@
         text-align: left;
         border-bottom: 1px solid #ccc;
     }
+
+    th.actions {
+        text-align: center;
+    }
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+
+    .btn-approve,
+    .btn-reject {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transform: scale(1);
+    }
+
+    .btn-approve {
+        background-color: #00c853;
+        color: #fff;
+
+        &:hover {
+            background-color: #00b344;
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.97);
+        }
+    }
+
+    .btn-reject {
+        background-color: #d32f2f;
+        color: #fff;
+
+        &:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
+
+        &:active {
+            transform: scale(0.97);
+        }
+    }
 }

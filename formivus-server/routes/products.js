@@ -110,14 +110,31 @@ router.get("/submitted", verifyToken, (req, res) => {
   const userId = req.user.id;
 
   const query = `
-    SELECT * FROM products
-    WHERE created_by = ?
-    ORDER BY is_approved ASC, name
+    SELECT p.*
+    FROM products p
+    LEFT JOIN user_hidden_products h ON h.product_id = p.id AND h.user_id = ?
+    WHERE p.created_by = ? AND h.id IS NULL
+    ORDER BY p.is_approved ASC, p.name
   `;
 
-  db.query(query, [userId], (err, results) => {
+  db.query(query, [userId, userId], (err, results) => {
     if (err) return res.status(500).json({ message: "Database error" });
     return res.status(200).json(results);
+  });
+});
+
+router.post("/hide/:id", verifyToken, (req, res) => {
+  const userId = req.user.id;
+  const productId = req.params.id;
+
+  const query = `
+    INSERT INTO user_hidden_products (user_id, product_id)
+    VALUES (?, ?)
+  `;
+
+  db.query(query, [userId, productId], (err) => {
+    if (err) return res.status(500).json({ message: "Hide error" });
+    return res.status(200).json({ message: "Product hidden from submissions" });
   });
 });
 
