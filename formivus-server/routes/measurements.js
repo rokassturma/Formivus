@@ -22,7 +22,7 @@ router.post("/measurements", verifyToken, (req, res) => {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-
+    
     db.query(
         query,
         [userId, date, chest_cm, bicep_cm, waist_narrow_cm, waist_wide_cm, hips_cm, leg_cm, weight_kg],
