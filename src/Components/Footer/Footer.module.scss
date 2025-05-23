@@ -1,10 +1,9 @@
 @use '../../styles/variables' as *;
-@use "sass:color";
 
 .footer {
     background-color: #f3ecaa;
     color: $text-dark;
-    padding: 60px 20px 30px;
+    padding: 2rem 1rem 1rem 1rem;
     font-family: $font-family-base;
     width: 100%;
 
@@ -12,31 +11,58 @@
         max-width: 1400px;
         margin: 0 auto;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        text-align: center;
+        justify-content: space-between;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding-bottom: 1rem;
+    }
 
-        .logo {
-            h2 {
-                font-size: 1.8rem;
-                margin-bottom: 8px;
-            }
+    .column {
+        min-width: 220px;
 
-            p {
-                font-size: 1rem;
-                opacity: 0.9;
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+                margin-bottom: 0.3rem;
+
+                a {
+                    text-decoration: none;
+                    color: $text-dark;
+                    font-size: 0.95rem;
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
             }
         }
 
-        .links {
+        .social {
             display: flex;
-            gap: 20px;
+            gap: 1rem;
+            margin-top: 0.5rem;
 
             a {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
                 color: $text-dark;
-                transition: color 0.3s;
 
                 &:hover {
                     color: $primary-color;
@@ -46,9 +72,23 @@
     }
 
     .bottom {
-        margin-top: 30px;
         text-align: center;
         font-size: 0.9rem;
         opacity: 0.8;
+        border-top: 1px solid $gray-light;
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 950px) {
+    .footerContent {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .column {
+            text-align: center;
+        }
     }
 }

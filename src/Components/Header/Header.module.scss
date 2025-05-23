@@ -1,5 +1,4 @@
 @use "../../styles/variables" as *;
-@use "sass:color";
 
 .header {
     background: $background-light;
@@ -14,106 +13,148 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 2rem;
-        max-width: 1600px;
+        max-width: 1400px;
         margin: 0 auto;
+    }
 
-        .left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+    .left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+
+        .logo img {
+            height: 50px;
+            display: block;
         }
 
-        .right {
+        .hamburger {
+            font-size: 1.8rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: $primary-color;
+            display: none;
+            
+
+            @media (max-width: 950px) {
+                display: block;
+            }
+        }
+
+        .navLeft {
             display: flex;
-            align-items: center;
             gap: 1rem;
 
-            .btn {
-                padding: 0.5rem 1rem;
-            }
-
-            .username {
-                color: $username-color;
-                font-weight: bold;
-                font-style: italic;
-                margin-right: 1rem;
-            }
-
-            .usernameInline {
-                color: $primary-color;
+            .navLink {
                 font-weight: 600;
-            }
+                color: $primary-color;
+                text-decoration: none;
 
-            .profileText {
-                color: $text-dark;
-                font-style: normal;
-                font-weight: 500;
-                margin-left: 0.5rem;
-            }
-
-            .dropdown {
-                position: relative;
-                display: inline-block;
-
-                &:hover .dropdownContent {
-                    display: block;
+                &:hover {
+                    color: $primary-hover;
                 }
+            }
+        }
+    }
 
-                .dropdownTitle {
-                    cursor: pointer;
-                    font-weight: bold;
-                    padding: 0.5rem 1rem;
+    .right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+        justify-content: flex-end;
+
+        .navLink {
+            font-weight: 600;
+            color: $primary-color;
+            text-decoration: none;
+
+            &:hover {
+                color: $primary-hover;
+            }
+        }
+
+        .usernameInline {
+            color: $primary-color;
+            font-weight: 600;
+        }
+
+        .profileText {
+            color: $text-dark;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .dropdown {
+            position: relative;
+
+            &:hover .dropdownContent {
+                display: block;
+            }
+
+            .dropdownTitle {
+                cursor: pointer;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                color: $text-dark;
+
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+
+            .dropdownContent {
+                display: none;
+                position: absolute;
+                background-color: $white;
+                border: 1px solid $border-color;
+                min-width: 180px;
+                z-index: 1000;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                a {
+                    display: block;
+                    padding: 0.75rem 1rem;
+                    text-decoration: none;
                     color: $text-dark;
 
                     &:hover {
-                        color: $primary-color;
+                        background-color: #f0f0f0;
                     }
                 }
+            }
+        }
 
-                .dropdownContent {
-                    display: none;
-                    position: absolute;
-                    background-color: white;
-                    border: 1px solid $border-color;
-                    min-width: 180px;
-                    z-index: 1000;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .logout {
+            margin-left: 1rem;
+        }
+    }
 
-                    a {
-                        display: block;
-                        padding: 0.75rem 1rem;
-                        text-decoration: none;
-                        color: $text-dark;
+    .mobileMenu {
+        display: flex;
+        flex-direction: column;
+        background-color: $white;
+        padding: 1rem 2rem;
+        gap: 1rem;
 
-                        &:hover {
-                            background-color: #f0f0f0;
-                        }
-                    }
-                }
+        a {
+            font-size: 1rem;
+            font-weight: 600;
+            color: $primary-color;
+            text-decoration: none;
+
+            &:hover {
+                color: $primary-hover;
             }
         }
     }
 }
 
-.navLink {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    min-width: 110px;
-    padding: 0 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: $primary-color;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-    border-bottom: 2px solid transparent;
+@media (max-width: 950px) {
 
-    &--active {
-        border-bottom: 2px solid $primary-color;
-    }
-
-    &:hover {
-        color: $primary-hover;
+    .right,
+    .left .navLeft {
+        display: none;
     }
 }

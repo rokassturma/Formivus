@@ -103,6 +103,15 @@
                 perspective: 1000px;
                 cursor: pointer;
 
+
+                @media (max-width: 950px) {
+                    width: 80%;
+                }
+
+                @media (max-width: 600px) {
+                    width: 100%;
+                }
+
                 &:hover .flipInner {
                     transform: rotateY(180deg);
                 }
@@ -130,7 +139,7 @@
                     }
 
                     .flipFront {
-                        background-color: $success-color;
+                        background-color: #63cf87;
                         color: $text-dark;
                     }
 
