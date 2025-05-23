@@ -5,6 +5,7 @@ import NotificationMessage from '../../Components/NotificationMessage/Notificati
 import { useLocation } from 'react-router-dom';
 
 
+
 export default function CaloriesSection() {
     const [profile, setProfile] = useState(null);
     const [progress, setProgress] = useState(null);
@@ -230,9 +231,9 @@ export default function CaloriesSection() {
 
                 <h2>Daily Calorie Needs</h2>
                 <p>Based on your profile and progress data, we estimate your maintenance calories to be:</p>
-                <p className={styles.mainValue}>
+                <span className={styles.mainValue}>
                     {profile && latestWeight ? `${calculateCalories(profile, goalType)} kcal/day` : 'Loading...'}
-                </p>
+                </span>
             </div>
 
             <div className={styles.block}>

@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import Spinner from '../Spinner/Spinner';
-
+import logo from '../../assets/images/logo.svg';
 
 
 export default function Header() {
@@ -51,7 +51,7 @@ export default function Header() {
             <div className={`main-wrapper ${styles.headerInner}`}>
                 <div className={styles.left}>
                     <NavLink to="/" className={styles.logo}>
-                        Formivus
+                        <img src={logo} alt="formivus logo" />
                     </NavLink>
 
                     {isAdmin &&
