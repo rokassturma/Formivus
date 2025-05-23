@@ -16,7 +16,7 @@ export default function Header() {
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 950);
-        handleResize(); // paleidžiam iškart
+        handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -65,49 +65,70 @@ export default function Header() {
                     )}
                 </div>
 
-                {!isMobile && currentUser && (
-                    <div className={styles.right}>
-                        <div className={styles.dropdown}>
-                            <span className={styles.dropdownTitle}>Health Panel ▾</span>
-                            <div className={styles.dropdownContent}>
-                                <Link to="/progress">Progress</Link>
-                                <Link to="/calories">My Calories</Link>
-                                <Link to="/products">Products</Link>
-                                <Link to="/meals">Meals Tracker</Link>
+                <div className={styles.right}>
+                    {!isMobile && currentUser && (
+                        <>
+                            <div className={styles.dropdown}>
+                                <span className={styles.dropdownTitle}>Health Panel ▾</span>
+                                <div className={styles.dropdownContent}>
+                                    <Link to="/progress">Progress</Link>
+                                    <Link to="/calories">My Calories</Link>
+                                    <Link to="/products">Products</Link>
+                                    <Link to="/meals">Meals Tracker</Link>
+                                </div>
                             </div>
-                        </div>
 
-                        <NavLink to="/my-profile" className={styles.navLink}>
-                            <span className={styles.usernameInline}>{currentUser.username}</span>
-                            <span className={styles.profileText}> Profile</span>
-                        </NavLink>
+                            <NavLink to="/my-profile" className={styles.navLink}>
+                                <span className={styles.usernameInline}>{currentUser.username}</span>
+                                <span className={styles.profileText}> Profile</span>
+                            </NavLink>
+                        </>
+                    )}
 
+                    {!isMobile && !currentUser && (
+                        <>
+                            <NavLink to="/login" className="btn-primary">Login</NavLink>
+                            <NavLink to="/register" className="btn-primary">Register</NavLink>
+                        </>
+                    )}
+
+                    {currentUser && (
                         <div className={styles.logout}>
                             {loggingOut ? <Spinner /> : (
                                 <button onClick={handleLogout} className="btn-primary">Logout</button>
                             )}
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-
-
 
             {isMobile && menuOpen && (
                 <div className={styles.mobileMenu}>
-                    {isAdmin && (
+                    {!currentUser && (
                         <>
-                            <NavLink to="/admin" onClick={() => setMenuOpen(false)}>Admin Panel</NavLink>
-                            <NavLink to="/admin/users" onClick={() => setMenuOpen(false)}>All Users</NavLink>
+                            <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login</NavLink>
+                            <NavLink to="/register" onClick={() => setMenuOpen(false)}>Register</NavLink>
                         </>
                     )}
-                    <Link to="/progress" onClick={() => setMenuOpen(false)}>Progress</Link>
-                    <Link to="/calories" onClick={() => setMenuOpen(false)}>My Calories</Link>
-                    <Link to="/products" onClick={() => setMenuOpen(false)}>Products</Link>
-                    <Link to="/meals" onClick={() => setMenuOpen(false)}>Meals Tracker</Link>
-                    <NavLink to="/my-profile" onClick={() => setMenuOpen(false)}>
-                        {currentUser?.username} Profile
-                    </NavLink>
+
+                    {currentUser && (
+                        <>
+                            {isAdmin && (
+                                <>
+                                    <NavLink to="/admin" onClick={() => setMenuOpen(false)}>Admin Panel</NavLink>
+                                    <NavLink to="/admin/users" onClick={() => setMenuOpen(false)}>All Users</NavLink>
+                                </>
+                            )}
+                            <Link to="/progress" onClick={() => setMenuOpen(false)}>Progress</Link>
+                            <Link to="/calories" onClick={() => setMenuOpen(false)}>My Calories</Link>
+                            <Link to="/products" onClick={() => setMenuOpen(false)}>Products</Link>
+                            <Link to="/meals" onClick={() => setMenuOpen(false)}>Meals Tracker</Link>
+                            <NavLink to="/my-profile" onClick={() => setMenuOpen(false)}>
+                                {currentUser?.username} Profile
+                            </NavLink>
+                            <button onClick={handleLogout} className="btn-primary">Logout</button>
+                        </>
+                    )}
                 </div>
             )}
         </header>
