@@ -11,7 +11,8 @@ export default function CaloriesSection() {
     const [goalWeight, setGoalWeight] = useState('');
     const [savedGoal, setSavedGoal] = useState(null);
     const [notification, setNotification] = useState({ text: '', type: '', fading: false });
-
+    const latestWeight = progress && progress.length > 0 ? progress[progress.length - 1].weight_kg : null;
+    const initialWeight = progress && progress.length > 0 ? progress[0].weight_kg : null;
     const location = useLocation();
 
 
@@ -35,6 +36,10 @@ export default function CaloriesSection() {
         fetchData();
     }, [location.pathname]);
 
+    console.log("Profile:", profile);
+    console.log("Latest weight from progress:", latestWeight);
+
+
     function showMessage(text, type = 'error') {
         setNotification({ text, type, fading: false });
 
@@ -46,10 +51,6 @@ export default function CaloriesSection() {
             setNotification({ text: '', type: '', fading: false });
         }, 5000);
     }
-
-    const latestWeight = progress && progress.length > 0 ? progress[progress.length - 1].weight_kg : null;
-    const initialWeight = progress && progress.length > 0 ? progress[0].weight_kg : null;
-
 
     let progressPercent = 0;
     if (savedGoal && latestWeight && initialWeight) {
@@ -79,6 +80,38 @@ export default function CaloriesSection() {
         }
     };
 
+
+    function calculateCalories(profile, latestWeight) {
+        const gender = profile.gender;
+        const height = Number(profile.height);
+        const age = Number(profile.age);
+        const weight = Number(latestWeight);
+        const activity_level = profile.activity_level;
+
+        if (!gender || !height || !age || !activity_level || !weight) return '...';
+
+        let bmr;
+        if (gender === 'male') {
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+        } else {
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+        }
+
+        const activityMultipliers = {
+            'sedentary': 1.2,
+            'light': 1.375,
+            'moderate': 1.55,
+            'active': 1.725,
+            'very active': 1.9
+        };
+
+        const multiplier = activityMultipliers[activity_level] || 1.2;
+
+        return Math.round(bmr * multiplier);
+    }
+
+
+
     return (
         <section className={styles.caloriesSection}>
             {notification.text && (
@@ -93,16 +126,14 @@ export default function CaloriesSection() {
 
             <h1>My Calories</h1>
 
-            {/* 1. Info / BMR skaičiavimas */}
             <div className={styles.block}>
                 <h2>Daily Calorie Needs</h2>
                 <p>Based on your profile data, we estimate your maintenance calories to be:</p>
                 <p className={styles.mainValue}>
-                    {profile ? `${calculateCalories(profile)} kcal/day` : 'Loading...'}
+                    {profile && latestWeight ? `${calculateCalories(profile, latestWeight)} kcal/day` : '... kcal/day'}
                 </p>
             </div>
 
-            {/* 2. Tikslas */}
             <div className={styles.block}>
                 <h2>Your Goal</h2>
                 <p>Set your target weight and track your progress.</p>
@@ -133,15 +164,4 @@ export default function CaloriesSection() {
             </div>
         </section>
     );
-}
-
-function calculateCalories(profile) {
-    const { gender, weight_kg, height_cm, age } = profile;
-    if (!gender || !weight_kg || !height_cm || !age) return '...';
-
-    if (gender === 'male') {
-        return Math.round(10 * weight_kg + 6.25 * height_cm - 5 * age + 5);
-    } else {
-        return Math.round(10 * weight_kg + 6.25 * height_cm - 5 * age - 161);
-    }
 }
