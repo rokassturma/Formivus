@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 import styles from "./ProgressChart.module.scss";
 
-
 Chart.register(
   LineElement,
   PointElement,
@@ -34,7 +33,9 @@ const measurementOptions = [
 const ProgressChart = ({ measurements }) => {
   const [selectedField, setSelectedField] = useState("waist_narrow_cm");
 
-  if (!measurements.length) return <p className={styles.noData}>Please enter measurements first to see the progress.</p>;
+  if (!measurements.length) {
+    return <p className={styles.noData}>Please enter measurements to see the chart.</p>;
+  }
 
   const sorted = [...measurements].sort(
     (a, b) => new Date(a.date) - new Date(b.date)
@@ -52,15 +53,14 @@ const ProgressChart = ({ measurements }) => {
       {
         label: measurementOptions.find(opt => opt.value === selectedField)?.label || "",
         data: sorted.map((m) => m[selectedField]),
-        borderColor: "#1976d2",
-        backgroundColor: "rgba(25, 118, 210, 0.2)",
+        borderColor: "#1e90ff",
+        backgroundColor: "rgba(30, 144, 255, 0.1)",
         fill: true,
         tension: 0.3,
         pointRadius: 5,
       },
     ],
   };
-
 
   const options = {
     responsive: true,
@@ -78,25 +78,26 @@ const ProgressChart = ({ measurements }) => {
   };
 
   return (
-    <main className="main-wrapper">
-      <section className={styles.chartBox}>
-        <div className={styles.header}>
-          <h2 className={styles.heading}>Progress Chart</h2>
-          <select
-            value={selectedField}
-            onChange={(e) => setSelectedField(e.target.value)}
-            className={styles.select}
-          >
-            {measurementOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
+    <section className={styles.chartCard}>
+      <div className={styles.header}>
+        <h2 className={styles.heading}>Progress Chart</h2>
+        <select
+          value={selectedField}
+          onChange={(e) => setSelectedField(e.target.value)}
+          className={styles.select}
+        >
+          {measurementOptions.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className={styles.chartWrapper}>
         <Line data={data} options={options} />
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

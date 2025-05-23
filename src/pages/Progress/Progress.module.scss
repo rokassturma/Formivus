@@ -1,39 +1,37 @@
-@use '../../styles/variables' as *;
+@use "../../styles/variables" as *;
 
-.progressWrapper {
+.progressPage {
+    font-family: $font-family-base;
+    color: $text-dark;
     padding: 2rem;
+    margin: auto;
+    border-radius: 12px;
+    
+}
 
-    h1 {
-        text-align: center;
-        margin-bottom: 1rem;
-        color: $text-dark;
-    }
+.card {
+    background-color: $white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    margin: 0rem auto;
+    text-align: center;
+}
 
-    .description {
-        text-align: center;
-        color: $text-dark;
-        margin-bottom: 2rem;
-        font-size: 1rem;
-    }
+.heading {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #004777;
+}
 
-    .formAndTableWrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-top: 2rem;
-    }
+.description {
+    font-size: 1rem;
+    color: $text-gray;
+    margin-bottom: 1.5rem;
+}
 
-    .formAndTableWrapper :global(.formBox),
-    .formAndTableWrapper :global(.tableWrapper) {
-        flex: 1 1 400px;
-        max-width: 100%;
-    }
-
-    @media (max-width: 768px) {
-        .formAndTableWrapper {
-            flex-direction: column;
-        }
-    }
+.verticalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }

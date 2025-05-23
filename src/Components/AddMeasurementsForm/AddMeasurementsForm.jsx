@@ -19,7 +19,6 @@ export default function AddMeasurementsForm({ onSuccess }) {
     const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState({ text: "", type: "", fading: false });
 
-
     function showMessage(text, type = "error") {
         setNotification({ text, type, fading: false });
 
@@ -70,7 +69,7 @@ export default function AddMeasurementsForm({ onSuccess }) {
     };
 
     return (
-        <main className={`main-wrapper ${styles.formContainer}`}>
+        <div className={styles.formContainer}>
             {notification.text && (
                 <div className="notificationWrapper">
                     <NotificationMessage
@@ -81,13 +80,15 @@ export default function AddMeasurementsForm({ onSuccess }) {
                 </div>
             )}
 
-            <section className={styles.formBox}>
-                <h1>New Measurement</h1>
+            <h2 className={styles.heading}>Add New Measurement</h2>
 
-                {isLoading ? <Spinner /> : (
-                    <form className={styles.form} onSubmit={handleSubmit}>
+            {isLoading ? (
+                <Spinner />
+            ) : (
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.gridWrapper}>
                         <div className={styles.formGroup}>
-                            <label>Date:</label>
+                            <label>Date</label>
                             <input
                                 type="date"
                                 name="date"
@@ -97,27 +98,39 @@ export default function AddMeasurementsForm({ onSuccess }) {
                             />
                         </div>
 
-                        {["chest_cm", "bicep_cm", "waist_narrow_cm", "waist_wide_cm", "hips_cm", "leg_cm", "weight_kg"].map((field) => (
+                        <div className={styles.formGroup}>
+                            <label>Weight (kg)</label>
+                            <input
+                                type="number"
+                                name="weight_kg"
+                                value={formData.weight_kg}
+                                onChange={handleChange}
+                                required
+                                step="0.01"
+                            />
+                        </div>
+
+                        {["chest_cm", "bicep_cm", "waist_narrow_cm", "waist_wide_cm", "hips_cm", "leg_cm"].map((field) => (
                             <div className={styles.formGroup} key={field}>
                                 <label>{field.replace(/_/g, " ").replace("cm", "(cm)")}</label>
                                 <input
                                     type="number"
-                                    step="0.01"
                                     name={field}
                                     value={formData[field]}
                                     onChange={handleChange}
                                     required
-                                    className={styles.inputNumber}
+                                    step="0.01"
                                 />
                             </div>
                         ))}
+                    </div>
 
-                        <button type="submit" className="btn-primary">
-                            Save measurements
-                        </button>
-                    </form>
-                )}
-            </section>
-        </main>
+                    <button type="submit" className="btn-primary">
+                        Save Measurements
+                    </button>
+                </form>
+
+            )}
+        </div>
     );
 }

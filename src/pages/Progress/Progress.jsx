@@ -6,7 +6,6 @@ import ProgressChart from '../../Components/ProgressChart/ProgressChart';
 import styles from './Progress.module.scss';
 
 export default function ProgressSection() {
-
     const [measurements, setMeasurements] = useState([]);
 
     const fetchMeasurements = async () => {
@@ -35,19 +34,22 @@ export default function ProgressSection() {
         fetchMeasurements();
     }, []);
 
-
-
     return (
-        <div className={styles.progressWrapper}>
-            <h1>My Progress</h1>
-            <p className={styles.description}>Track your body measurements and visualize your progress over time.</p>
+        <main className='main-wrapper'>
+            <section className={styles.progressPage}>
+                <div className={styles.card}>
+                    <h1 className={styles.heading}>My Progress</h1>
+                    <p className={styles.description}>Track your body measurements and visualize your progress over time.</p>
 
-            <div className={styles.formAndTableWrapper}>
-                <AddMeasurementsForm onSuccess={fetchMeasurements} />
-                <MeasurementsTable measurements={measurements} onDelete={handleDelete} />
-            </div>
+                    <div className={styles.verticalContent}>
+                        <AddMeasurementsForm onSuccess={fetchMeasurements} />
+                        <MeasurementsTable measurements={measurements} onDelete={handleDelete} />
+                        <ProgressChart measurements={measurements} />
+                    </div>
+                </div>
+            </section>
+        </main>
+    );
 
-            <ProgressChart measurements={measurements} />
-        </div>
-    )
+
 }

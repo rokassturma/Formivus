@@ -1,54 +1,73 @@
-@use '../../styles/variables' as *;
+@use "../../styles/variables" as *;
 @use '../../styles/mixin' as *;
 
-.formBox {
-    background-color: #f4f4f4;
-    padding: 2rem;
-    border-radius: 0.75rem;
-    max-width: 700px;
-    margin: 0 auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.formContainer {
+    background-color: $table-color;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 
-    h1 {
-        text-align: center;
-        color: $text-dark;
-        margin-bottom: 1rem;
-    }
+.heading {
+    font-size: 1.5rem;
+    color: #004777;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
+}
+
+.doubleRow {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.multiInputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
 }
 
 .formGroup {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
 
     label {
-        flex: 1;
-        font-weight: 600;
+        font-weight: 500;
         color: $text-dark;
-        margin-right: 1rem;
+        margin-bottom: 0.25rem;
     }
 
     input {
-        flex: 2;
-        padding: 0.7rem;
+        padding: 0.5rem;
+        border-radius: 8px;
+        border: 1px solid $gray-light;
         font-size: 1rem;
-        border: 1px solid $border-color;
-        border-radius: 6px;
+        font-family: $font-family-base;
+        @include remove-number-arrows;
 
         &:focus {
-            outline: none;
             border-color: $primary-color;
+            outline: none;
         }
     }
+}
 
-    input[type="number"] {
-        @include remove-number-arrows;
+.gridWrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
     }
 }

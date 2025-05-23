@@ -1,21 +1,22 @@
 import styles from "./MeasurementsTable.module.scss";
-import axios from "axios";
 
 const MeasurementsTable = ({ measurements, onDelete }) => {
     if (!measurements.length) {
-        return <p className={styles.noData}>Please enter measurements first to see the progress.</p>;
+        return <p className={styles.noData}>Please enter measurements to see the progress.</p>;
     }
 
     return (
-        <div className={styles.tableWrapper}>
-            <table className={styles.measurementsTable}>
+        <div className={styles.tableContainer}>
+            <h2 className={styles.heading}>Measurements History</h2>
+            <p className={styles.p1}>Please note that all measurements are provided in (cm).</p>
+            <table className={styles.table}>
                 <thead>
                     <tr>
                         <th>Date</th>
                         <th>Chest</th>
                         <th>Bicep</th>
-                        <th>Waist (narrow)</th>
-                        <th>Waist (wide)</th>
+                        <th>Waist (N)</th>
+                        <th>Waist (W)</th>
                         <th>Hips</th>
                         <th>Leg</th>
                         <th>Weight</th>
@@ -25,22 +26,19 @@ const MeasurementsTable = ({ measurements, onDelete }) => {
                 <tbody>
                     {measurements.map((m) => (
                         <tr key={m.id}>
-                            <td>{new Date(m.date).toLocaleDateString("lt-LT", {
-                                year: "numeric",
-                                month: "2-digit",
-                                day: "2-digit"
-                            })}</td>
-                            <td>{m.chest_cm} cm</td>
-                            <td>{m.bicep_cm} cm</td>
-                            <td>{m.waist_narrow_cm} cm</td>
-                            <td>{m.waist_wide_cm} cm</td>
-                            <td>{m.hips_cm} cm</td>
-                            <td>{m.leg_cm} cm</td>
+                            <td>{new Date(m.date).toLocaleDateString("lt-LT")}</td>
+                            <td>{m.chest_cm}</td>
+                            <td>{m.bicep_cm}</td>
+                            <td>{m.waist_narrow_cm}</td>
+                            <td>{m.waist_wide_cm}</td>
+                            <td>{m.hips_cm}</td>
+                            <td>{m.leg_cm}</td>
                             <td>{m.weight_kg}</td>
                             <td>
                                 <button
                                     onClick={() => onDelete(m.id)}
                                     className={styles.deleteButton}
+                                    title="Delete entry"
                                 >
                                     &times;
                                 </button>

@@ -1,46 +1,51 @@
-@use '../../styles/variables' as *;
+@use "../../styles/variables" as *;
 
-.chartBox {
-    background-color: #fdfdfd;
+.chartCard {
+    background-color: $background-light;
     padding: 2rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin: 3rem auto;
-    width: 100%;
-    max-width: 1000px;
+    margin-bottom: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    font-family: $font-family-base;
+}
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
-        gap: 1rem;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
 
-        .heading {
-            color: $text-dark;
-            margin: 0;
-        }
+.heading {
+    font-size: 1.5rem;
+    color: #004777;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
 
-        .select {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid $border-color;
-            background-color: white;
-            color: $text-dark;
+.select {
+    font-family: $font-family-base;
+    padding: 0.5rem 1rem;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background-color: $table-color;
+    font-size: 1rem;
+    color: $text-dark;
 
-            &:focus {
-                outline: none;
-                border-color: $primary-color;
-            }
-        }
-
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
     }
 }
 
+.chartWrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
 .noData {
-    text-align: center;
-    color: $text-dark;
-    margin-top: 2rem;
+    font-style: italic;
+    color: $text-gray;
+    margin-top: 1rem;
 }
