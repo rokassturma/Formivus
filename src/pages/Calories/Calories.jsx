@@ -11,10 +11,23 @@ export default function CaloriesSection() {
     const [goalWeight, setGoalWeight] = useState('');
     const [savedGoal, setSavedGoal] = useState(null);
     const [notification, setNotification] = useState({ text: '', type: '', fading: false });
+    const [goalType, setGoalType] = useState('');
+    const [recommendationText, setRecommendationText] = useState('');
+
+
     const latestWeight = progress && progress.length > 0 ? progress[progress.length - 1].weight_kg : null;
     const initialWeight = progress && progress.length > 0 ? progress[0].weight_kg : null;
+
     const location = useLocation();
 
+
+    useEffect(() => {
+        const saved = localStorage.getItem('goalType');
+        if (saved) {
+            setGoalType(saved);
+            setRecommendationText(getRecommendationText(saved));
+        }
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,30 +49,41 @@ export default function CaloriesSection() {
         fetchData();
     }, [location.pathname]);
 
-    console.log("Profile:", profile);
-    console.log("Latest weight from progress:", latestWeight);
-
-
     function showMessage(text, type = 'error') {
         setNotification({ text, type, fading: false });
 
         setTimeout(() => {
             setNotification(prev => ({ ...prev, fading: true }));
-        }, 4500);
+        }, 10000);
 
         setTimeout(() => {
             setNotification({ text: '', type: '', fading: false });
-        }, 5000);
+        }, 10000);
     }
 
-    let progressPercent = 0;
-    if (savedGoal && latestWeight && initialWeight) {
-        const totalDiff = Math.abs(initialWeight - savedGoal);
-        const currentDiff = Math.abs(latestWeight - savedGoal);
-        progressPercent = 100 - (currentDiff / totalDiff) * 100;
-        if (progressPercent < 0) progressPercent = 0;
-        if (progressPercent > 100) progressPercent = 100;
+    const progressPercent = getProgressPercent(initialWeight, latestWeight, savedGoal, goalType);
+
+    function getProgressPercent(initialWeight, latestWeight, savedGoal, goalType) {
+        if (!initialWeight || !latestWeight || !savedGoal || !goalType) return 0;
+
+        const start = Number(initialWeight);
+        const current = Number(latestWeight);
+        const goal = Number(savedGoal);
+
+        if (goalType === 'maintain') return 100;
+
+        const totalDiff = Math.abs(start - goal);
+        const progressDiff = Math.abs(current - goal);
+
+        if (totalDiff === 0) return 100;
+
+        let progress = 100 - (progressDiff / totalDiff) * 100;
+        if (progress < 0) progress = 0;
+        if (progress > 100) progress = 100;
+
+        return progress;
     }
+
 
     const handleSaveGoal = async (e) => {
         e.preventDefault();
@@ -80,15 +104,39 @@ export default function CaloriesSection() {
         }
     };
 
+    function getRecommendationText(goalType) {
+        switch (goalType) {
+            case 'lose_weight':
+                return "Since you chose to lose weight, it's recommended to stay in a calorie deficit and be consistent with your nutrition. Light physical activity is beneficial but not essential.";
+            case 'lose_fat':
+                return "To lose fat while preserving muscle, aim for a slight calorie deficit and include regular strength training.";
+            case 'maintain':
+                return "To maintain your current body composition, aim to match your daily calorie needs. Stay active and monitor your progress.";
+            case 'gain_weight':
+                return "To gain weight effectively, eat in a slight surplus and monitor your energy levels and weight weekly.";
+            case 'gain_muscle':
+                return "To gain muscle mass, combine a moderate calorie surplus with strength training. Consistency in both training and nutrition is key.";
+            default:
+                return '';
+        }
+    }
 
-    function calculateCalories(profile, latestWeight) {
+    useEffect(() => {
+        if (goalType) {
+            localStorage.setItem('goalType', goalType);
+            setRecommendationText(getRecommendationText(goalType));
+        }
+    }, [goalType]);
+
+
+    function calculateCalories(profile, goalType) {
         const gender = profile.gender;
         const height = Number(profile.height);
         const age = Number(profile.age);
         const weight = Number(latestWeight);
         const activity_level = profile.activity_level;
 
-        if (!gender || !height || !age || !activity_level || !weight) return '...';
+        if (!gender || !weight || !height || !age || !activity_level) return '...';
 
         let bmr;
         if (gender === 'male') {
@@ -97,19 +145,50 @@ export default function CaloriesSection() {
             bmr = 10 * weight + 6.25 * height - 5 * age - 161;
         }
 
-        const activityMultipliers = {
-            'sedentary': 1.2,
-            'light': 1.375,
-            'moderate': 1.55,
-            'active': 1.725,
+        const activityFactors = {
+            sedentary: 1.2,
+            light: 1.375,
+            moderate: 1.55,
+            active: 1.725,
             'very active': 1.9
         };
 
-        const multiplier = activityMultipliers[activity_level] || 1.2;
+        const activityFactor = activityFactors[activity_level] || 1.2;
+        const maintenanceCalories = bmr * activityFactor;
 
-        return Math.round(bmr * multiplier);
+        const goalAdjustments = {
+            'lose_weight': -0.25,
+            'lose_fat': -0.15,
+            'maintain': 0,
+            'gain_weight': 0.15,
+            'gain_muscle': 0.25
+        };
+
+
+        const adjustment = goalAdjustments[goalType] || 0;
+        return Math.round(maintenanceCalories * (1 + adjustment));
     }
 
+    useEffect(() => {
+        if (goalType && savedGoal && latestWeight) {
+            const goal = Number(savedGoal);
+            const current = Number(latestWeight);
+
+            if (
+                (goalType === 'gain_weight' || goalType === 'gain_muscle') &&
+                goal <= current
+            ) {
+                showMessage("Your target weight is lower than your current weight. Please adjust your goal to match your focus.", 'error');
+            }
+
+            if (
+                (goalType === 'lose_weight' || goalType === 'lose_fat') &&
+                goal >= current
+            ) {
+                showMessage("Your target weight is higher than your current weight. Please adjust your goal to match your focus.", 'error');
+            }
+        }
+    }, [goalType, savedGoal, latestWeight]);
 
 
     return (
@@ -127,10 +206,32 @@ export default function CaloriesSection() {
             <h1>My Calories</h1>
 
             <div className={styles.block}>
+                <div className={styles.focus}>
+                    <h2>Your Focus</h2>
+                    <p>Select your specific goal to receive tailored recommendations.</p>
+
+                    <select
+                        value={goalType}
+                        onChange={(e) => setGoalType(e.target.value)}
+                        className={styles.goalTypeSelect}
+                    >
+                        <option value="" disabled>-- Select your goal --</option>
+                        <option value="lose_weight">Lose weight</option>
+                        <option value="lose_fat">Lose fat</option>
+                        <option value="maintain">Maintain</option>
+                        <option value="gain_weight">Gain weight</option>
+                        <option value="gain_muscle">Gain muscle</option>
+                    </select>
+
+                    {recommendationText && (
+                        <p className={styles.recommendation}>{recommendationText}</p>
+                    )}
+                </div>
+
                 <h2>Daily Calorie Needs</h2>
-                <p>Based on your profile data, we estimate your maintenance calories to be:</p>
+                <p>Based on your profile and progress data, we estimate your maintenance calories to be:</p>
                 <p className={styles.mainValue}>
-                    {profile && latestWeight ? `${calculateCalories(profile, latestWeight)} kcal/day` : '... kcal/day'}
+                    {profile && latestWeight ? `${calculateCalories(profile, goalType)} kcal/day` : 'Loading...'}
                 </p>
             </div>
 

@@ -25,7 +25,11 @@ const MeasurementsTable = ({ measurements, onDelete }) => {
                 <tbody>
                     {measurements.map((m) => (
                         <tr key={m.id}>
-                            <td>{new Date(m.date).toLocaleDateString()}</td>
+                            <td>{new Date(m.date).toLocaleDateString("lt-LT", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit"
+                            })}</td>
                             <td>{m.chest_cm} cm</td>
                             <td>{m.bicep_cm} cm</td>
                             <td>{m.waist_narrow_cm} cm</td>

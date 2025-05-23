@@ -36,14 +36,22 @@ const ProgressChart = ({ measurements }) => {
 
   if (!measurements.length) return <p className={styles.noData}>Please enter measurements first to see the progress.</p>;
 
+  const sorted = [...measurements].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
+
   const data = {
-    labels: measurements.map((m) =>
-      new Date(m.date).toLocaleDateString("en-GB")
+    labels: sorted.map((m) =>
+      new Date(m.date).toLocaleDateString("lt-LT", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
     ),
     datasets: [
       {
         label: measurementOptions.find(opt => opt.value === selectedField)?.label || "",
-        data: measurements.map((m) => m[selectedField]),
+        data: sorted.map((m) => m[selectedField]),
         borderColor: "#1976d2",
         backgroundColor: "rgba(25, 118, 210, 0.2)",
         fill: true,
@@ -52,6 +60,7 @@ const ProgressChart = ({ measurements }) => {
       },
     ],
   };
+
 
   const options = {
     responsive: true,
