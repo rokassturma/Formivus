@@ -2,6 +2,7 @@ import styles from './MealsSection.module.scss';
 import MealForm from './MealForm/MealForm';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function MealsSection() {
     const [meals, setMeals] = useState([]);
@@ -116,6 +117,9 @@ export default function MealsSection() {
     return (
         <section className={styles.mealsSection}>
             <h1>My Meals</h1>
+            <Link to="/meals/print" className="btn-secondary smallButton" target="_blank">
+                Print-view
+            </Link>
 
             <div className={styles.mealsWrapper}>
                 {meals.map(meal => (

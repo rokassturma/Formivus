@@ -11,10 +11,13 @@ import ProgressSection from "./pages/Progress/Progress";
 import Calories from "./pages/Calories/Calories";
 import Products from "./pages/Products/Products";
 import MealsSection from "./Components/MealsSection/MealsSection";
+import MealsPrintView from "./Components/MealsPrinView/MealsPrintView";
+
 
 
 
 function App() {
+
   return (
     <Router>
       <Routes>
@@ -84,6 +87,10 @@ function App() {
             }
           />
         </Route>
+
+        <Route
+          path="/meals/print"
+          element={<MealsPrintView />} />
 
         <Route
           path="/login"
