@@ -70,9 +70,9 @@ export default function MealForm({ mealId, onSuccess }) {
     return (
         <>
             <tr className={styles.formRow}>
-                <td></td>
+                <td data-label=""></td>
 
-                <td>
+                <td data-label="Product:">
                     <Select
                         className={styles.reactSelect}
                         classNamePrefix="select"
@@ -84,7 +84,7 @@ export default function MealForm({ mealId, onSuccess }) {
                     />
                 </td>
 
-                <td>
+                <td data-label="Amount:">
                     <input
                         className={styles.tableInput}
                         type="number"
@@ -95,10 +95,10 @@ export default function MealForm({ mealId, onSuccess }) {
                     />
                 </td>
 
-                <td className={styles.previewValue}>{calculated?.proteins || ''}g</td>
-                <td className={styles.previewValue}>{calculated?.carbs || ''}g</td>
-                <td className={styles.previewValue}>{calculated?.fats || ''}g</td>
-                <td className={styles.previewValue}>{calculated?.calories || ''} kcal</td>
+                <td data-label="Proteins:" className={styles.previewValue}>{calculated?.proteins || ''}g</td>
+                <td data-label="Carbs:" className={styles.previewValue}>{calculated?.carbs || ''}g</td>
+                <td data-label="Fats:" className={styles.previewValue}>{calculated?.fats || ''}g</td>
+                <td data-label="Calories:" className={styles.previewValue}>{calculated?.calories || ''} kcal</td>
 
                 <td>
                     <button type="submit" className="btn-primary" onClick={handleSubmit}>Add</button>

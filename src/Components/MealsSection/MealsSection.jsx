@@ -181,14 +181,14 @@ export default function MealsSection() {
                             <tbody>
                                 {getItemsForMeal(meal.id).map(item => (
                                     <tr key={item.id}>
-                                        <td>{new Date(item.date).toLocaleString('lt-LT')}</td>
-                                        <td>{item.product_name}</td>
-                                        <td>{item.amount} g</td>
-                                        <td>{item.proteins}</td>
-                                        <td>{item.carbs}</td>
-                                        <td>{item.fats}</td>
-                                        <td>{item.calories}</td>
-                                        <td>
+                                        <td data-label="Date">{new Date(item.date).toLocaleString('lt-LT')}</td>
+                                        <td data-label="Product">{item.product_name}</td>
+                                        <td data-label="Amount">{item.amount} g</td>
+                                        <td data-label="Proteins">{item.proteins}</td>
+                                        <td data-label="Carbs">{item.carbs}</td>
+                                        <td data-label="Fats">{item.fats}</td>
+                                        <td data-label="Calories">{item.calories}</td>
+                                        <td data-label="Actions">
                                             <button
                                                 onClick={() => handleDeleteItem(item.id)}
                                                 className={styles.deleteBtn}

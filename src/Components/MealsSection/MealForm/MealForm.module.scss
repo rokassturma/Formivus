@@ -67,3 +67,19 @@
 input[type="number"] {
     @include remove-number-arrows;
 }
+
+@media (max-width: 550px) {
+  .formRow td {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &::before {
+      margin-bottom: 4px;
+    }
+
+    input,
+    .reactSelect {
+      width: 100%;
+    }
+  }
+}
