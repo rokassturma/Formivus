@@ -32,28 +32,31 @@
         }
     }
 
-
     .aboutSection {
-        padding: 80px 20px;
+        padding: 60px 20px;
         background-color: $background-light;
 
         .aboutContent {
             display: flex;
+            flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             gap: 40px;
-            max-width: 1200px;
             margin: 0 auto;
             flex-wrap: wrap;
 
-            .aboutText {
-                flex: 1;
-                min-width: 300px;
+            .aboutText,
+            .aboutImage {
+                flex: 1 1 400px;
+                max-width: 400px;
+                text-align: center;
+            }
 
+            .aboutText {
                 h2 {
                     font-size: 2rem;
-                    color: $primary-color;
                     margin-bottom: 20px;
+                    color: $primary-color;
                 }
 
                 p {
@@ -64,18 +67,31 @@
             }
 
             .aboutImage {
-                flex: 1;
-                min-width: 300px;
-                display: flex;
-                justify-content: center;
-
                 img {
                     max-width: 100%;
                     height: auto;
+                    object-fit: contain;
+                    display: block;
+                    margin: 0 auto;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            .aboutContent {
+
+                .aboutText,
+                .aboutImage {
+                    max-width: 100%;
+                }
+
+                .aboutImage {
+                    margin-top: 20px;
                 }
             }
         }
     }
+
 
     .featuresSection {
         padding: 60px 20px;
