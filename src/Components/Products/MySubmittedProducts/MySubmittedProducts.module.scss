@@ -1,10 +1,9 @@
 .submittedBox {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 }
+
 
 .submittedBox h3 {
     font-size: 20px;
@@ -71,5 +70,54 @@
     &:active {
         transform: scale(0.97);
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+}
+
+@media (max-width: 950px) {
+
+    .submittedBox {
+        width: 100%;
+
+        .submittedTable {
+            border: 0;
+            width: 100%;
+            font-size: 0.9rem;
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin: 1rem auto;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 1rem 1.2rem;
+                background: #fff;
+                max-width: 600px;
+                width: 90%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem 0;
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+
+                &::before {
+                    content: attr(data-label);
+                    font-weight: bold;
+                    text-transform: capitalize;
+                    color: #333;
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
     }
 }

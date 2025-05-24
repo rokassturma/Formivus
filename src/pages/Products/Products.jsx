@@ -109,13 +109,13 @@ export default function Products() {
                                 .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
                                 .map(p => (
                                     <tr key={p.id}>
-                                        <td>{p.name}</td>
-                                        <td>{p.proteins}</td>
-                                        <td>{p.carbs}</td>
-                                        <td>{p.fats}</td>
-                                        <td>{p.calories}</td>
+                                        <td data-label="Name">{p.name}</td>
+                                        <td data-label="Proteins (g)">{p.proteins}</td>
+                                        <td data-label="Carbs (g)">{p.carbs}</td>
+                                        <td data-label="Fats (g)">{p.fats}</td>
+                                        <td data-label="Calories (kcal)">{p.calories}</td>
                                         {currentUser?.role === 'admin' && (
-                                            <td>
+                                            <td data-label="Actions">
                                                 <button
                                                     className="btn-smalll btn-red"
                                                     onClick={() => deleteProduct(p.id)}

@@ -31,7 +31,7 @@
             box-shadow: 0 0 0 2px rgba(0, 175, 181, 0.2);
         }
 
-        
+
     }
 
 
@@ -60,5 +60,45 @@
     tr:nth-child(even) {
         background-color: #f9f9f9;
 
+    }
+}
+
+@media (max-width: 850px) {
+    .productsTable {
+        border: 0;
+        width: 100%;
+        font-size: 0.9rem;
+
+        thead {
+            display: none;
+        }
+
+        tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #fff;
+        }
+
+        td {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+
+            &::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #333;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
     }
 }

@@ -64,17 +64,23 @@ export default function MySubmittedProducts({ refresh }) {
                     <tbody>
                         {products.map(p => (
                             <tr key={p.id}>
-                                <td>{p.name}</td>
-                                <td>{p.proteins}</td>
-                                <td>{p.carbs}</td>
-                                <td>{p.fats}</td>
-                                <td>{p.calories}</td>
-                                <td className={styles[`status${getStatus(p)}`]}>
+                                <td data-label="Name">{p.name}</td>
+                                <td data-label="Proteins">{p.proteins}</td>
+                                <td data-label="Carbs">{p.carbs}</td>
+                                <td data-label="Fats">{p.fats}</td>
+                                <td data-label="Calories">{p.calories}</td>
+                                <td
+                                    className={styles[`status${getStatus(p)}`]}
+                                    data-label="Status"
+                                >
                                     {getStatus(p)}
                                 </td>
-                                <td>
+                                <td data-label="Actions">
                                     {(p.is_approved === 1 || p.is_approved === 2) && (
-                                        <button onClick={() => handleHide(p.id)} className={styles['btn-hide']}>
+                                        <button
+                                            onClick={() => handleHide(p.id)}
+                                            className={styles['btn-hide']}
+                                        >
                                             Hide
                                         </button>
                                     )}
