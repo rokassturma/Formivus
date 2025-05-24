@@ -17,7 +17,6 @@
         flex-wrap: wrap;
         gap: 1rem;
         margin-bottom: 2rem;
-        padding: 0 1rem;
 
         .searchInput {
             flex: 1;
@@ -110,6 +109,74 @@
         button {
             flex: 1;
             white-space: nowrap;
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    
+    .searchInput {
+        align-items: center;
+    }
+
+    .selectRole {
+        margin: 0 auto;
+    }
+
+    .userTable {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        min-width: 250px;
+
+        thead {
+            display: none;
+        }
+
+        tbody {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+
+            tr {
+                display: flex;
+                flex-direction: column;
+                background-color: $white;
+                padding: 1rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                border: 1px solid $gray-light;
+                overflow: hidden;
+
+                td {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    padding: 0.3rem 0;
+                    font-size: 0.9rem;
+
+                    &::before {
+                        content: attr(data-label);
+                        font-weight: 600;
+                        color: $text-dark;
+                        margin-right: 0.75rem;
+                        min-width: 80px;
+                    }
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        button {
+            width: 100%;
         }
     }
 }

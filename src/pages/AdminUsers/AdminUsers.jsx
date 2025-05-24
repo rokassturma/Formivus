@@ -128,15 +128,15 @@ export default function AdminUsers() {
                             key={index}
                             className={`${profile.role === 'admin' ? styles.adminRow : ''} ${currentUser?.email === profile.email ? styles.youRow : ''}`}
                         >
-                            <td>{profile.username || 'Unknown'}{currentUser?.email === profile.email && ' (you)'}</td>
-                            <td>{profile.email || 'Not provided'}</td>
-                            <td>{profile.age ? `${profile.age} yrs` : '–'}</td>
-                            <td>{profile.height ? `${profile.height} cm` : '–'}</td>
-                            <td>{profile.weight ? `${profile.weight} kg` : '–'}</td>
-                            <td>{profile.gender || '–'}</td>
-                            <td>{profile.activity_level || '–'}</td>
-                            <td>{profile.role}</td>
-                            <td className={styles.actions}>
+                            <td data-label="Username:">{profile.username || 'Unknown'}{currentUser?.email === profile.email && ' (you)'}</td>
+                            <td data-label="Email:">{profile.email || 'Not provided'}</td>
+                            <td data-label="Age:">{profile.age ? `${profile.age} yrs` : '–'}</td>
+                            <td data-label="Height:">{profile.height ? `${profile.height} cm` : '–'}</td>
+                            <td data-label="Weight:">{profile.weight ? `${profile.weight} kg` : '–'}</td>
+                            <td data-label="Gender:">{profile.gender || '–'}</td>
+                            <td data-label="Activity:">{profile.activity_level || '–'}</td>
+                            <td data-label="Role:">{profile.role}</td>
+                            <td className={styles.actions} data-label="Actions">
                                 <button className="btn-secondary" onClick={() => handleRoleToggle(profile.email)}>
                                     Set as {profile.role === 'admin' ? 'user' : 'admin'}
                                 </button>
