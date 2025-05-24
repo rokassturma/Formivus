@@ -234,6 +234,14 @@
                 transform: translateY(-5px);
             }
 
+            @media (max-width: 950px) {
+                width: 100%;
+            }
+
+            @media (max-width: 600px) {
+                width: 90%;
+            }
+
             .avatar {
                 width: 80px;
                 height: 80px;

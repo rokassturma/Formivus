@@ -11,18 +11,27 @@ export default function Header() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 950);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= 950);
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        const mediaQuery = window.matchMedia('(max-width: 950px)');
+
+        const handleChange = () => {
+            setIsMobile(mediaQuery.matches);
+        };
+
+        handleChange();
+        mediaQuery.addEventListener('change', handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
     }, []);
 
     useEffect(() => {
         if (loading || !currentUser) return;
+
         axios.get('http://localhost:5000/api/admin-users', { withCredentials: true })
             .then(() => setIsAdmin(true))
             .catch(() => setIsAdmin(false));
