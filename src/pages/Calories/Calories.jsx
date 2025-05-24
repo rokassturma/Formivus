@@ -193,77 +193,81 @@ export default function CaloriesSection() {
 
 
     return (
-        <section className={styles.caloriesSection}>
-            {notification.text && (
-                <div className="notificationWrapper">
-                    <NotificationMessage
-                        message={notification.text}
-                        type={notification.type}
-                        fading={notification.fading}
-                    />
-                </div>
-            )}
-
-            <h1>My Calories</h1>
-
-            <div className={styles.block}>
-                <div className={styles.focus}>
-                    <h2>Your Focus</h2>
-                    <p>Select your specific goal to receive tailored recommendations.</p>
-
-                    <select
-                        value={goalType}
-                        onChange={(e) => setGoalType(e.target.value)}
-                        className={styles.goalTypeSelect}
-                    >
-                        <option value="" disabled>-- Select your goal --</option>
-                        <option value="lose_weight">Lose weight</option>
-                        <option value="lose_fat">Lose fat</option>
-                        <option value="maintain">Maintain</option>
-                        <option value="gain_weight">Gain weight</option>
-                        <option value="gain_muscle">Gain muscle</option>
-                    </select>
-
-                    {recommendationText && (
-                        <p className={styles.recommendation}>{recommendationText}</p>
-                    )}
-                </div>
-
-                <h2>Daily Calorie Needs</h2>
-                <p>Based on your profile and progress data, we estimate your maintenance calories to be:</p>
-                <span className={styles.mainValue}>
-                    {profile && latestWeight ? `${calculateCalories(profile, goalType)} kcal/day` : 'Loading...'}
-                </span>
-            </div>
-
-            <div className={styles.block}>
-                <h2>Your Goal</h2>
-                <p>Set your target weight and track your progress.</p>
-
-                <form onSubmit={handleSaveGoal} className={styles.goalForm}>
-                    <input
-                        type="number"
-                        placeholder="Enter target weight (kg)"
-                        value={goalWeight}
-                        onChange={(e) => setGoalWeight(e.target.value)}
-                    />
-                    <button type="submit" className="btn-primary">Save Goal</button>
-                </form>
-
-                {savedGoal && latestWeight && (
-                    <div className={styles.progressBox}>
-                        <p>Current weight: <strong>{latestWeight} kg</strong></p>
-                        <p>Goal weight: <strong>{savedGoal} kg</strong></p>
-                        <div className={styles.progressBarWrapper}>
-                            <div
-                                className={styles.progressBar}
-                                style={{ width: `${progressPercent}%` }}
-                            ></div>
-                        </div>
-                        <p>{progressPercent.toFixed(1)}% towards your goal</p>
+        <main className='main-wrapper'>
+            <section className={styles.caloriesSection}>
+                {notification.text && (
+                    <div className="notificationWrapper">
+                        <NotificationMessage
+                            message={notification.text}
+                            type={notification.type}
+                            fading={notification.fading}
+                        />
                     </div>
                 )}
-            </div>
-        </section>
+
+                <h1>My Calories</h1>
+
+                <div className={styles.blockMain}>
+                    <div className={styles.block}>
+                        <div className={styles.focus}>
+                            <h2>Your Focus</h2>
+                            <p>Select your specific goal to receive tailored recommendations.</p>
+
+                            <select
+                                value={goalType}
+                                onChange={(e) => setGoalType(e.target.value)}
+                                className={styles.goalTypeSelect}
+                            >
+                                <option value="" disabled>-- Select your goal --</option>
+                                <option value="lose_weight">Lose weight</option>
+                                <option value="lose_fat">Lose fat</option>
+                                <option value="maintain">Maintain</option>
+                                <option value="gain_weight">Gain weight</option>
+                                <option value="gain_muscle">Gain muscle</option>
+                            </select>
+
+                            {recommendationText && (
+                                <p className={styles.recommendation}>{recommendationText}</p>
+                            )}
+                        </div>
+
+                        <h2>Daily Calorie Needs</h2>
+                        <p>Based on your profile and progress data, we estimate your maintenance calories to be:</p>
+                        <span className={styles.mainValue}>
+                            {profile && latestWeight ? `${calculateCalories(profile, goalType)} kcal/day` : 'Loading...'}
+                        </span>
+                    </div>
+
+                    <div className={styles.block}>
+                        <h2>Your Goal</h2>
+                        <p>Set your target weight and track your progress.</p>
+
+                        <form onSubmit={handleSaveGoal} className={styles.goalForm}>
+                            <input
+                                type="number"
+                                placeholder="Enter target weight (kg)"
+                                value={goalWeight}
+                                onChange={(e) => setGoalWeight(e.target.value)}
+                            />
+                            <button type="submit" className="btn-primary">Save Goal</button>
+                        </form>
+
+                        {savedGoal && latestWeight && (
+                            <div className={styles.progressBox}>
+                                <p>Current weight: <strong>{latestWeight} kg</strong></p>
+                                <p>Goal weight: <strong>{savedGoal} kg</strong></p>
+                                <div className={styles.progressBarWrapper}>
+                                    <div
+                                        className={styles.progressBar}
+                                        style={{ width: `${progressPercent}%` }}
+                                    ></div>
+                                </div>
+                                <p>{progressPercent.toFixed(1)}% towards your goal</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+        </main>
     );
 }
