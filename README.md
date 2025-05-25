@@ -1,3 +1,8 @@
+## 🎥 Demo
+
+![Formivus Demo](./assets/FormivusDemo.gif)
+
+
 # 🧠 Formivus – Personal Health Tracker
 
 **Formivus** is a web-based health analysis platform designed to help users monitor their well-being through body measurements, calorie tracking, product suggestions, and more. It provides different user roles (admin/user), responsive views, and deep personalization options.
