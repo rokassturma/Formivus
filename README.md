@@ -1,153 +1,124 @@
-Project Overview
-This wellness management system is designed to help users track their personal progress, manage their meals, monitor calorie intake, and suggest new products, with clear role-based access control for both users and admins.
+# 🧠 Formivus – Personal Health Tracker
 
-🔐 Registration
-The registration form uses a disabled button until all validation requirements are met:
+**Formivus** is a web-based health analysis platform designed to help users monitor their well-being through body measurements, calorie tracking, product suggestions, and more. It provides different user roles (admin/user), responsive views, and deep personalization options.
 
-Email Validation
+---
 
-Users must provide a valid email format.
+## 🔐 Registration & Login
 
-Real-time error messages appear below the input.
+### ✅ Registration features:
+- Register button remains disabled until all fields are valid.
+- **Email** is validated in real-time (must be unique and formatted correctly).
+- **Username** must be at least 5 characters, only letters/numbers (no special characters), and unique.
+- **Password** must meet strength requirements and match confirmation.
+- Option to **show/hide** password.
+- On successful registration, users are redirected to login and shown a success message.
+- **Passwords are hashed** using Bcrypt.
 
-Duplicate emails are not allowed.
+### 🔓 Login:
+- Validates email and password combination.
+- Proper error messages if email does not exist or password is incorrect.
+- Show/hide password toggle available.
 
-Special characters like *, /, etc. are restricted.
+---
 
-Username Validation
+## 🏠 After Login
 
-Must be at least 5 characters long.
+- User is redirected to the **Home page** with access to `My Profile` and `Health Panel`.
+- From here, users can access personalized health tools.
 
-No special symbols allowed.
+---
 
-If the username already exists in the database, an error is shown.
+## 🧍 My Profile
 
-Password Requirements
+- Users fill in **age, gender, height, weight, and activity level**.
+- This data is used across the platform (calorie calculation, recommendations).
+- Users can update their profile anytime.
 
-Toggle visibility button (show/hide password).
+### 🔒 Security:
+- Admin-only pages (`/admin`, etc.) are protected both via **backend logic** and **role-based access**.
+- Attempts to manipulate roles via dev tools or URL are automatically redirected or blocked.
 
-Requirements shown while typing.
+---
 
-Weak passwords are not accepted.
+## 📈 My Progress
 
-Passwords must match.
+- Users can input full body measurements.
+- All inputs are stored and displayed in a history **table** and an optional **chart**.
+- The chart is dynamically updated with each new entry.
+- User can select which metric to view progress over time (e.g., waist, hips, etc.).
 
-Upon successful registration, a confirmation message appears, and the user is redirected to the login page.
+---
 
-Passwords are hashed using Bcrypt for security.
+## 🔥 My Calories
 
-🔑 Login
-Email is verified. If the address doesn't exist, an error is shown.
+⚠️ Before demo: clear `localStorage` if previously used.
 
-Password is validated against the hashed version in the database.
+- Choose your **focus goal**: Lose weight, Maintain, Gain muscle.
+- Based on the profile and progress data, the app calculates:
+  - Daily maintenance calorie needs
+  - Visual progress bar (based on current and goal weight)
+- Users set a **target weight** and the system updates progress % accordingly.
+- Focus goal also displays a short **motivational strategy**.
+- Errors are shown if logic is invalid (e.g., trying to gain when current > goal).
 
-Toggle visibility function also exists here.
+---
 
-🏠 After Logging In
-The user is directed to the Home Page, where new sections like My Profile and Health Panel become available.
+## 🥑 Products
 
-In My Profile, the user can fill in essential details:
+- Users can **suggest new products** with detailed macros.
+- Calories are calculated automatically based on macros.
+- Admin sees pending suggestions and can approve/reject them.
+- Status is shown in the user panel: `Pending`, `Approved`, or `Rejected`.
+- Admins can also create instantly-approved products or delete them directly.
+- Search functionality included.
 
-Gender, Age, Height, Weight, and Activity Level.
+---
 
-This information directly affects calculations in other sections.
+## 🍽️ Meal Tracker
 
-The data can be edited anytime.
+- Add multiple **meals per day**.
+- Custom meal naming.
+- Inside each meal, user can add **multiple products** from the product list.
+- Amounts (g/ml) are entered and macros are calculated dynamically.
+- Live totals for **proteins, carbs, fats, and calories**.
+- Button to open **print view** for easy meal plan printing.
 
-Unauthorized users cannot gain admin rights through URL manipulation or browser tools – all attempts are blocked or redirected.
+---
 
-📊 My Progress
-Users can enter body measurements and see progress over time.
+## 🛠️ Admin Panel
 
-The Measurements Table shows historical data (no entry limit).
+### 1. **Admin Panel**
+- View all submitted products.
+- Approve or reject suggestions with one click.
+- Users receive immediate feedback in their Products panel.
 
-A Progress Chart visualizes measurement changes over time.
+### 2. **All Users**
+- View all registered users and profile stats.
+- Admin can:
+  - Promote/demote user roles
+  - Delete users
+  - Filter by role or search by name/email
+  - See profile data of users who filled their profile
+  - Highlight self with label `(you)`
 
-The user can choose which measurement to track (waist, hips, etc.).
+---
 
-The chart updates immediately after each new entry.
+## 💅 Design & Styling
 
-🔥 My Calories
-⚠️ Note: LocalStorage is not used – all data is stored in the backend.
+- Fully **responsive** design (tables adapt to small screens using label-style layouts).
+- SCSS used for all styles, with global variables and modular structure.
+- Icons, colors, and layout match a clean, modern aesthetic.
+- Accessibility and UX prioritised.
 
-This section displays:
+---
 
-Focus goal (Lose / Maintain / Gain weight).
+## 🧰 Technologies Used
 
-Daily calorie needs (calculated based on profile + last recorded weight).
+- **React.js** – frontend user interface
+- **Node.js** – backend server logic
+- **MySQL** – relational database
+- **SCSS (Sass)** – CSS styling with modular structure
 
-Target weight with a dynamic progress bar.
+---
 
-After submitting new measurements, progress updates visually.
-
-Depending on the selected Focus, the user receives recommendations.
-
-Calorie needs react to:
-
-Profile data
-
-Progress measurements
-
-Activity level
-
-Selected goal focus
-
-Logical inconsistencies (e.g., trying to lose weight but entering a higher goal weight) will result in an error – progress won’t be calculated.
-
-🧾 Products
-Users can suggest new products with full macro breakdown (100g/ml base).
-
-Calories are calculated automatically.
-
-Formatting is normalized (first letter capitalized, rest lowercase).
-
-Users see the status of each submission:
-
-Pending, Approved, or Rejected (updated by admin).
-
-Admin-created products are automatically approved and can be deleted.
-
-Search functionality included for browsing available products.
-
-🍽 Meal Tracker
-Users can add meals by clicking "Add New Meal".
-
-A table appears where they input meal details.
-
-Users can rename meals, choose products, enter amounts (raw values).
-
-Macros are calculated instantly from the product list.
-
-All daily entries are summed automatically.
-
-Meals are not limited in number.
-
-A "Print View" is available to export all meals for the day.
-
-👨‍💼 Admin Functionality
-Admin users see two additional links: Admin Panel and All Users.
-
-Admin Panel:
-
-View and manage product suggestions (approve/reject).
-
-Feedback is instantly reflected in the user’s view.
-
-All Users:
-
-Displays a full list of registered users with their profile data.
-
-Admins are visually highlighted and labeled (you).
-
-Filtering and search by username/email and user roles.
-
-Admins can:
-
-Assign/revoke admin roles (excluding themselves).
-
-Delete users.
-
-Role updates affect access rights in real time.
-
-💅 Styling
-The entire project is fully responsive, optimized for both desktop and mobile.
