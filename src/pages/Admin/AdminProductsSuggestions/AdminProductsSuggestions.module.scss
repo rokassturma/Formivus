@@ -105,7 +105,7 @@
         color: $white;
 
         &:hover {
-            background-color: color.adjust($success-color, $lightness: -10%);
+            background-color: color.adjust($danger-color, $lightness: -10%);
             transform: scale(1.05);
         }
 
