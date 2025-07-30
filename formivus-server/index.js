@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://formivus.heyrokas.tech/",
+    origin: "https://formivus.heyrokas.tech",
     credentials: true,
   })
 );
