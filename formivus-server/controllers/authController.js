@@ -73,7 +73,7 @@ export const login = (req, res) => {
         username: user.username,
         email: user.email,
       },
-      "JWT_SECRET_KEY",
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
 
