@@ -1,33 +1,45 @@
-import { useState } from 'react';
-import styles from './ProfileForm.module.scss';
-import axios from 'axios';
+import { useState } from "react";
+import styles from "./ProfileForm.module.scss";
+import axios from "axios";
 
-export default function ProfileForm({ profileData, onProfileSaved, showMessage }) {
-
-  const [age, setAge] = useState(profileData?.age || '');
-  const [gender, setGender] = useState(profileData?.gender || '');
-  const [height, setHeight] = useState(profileData?.height || '');
-  const [weight, setWeight] = useState(profileData?.weight || '');
-  const [activity_level, setActivityLevel] = useState(profileData?.activity_level || '');
+export default function ProfileForm({
+  profileData,
+  onProfileSaved,
+  showMessage,
+}) {
+  const [age, setAge] = useState(profileData?.age || "");
+  const [gender, setGender] = useState(profileData?.gender || "");
+  const [height, setHeight] = useState(profileData?.height || "");
+  const [weight, setWeight] = useState(profileData?.weight || "");
+  const [activity_level, setActivityLevel] = useState(
+    profileData?.activity_level || ""
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validGenders = ['male', 'female', 'other'];
-    const validActivityLevels = ['sedentary', 'light', 'moderate', 'active', 'very active'];
+    const validGenders = ["male", "female", "other"];
+    const validActivityLevels = [
+      "sedentary",
+      "light",
+      "moderate",
+      "active",
+      "very active",
+    ];
 
     if (!gender || !age || !height || !weight || !activity_level) {
-      if (showMessage) showMessage('Please fill in all fields.', 'error');
+      if (showMessage) showMessage("Please fill in all fields.", "error");
       return;
     }
 
     if (!validGenders.includes(gender)) {
-      if (showMessage) showMessage('Please select a valid gender.', 'error');
+      if (showMessage) showMessage("Please select a valid gender.", "error");
       return;
     }
 
     if (!validActivityLevels.includes(activity_level)) {
-      if (showMessage) showMessage('Please select a valid activity level.', 'error');
+      if (showMessage)
+        showMessage("Please select a valid activity level.", "error");
       return;
     }
 
@@ -36,32 +48,42 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
       age,
       height,
       weight,
-      activity_level
+      activity_level,
     };
 
     try {
       if (profileData) {
-        await axios.put('http://localhost:5000/api/profile', payLoad, {
-          withCredentials: true
-        });
-        if (showMessage) showMessage('Profile updated successfully!', 'success');
+        await axios.put(
+          `${process.env.REACT_APP_API_URL}/api/profile`,
+          payLoad,
+          {
+            withCredentials: true,
+          }
+        );
+        if (showMessage)
+          showMessage("Profile updated successfully!", "success");
       } else {
-        await axios.post('http://localhost:5000/api/profile', payLoad, {
-          withCredentials: true
-        });
-        if (showMessage) showMessage('Profile created successfully!', 'success');
+        await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/profile`,
+          payLoad,
+          {
+            withCredentials: true,
+          }
+        );
+        if (showMessage)
+          showMessage("Profile created successfully!", "success");
       }
 
-      setGender('');
-      setAge('');
-      setWeight('');
-      setHeight('');
-      setActivityLevel('');
+      setGender("");
+      setAge("");
+      setWeight("");
+      setHeight("");
+      setActivityLevel("");
 
       if (onProfileSaved) onProfileSaved();
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Something went wrong.';
-      if (showMessage) showMessage(errorMsg, 'error');
+      const errorMsg = err.response?.data?.message || "Something went wrong.";
+      if (showMessage) showMessage(errorMsg, "error");
     }
   };
 
@@ -74,7 +96,9 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
           onChange={(e) => setGender(e.target.value)}
           required
         >
-          <option value="" disabled>Select gender</option>
+          <option value="" disabled>
+            Select gender
+          </option>
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
@@ -83,7 +107,7 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
       <div className={styles.formGroup}>
         <label>Age:</label>
         <input
-          type='number'
+          type="number"
           value={age}
           onChange={(e) => setAge(e.target.value)}
           min="14"
@@ -95,7 +119,7 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
       <div className={styles.formGroup}>
         <label>Height (cm):</label>
         <input
-          type='number'
+          type="number"
           value={height}
           onChange={(e) => setHeight(e.target.value)}
           min="100"
@@ -107,7 +131,7 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
       <div className={styles.formGroup}>
         <label>Weight (kg):</label>
         <input
-          type='number'
+          type="number"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
           min="30"
@@ -123,7 +147,9 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
           onChange={(e) => setActivityLevel(e.target.value)}
           required
         >
-          <option value="" disabled>Select your activity level</option>
+          <option value="" disabled>
+            Select your activity level
+          </option>
           <option value="sedentary">Sedentary</option>
           <option value="light">Light</option>
           <option value="moderate">Moderate</option>
@@ -132,7 +158,9 @@ export default function ProfileForm({ profileData, onProfileSaved, showMessage }
         </select>
       </div>
 
-      <button type='submit' className='btn-primary'>Save Profile</button>
+      <button type="submit" className="btn-primary">
+        Save Profile
+      </button>
     </form>
   );
 }
