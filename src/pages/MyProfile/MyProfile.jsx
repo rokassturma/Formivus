@@ -17,7 +17,7 @@ export default function MyProfile() {
     setIsLoading(true);
 
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/profile`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/profile`, {
         withCredentials: true,
       })
       .then((res) => {

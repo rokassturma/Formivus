@@ -5,7 +5,7 @@ export default function MealList({ items, onUpdate }) {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/meal-items/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/meal-items/${id}`,
         {
           withCredentials: true,
         }

@@ -11,7 +11,7 @@ export default function ProgressSection() {
   const fetchMeasurements = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/measurements`,
+        `${import.meta.env.VITE_API_URL}/api/measurements`,
         {
           withCredentials: true,
         }
@@ -25,7 +25,7 @@ export default function ProgressSection() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/measurements/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/measurements/${id}`,
         {
           withCredentials: true,
         }

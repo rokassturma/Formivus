@@ -33,7 +33,7 @@ export default function AdminUsers() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/admin/profiles`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/admin/profiles`, {
         withCredentials: true,
       })
       .then((res) => setProfiles(res.data))
@@ -45,12 +45,12 @@ export default function AdminUsers() {
   const handleRoleToggle = async (email) => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/admin/toggle-role`,
+        `${import.meta.env.VITE_API_URL}/api/admin/toggle-role`,
         { email },
         { withCredentials: true }
       );
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/admin/profiles`,
+        `${import.meta.env.VITE_API_URL}/api/admin/profiles`,
         { withCredentials: true }
       );
       setProfiles(res.data);
@@ -80,14 +80,14 @@ export default function AdminUsers() {
   const handleDeleteConfirmed = async () => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/admin/delete-user`,
+        `${import.meta.env.VITE_API_URL}/api/admin/delete-user`,
         {
           data: { email: emailToDelete },
           withCredentials: true,
         }
       );
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/admin/profiles`,
+        `${import.meta.env.VITE_API_URL}/api/admin/profiles`,
         { withCredentials: true }
       );
       setProfiles(res.data);

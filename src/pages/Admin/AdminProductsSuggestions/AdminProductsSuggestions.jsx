@@ -10,7 +10,7 @@ export default function AdminProductsSuggestions() {
 
   const fetchPending = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/products/pending`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/products/pending`, {
         withCredentials: true,
       })
       .then((res) => setPending(res.data))
@@ -25,7 +25,7 @@ export default function AdminProductsSuggestions() {
   const handleAction = async (id, action) => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/products/${id}/approve`,
+        `${import.meta.env.VITE_API_URL}/api/products/${id}/approve`,
         { action },
         {
           withCredentials: true,

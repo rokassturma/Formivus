@@ -64,7 +64,7 @@ export default function Register() {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/register`,
+        `${import.meta.env.VITE_API_URL}/api/register`,
         { email, username, password },
         { withCredentials: true }
       );

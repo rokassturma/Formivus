@@ -54,7 +54,7 @@ export default function ProfileForm({
     try {
       if (profileData) {
         await axios.put(
-          `${process.env.REACT_APP_API_URL}/api/profile`,
+          `${import.meta.env.VITE_API_URL}/api/profile`,
           payLoad,
           {
             withCredentials: true,
@@ -64,7 +64,7 @@ export default function ProfileForm({
           showMessage("Profile updated successfully!", "success");
       } else {
         await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/profile`,
+          `${import.meta.env.VITE_API_URL}/api/profile`,
           payLoad,
           {
             withCredentials: true,

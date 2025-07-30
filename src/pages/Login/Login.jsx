@@ -42,12 +42,12 @@ export default function Login() {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/login`,
+        `${import.meta.env.VITE_API_URL}/api/login`,
         { email, password },
         { withCredentials: true }
       );
 
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/me`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/me`, {
         withCredentials: true,
       });
 

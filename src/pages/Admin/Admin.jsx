@@ -10,7 +10,7 @@ export default function Admin() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/admin-users`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/admin-users`, {
         withCredentials: true,
       })
       .then(() => setAuthorized(true))

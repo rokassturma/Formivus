@@ -60,7 +60,7 @@ export default function ProductForm({ onSuccess }) {
       };
 
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/products`,
+        `${import.meta.env.VITE_API_URL}/api/products`,
         formattedForm,
         {
           withCredentials: true,

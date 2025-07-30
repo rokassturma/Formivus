@@ -8,7 +8,7 @@ export default function MySubmittedProducts({ refresh }) {
   const fetch = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/products/submitted`,
+        `${import.meta.env.VITE_API_URL}/api/products/submitted`,
         {
           withCredentials: true,
         }
@@ -32,7 +32,7 @@ export default function MySubmittedProducts({ refresh }) {
   const handleHide = async (id) => {
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/products/hide/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/products/hide/${id}`,
         {},
         {
           withCredentials: true,

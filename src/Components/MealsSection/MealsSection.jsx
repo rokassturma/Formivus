@@ -13,7 +13,7 @@ export default function MealsSection() {
   const handleDeleteMeal = async (mealId) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/meals/${mealId}`,
+        `${import.meta.env.VITE_API_URL}/api/meals/${mealId}`,
         {
           withCredentials: true,
         }
@@ -27,7 +27,7 @@ export default function MealsSection() {
   const handleSaveMealName = async (mealId) => {
     try {
       await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/meals/${mealId}`,
+        `${import.meta.env.VITE_API_URL}/api/meals/${mealId}`,
         {
           name: nameInputs[mealId],
         },
@@ -44,7 +44,7 @@ export default function MealsSection() {
   const handleDeleteItem = async (itemId) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/meal-items/${itemId}`,
+        `${import.meta.env.VITE_API_URL}/api/meal-items/${itemId}`,
         {
           withCredentials: true,
         }
@@ -57,12 +57,9 @@ export default function MealsSection() {
 
   const fetchMeals = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/meals`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/meals`, {
+        withCredentials: true,
+      });
       setMeals(res.data);
     } catch (err) {
       console.error("Error fetching meals:", err);
@@ -72,7 +69,7 @@ export default function MealsSection() {
   const fetchMealItems = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/meal-items`,
+        `${import.meta.env.VITE_API_URL}/api/meal-items`,
         {
           withCredentials: true,
         }
@@ -91,7 +88,7 @@ export default function MealsSection() {
   const handleAddMeal = async () => {
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/meals`,
+        `${import.meta.env.VITE_API_URL}/api/meals`,
         {},
         {
           withCredentials: true,

@@ -9,11 +9,11 @@ export default function MealsPrintView() {
   useEffect(() => {
     const fetchAll = async () => {
       const resMeals = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/meals`,
+        `${import.meta.env.VITE_API_URL}/api/meals`,
         { withCredentials: true }
       );
       const resItems = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/meal-items`,
+        `${import.meta.env.VITE_API_URL}/api/meal-items`,
         {
           withCredentials: true,
         }

@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/me`, { withCredentials: true })
+      .get(`${import.meta.env.VITE_API_URL}/api/me`, { withCredentials: true })
       .then((res) => setCurrentUser(res.data.user))
       .catch(() => setCurrentUser(null))
       .finally(() => setLoading(false));

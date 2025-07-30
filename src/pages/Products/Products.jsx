@@ -20,7 +20,7 @@ export default function Products() {
     const fetch = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products`,
+          `${import.meta.env.VITE_API_URL}/api/products`,
           {
             withCredentials: true,
           }
@@ -35,12 +35,9 @@ export default function Products() {
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/products/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/products/${id}`, {
+        withCredentials: true,
+      });
 
       setNotification({
         type: "success",

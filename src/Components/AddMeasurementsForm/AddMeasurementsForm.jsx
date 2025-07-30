@@ -46,7 +46,7 @@ export default function AddMeasurementsForm({ onSuccess }) {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/measurements`,
+        `${import.meta.env.VITE_API_URL}/api/measurements`,
         formData,
         { withCredentials: true }
       );

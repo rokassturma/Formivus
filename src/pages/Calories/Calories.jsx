@@ -38,13 +38,13 @@ export default function CaloriesSection() {
     const fetchData = async () => {
       try {
         const [profileRes, progressRes, goalRes] = await Promise.all([
-          axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/profile`, {
             withCredentials: true,
           }),
-          axios.get(`${process.env.REACT_APP_API_URL}/api/progress`, {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/progress`, {
             withCredentials: true,
           }),
-          axios.get(`${process.env.REACT_APP_API_URL}/api/calorie-goals`, {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/calorie-goals`, {
             withCredentials: true,
           }),
         ]);
@@ -111,7 +111,7 @@ export default function CaloriesSection() {
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/calorie-goals`,
+        `${import.meta.env.VITE_API_URL}/api/calorie-goals`,
         { goal_weight_kg: goalWeight },
         { withCredentials: true }
       );

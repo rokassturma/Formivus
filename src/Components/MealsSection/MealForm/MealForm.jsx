@@ -13,7 +13,7 @@ export default function MealForm({ mealId, onSuccess }) {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products`,
+          `${import.meta.env.VITE_API_URL}/api/products`,
           {
             withCredentials: true,
           }
@@ -48,7 +48,7 @@ export default function MealForm({ mealId, onSuccess }) {
 
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/meal-items`,
+        `${import.meta.env.VITE_API_URL}/api/meal-items`,
         {
           product_id: selectedProduct.id,
           amount: Number(amount),
