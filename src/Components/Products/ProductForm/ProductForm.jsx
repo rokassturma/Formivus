@@ -56,7 +56,6 @@ export default function ProductForm({ onSuccess }) {
     try {
       const formattedForm = {
         ...form,
-        name: capitalizeFirstWordOnly(name),
       };
 
       await axios.post(
@@ -91,11 +90,6 @@ export default function ProductForm({ onSuccess }) {
       });
       setTimeout(() => setNotification(null), 5000);
     }
-  };
-
-  const capitalizeFirstWordOnly = (str) => {
-    const trimmed = str.trim().toLowerCase();
-    return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
   };
 
   return (

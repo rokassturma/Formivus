@@ -13,8 +13,15 @@ export default function Products() {
   const [refresh, setRefresh] = useState(false);
   const [refreshSubmitted, setRefreshSubmitted] = useState(false);
   const [search, setSearch] = useState("");
-
   const [notification, setNotification] = useState(null);
+  const [editProductId, setEditProductId] = useState(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    proteins: "",
+    carbs: "",
+    fats: "",
+    calories: "",
+  });
 
   useEffect(() => {
     const fetch = async () => {
@@ -51,6 +58,47 @@ export default function Products() {
       setNotification({
         type: "error",
         message: "Failed to delete product",
+      });
+      setTimeout(() => setNotification(null), 5000);
+    }
+  };
+
+  const startEditing = (product) => {
+    setEditProductId(product.id);
+    setEditForm({
+      name: product.name,
+      proteins: product.proteins,
+      carbs: product.carbs,
+      fats: product.fats,
+      calories: product.calories,
+    });
+  };
+
+  const cancelEditing = () => {
+    setEditProductId(null);
+  };
+
+  const saveEdit = async () => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/products/${editProductId}`,
+        editForm,
+        {
+          withCredentials: true,
+        }
+      );
+      setNotification({
+        type: "success",
+        message: "Product updated successfully",
+      });
+      setTimeout(() => setNotification(null), 5000);
+      setEditProductId(null);
+      setRefresh((prev) => !prev);
+    } catch (err) {
+      console.error("Edit error:", err);
+      setNotification({
+        type: "error",
+        message: "Failed to update product",
       });
       setTimeout(() => setNotification(null), 5000);
     }
@@ -115,19 +163,110 @@ export default function Products() {
                 )
                 .map((p) => (
                   <tr key={p.id}>
-                    <td data-label="Name">{p.name}</td>
-                    <td data-label="Proteins (g)">{p.proteins}</td>
-                    <td data-label="Carbs (g)">{p.carbs}</td>
-                    <td data-label="Fats (g)">{p.fats}</td>
-                    <td data-label="Calories (kcal)">{p.calories}</td>
+                    <td data-label="Name">
+                      {editProductId === p.id ? (
+                        <input
+                          type="text"
+                          value={editForm.name}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, name: e.target.value })
+                          }
+                        />
+                      ) : (
+                        p.name
+                      )}
+                    </td>
+                    <td data-label="Proteins (g)">
+                      {editProductId === p.id ? (
+                        <input
+                          type="number"
+                          value={editForm.proteins}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm,
+                              proteins: e.target.value,
+                            })
+                          }
+                        />
+                      ) : (
+                        p.proteins
+                      )}
+                    </td>
+                    <td data-label="Carbs (g)">
+                      {editProductId === p.id ? (
+                        <input
+                          type="number"
+                          value={editForm.carbs}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, carbs: e.target.value })
+                          }
+                        />
+                      ) : (
+                        p.carbs
+                      )}
+                    </td>
+                    <td data-label="Fats (g)">
+                      {editProductId === p.id ? (
+                        <input
+                          type="number"
+                          value={editForm.fats}
+                          onChange={(e) =>
+                            setEditForm({ ...editForm, fats: e.target.value })
+                          }
+                        />
+                      ) : (
+                        p.fats
+                      )}
+                    </td>
+                    <td data-label="Calories (kcal)">
+                      {editProductId === p.id ? (
+                        <input
+                          type="number"
+                          value={editForm.calories}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm,
+                              calories: e.target.value,
+                            })
+                          }
+                        />
+                      ) : (
+                        p.calories
+                      )}
+                    </td>
                     {currentUser?.role === "admin" && (
                       <td data-label="Actions">
-                        <button
-                          className="btn-smalll btn-red"
-                          onClick={() => deleteProduct(p.id)}
-                        >
-                          ❌
-                        </button>
+                        {editProductId === p.id ? (
+                          <>
+                            <button
+                              className="btn-smalll btn-green"
+                              onClick={saveEdit}
+                            >
+                              💾
+                            </button>
+                            <button
+                              className="btn-smalll btn-red"
+                              onClick={cancelEditing}
+                            >
+                              ❌
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className="btn-smalll btn-blue"
+                              onClick={() => startEditing(p)}
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              className="btn-smalll btn-red"
+                              onClick={() => deleteProduct(p.id)}
+                            >
+                              ❌
+                            </button>
+                          </>
+                        )}
                       </td>
                     )}
                   </tr>
