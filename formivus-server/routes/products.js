@@ -4,7 +4,6 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-
 router.get("/", verifyToken, (req, res) => {
   const query = `
     SELECT * FROM products
@@ -18,13 +17,12 @@ router.get("/", verifyToken, (req, res) => {
   });
 });
 
-
 router.post("/", verifyToken, (req, res) => {
   const userId = req.user.id;
   const role = req.user.role;
 
-  const isAdmin = role === 'admin' ? 1 : 0;
-  const isApproved = role === 'admin' ? 1 : 0;
+  const isAdmin = role === "admin" ? 1 : 0;
+  const isApproved = role === "admin" ? 1 : 0;
 
   const { name, proteins, carbs, fats, calories } = req.body;
 
@@ -47,10 +45,8 @@ router.post("/", verifyToken, (req, res) => {
   );
 });
 
-
-
 router.get("/pending", verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
@@ -66,9 +62,8 @@ router.get("/pending", verifyToken, (req, res) => {
   });
 });
 
-
 router.put("/:id/approve", verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
@@ -88,10 +83,8 @@ router.put("/:id/approve", verifyToken, (req, res) => {
   });
 });
 
-
-
 router.delete("/:id", verifyToken, (req, res) => {
-  if (req.user.role !== 'admin') {
+  if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
@@ -104,7 +97,6 @@ router.delete("/:id", verifyToken, (req, res) => {
     return res.status(200).json({ message: "Product deleted" });
   });
 });
-
 
 router.get("/submitted", verifyToken, (req, res) => {
   const userId = req.user.id;
@@ -136,6 +128,37 @@ router.post("/hide/:id", verifyToken, (req, res) => {
     if (err) return res.status(500).json({ message: "Hide error" });
     return res.status(200).json({ message: "Product hidden from submissions" });
   });
+});
+
+router.put("/:id", verifyToken, (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const productId = req.params.id;
+  const { name, proteins, carbs, fats, calories } = req.body;
+
+  if (!name || proteins < 0 || carbs < 0 || fats < 0 || calories < 0) {
+    return res.status(400).json({ message: "Invalid product data" });
+  }
+
+  const query = `
+    UPDATE products
+    SET name = ?, proteins = ?, carbs = ?, fats = ?, calories = ?
+    WHERE id = ?
+  `;
+
+  db.query(
+    query,
+    [name, proteins, carbs, fats, calories, productId],
+    (err, result) => {
+      if (err) return res.status(500).json({ message: "Update error" });
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+      return res.status(200).json({ message: "Product updated successfully" });
+    }
+  );
 });
 
 export default router;
